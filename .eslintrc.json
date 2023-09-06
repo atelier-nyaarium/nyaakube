@@ -1,0 +1,27 @@
+{
+	"env": {
+		"browser": true,
+		"es6": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"next",
+		"next/core-web-vitals",
+		"plugin:react/recommended",
+		"plugin:react-hooks/recommended",
+		"plugin:security/recommended"
+	],
+	"rules": {
+		"no-case-declarations": "warn",
+		"no-constant-condition": "off",
+		"no-loss-of-precision": "warn",
+		"no-undef": "error",
+		"no-unused-vars": ["warn", { "args": "none" }],
+		"no-useless-escape": "warn",
+		"no-var": "warn",
+		"prefer-arrow-callback": "warn",
+		"prefer-const": "warn",
+		"security/detect-object-injection": "off"
+	}
+}
