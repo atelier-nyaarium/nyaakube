@@ -1,0 +1,18 @@
+# Build
+.next/
+
+# Development
+_test/
+.vscode-server/
+.vscode/
+debug.log
+node_modules/
+volumes/
+.git*
+.env*
+compose*.yml
+
+#### OS
+Thumbs.db
+.DS_Store
+._.DS_Store
