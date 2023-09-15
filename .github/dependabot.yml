@@ -1,0 +1,33 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    versioning-strategy: "increase"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    assignees:
+      - "nyaarium"
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+
+      nextjs:
+        patterns:
+          - "next"
+          - "eslint-config-next"
+
+      material-ui:
+        patterns:
+          - "@mui/material"
+          - "@mui/icons-material"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    assignees:
+      - "nyaarium"
