@@ -2,6 +2,7 @@
 #   DOCKER_PASSWORD
 #   DOCKER_USERNAME
 #   KUBECONFIG
+#   SNYK_TOKEN
 
 name: Push (main)
 
@@ -32,6 +33,12 @@ jobs:
   Rollout:
     needs: Push
     uses: ./.github/workflows/_k8s-restart.yml
+    secrets: inherit
+    permissions:
+      contents: read
+
+  Snyk:
+    uses: ./.github/workflows/_snyk.yml
     secrets: inherit
     permissions:
       contents: read
