@@ -42,9 +42,9 @@ export default function scanDirectory(basePath, filePath) {
 		// eslint-disable-next-line security/detect-non-literal-fs-filename
 		const isDir = fs.lstatSync(pathStr).isDirectory();
 		if (isDir) {
-			retDirs.push(path.join(filePath, filename));
+			retDirs.push(filename);
 		} else {
-			retFiles.push(path.join(filePath, filename));
+			retFiles.push(filename);
 		}
 	}
 
