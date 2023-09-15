@@ -42,12 +42,12 @@ jobs:
     secrets: inherit
     permissions:
       contents: read
+      security-events: write
 
   Trivy:
     needs: Push
     uses: ./.github/workflows/_trivy.yml
     secrets: inherit
     permissions:
-      actions: read
       contents: read
       security-events: write
