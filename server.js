@@ -32,31 +32,38 @@ const SERVABLE_BASE_PATHS = Object.freeze([
 function routeHandler(req, res, parsedUrl, next) {
 	const { pathname } = parsedUrl;
 
-	// If the file exists, redirect to file serve API
-	for (const basePath of SERVABLE_BASE_PATHS) {
-		const safePath = sanitizePath(basePath, pathname);
-		if (!isFileAccessible(safePath)) continue;
+	// If begins with /files/
+	if (pathname.startsWith("/files/")) {
+		// Looks like: /files/path/to/file.ext
+		//    Trim to: path/to/file.ext
+		const filePath = pathname.replace(/^\/files\//, "");
 
-		try {
-			let rawQuery = req.url.split("?")[1] ?? "";
-			if (rawQuery) rawQuery = `?${rawQuery}`;
+		// If the file exists, redirect to file serve API
+		for (const basePath of SERVABLE_BASE_PATHS) {
+			const safePath = sanitizePath(basePath, filePath);
+			if (!isFileAccessible(safePath)) continue;
 
-			return fetch(`http://localhost:${port}/api/file${rawQuery}`, {
-				method: "post",
-				body: JSON.stringify({ path: pathname }),
-			})
-				.then((fetchRes) => {
-					return fetchRes.body.pipe(res);
+			try {
+				let rawQuery = req.url.split("?")[1] ?? "";
+				if (rawQuery) rawQuery = `?${rawQuery}`;
+
+				return fetch(`http://localhost:${port}/api/file${rawQuery}`, {
+					method: "post",
+					body: JSON.stringify({ path: filePath }),
 				})
-				.catch((error) => {
-					console.log(`⛔ `, `Error during file route`);
-					console.error(error);
-					return res.destroy();
-				});
-		} catch (error) {
-			console.log(`⛔ `, `Error fetching file route`);
-			console.error(error);
-			return res.destroy();
+					.then((fetchRes) => {
+						return fetchRes.body.pipe(res);
+					})
+					.catch((error) => {
+						console.log(`⛔ `, `Error during file route`);
+						console.error(error);
+						return res.destroy();
+					});
+			} catch (error) {
+				console.log(`⛔ `, `Error fetching file route`);
+				console.error(error);
+				return res.destroy();
+			}
 		}
 	}
 

@@ -50,7 +50,7 @@ export default function PageIndex() {
 							<CardHeader
 								avatar={
 									<Avatar
-										src="logos/discord.png"
+										src="files/logos/discord.png"
 										sx={{
 											borderRadius: "0",
 											filter,
@@ -70,7 +70,7 @@ export default function PageIndex() {
 								<CardHeader
 									avatar={
 										<Avatar
-											src="logos/steam.png"
+											src="files/logos/steam.png"
 											sx={{
 												borderRadius: "0",
 												filter,
@@ -91,7 +91,7 @@ export default function PageIndex() {
 								<CardHeader
 									avatar={
 										<Avatar
-											src="logos/chilloutvr.png"
+											src="files/logos/chilloutvr.png"
 											sx={{
 												borderRadius: "0",
 												filter,
@@ -112,7 +112,7 @@ export default function PageIndex() {
 								<CardHeader
 									avatar={
 										<Avatar
-											src="logos/twitch.png"
+											src="files/logos/twitch.png"
 											sx={{
 												borderRadius: "0",
 												filter,
@@ -133,7 +133,7 @@ export default function PageIndex() {
 								<CardHeader
 									avatar={
 										<Avatar
-											src="logos/youtube.png"
+											src="files/logos/youtube.png"
 											sx={{
 												borderRadius: "0",
 												filter,
@@ -154,7 +154,7 @@ export default function PageIndex() {
 								<CardHeader
 									avatar={
 										<Avatar
-											src="logos/twitter.png"
+											src="files/logos/twitter.png"
 											sx={{
 												borderRadius: "0",
 												filter,
