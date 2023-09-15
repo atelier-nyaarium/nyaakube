@@ -38,6 +38,7 @@ jobs:
       contents: read
 
   Snyk:
+    needs: Push
     uses: ./.github/workflows/_snyk.yml
     secrets: inherit
     permissions:
