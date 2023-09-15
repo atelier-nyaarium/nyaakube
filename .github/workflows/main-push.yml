@@ -1,0 +1,46 @@
+# Uses secrets:
+#   DOCKER_PASSWORD
+#   DOCKER_USERNAME
+#   KUBECONFIG
+
+name: Push (main)
+
+on:
+  push:
+    branches:
+      - main
+
+  schedule:
+    - cron: "0 8 * * 1"
+
+jobs:
+  Build:
+    uses: ./.github/workflows/_build.yml
+    secrets: inherit
+    permissions:
+      contents: read
+    with:
+      save: true
+
+  Push:
+    needs: Build
+    uses: ./.github/workflows/_docker-push.yml
+    secrets: inherit
+    permissions:
+      contents: read
+
+  Rollout:
+    needs: Push
+    uses: ./.github/workflows/_k8s-restart.yml
+    secrets: inherit
+    permissions:
+      contents: read
+
+  Trivy:
+    needs: Push
+    uses: ./.github/workflows/_trivy.yml
+    secrets: inherit
+    permissions:
+      actions: read
+      contents: read
+      security-events: write

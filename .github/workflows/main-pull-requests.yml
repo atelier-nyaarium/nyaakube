@@ -1,0 +1,22 @@
+name: Pull Request (main)
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Build:
+    uses: ./.github/workflows/_build.yml
+    secrets: inherit
+    permissions:
+      contents: read
+    with:
+      save: true
+
+  Review:
+    uses: ./.github/workflows/_dependency-review.yml
+    secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write

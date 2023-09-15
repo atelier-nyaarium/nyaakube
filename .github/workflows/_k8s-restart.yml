@@ -1,0 +1,25 @@
+name: Workflow Call - K8s Rollout Restart
+
+on:
+  workflow_call:
+
+jobs:
+  k8s-rollout-restart:
+    name: K8s Rollout Restart
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Rollout restart
+        run: |
+          REPO_NAME="${{ github.repository }}"
+          REPO_NAME="${REPO_NAME##*/}"
+
+          echo ${{ secrets.KUBECONFIG }} | base64 -d > kubeconfig.yaml
+          export KUBECONFIG=kubeconfig.yaml
+
+          kubectl rollout restart deployment ${REPO_NAME}-deployment
