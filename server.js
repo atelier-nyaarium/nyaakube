@@ -33,10 +33,10 @@ function routeHandler(req, res, parsedUrl, next) {
 	const { pathname } = parsedUrl;
 
 	// If begins with /files/
+	//    Trim: /files/path/to/file.ext
+	//      To: path/to/file.ext
 	if (pathname.startsWith("/files/")) {
-		// Looks like: /files/path/to/file.ext
-		//    Trim to: path/to/file.ext
-		const filePath = pathname.replace(/^\/files\//, "");
+		const filePath = pathname.substring("/files/".length);
 
 		// If the file exists, redirect to file serve API
 		for (const basePath of SERVABLE_BASE_PATHS) {
