@@ -24,10 +24,10 @@ export default function scanDirectory(basePath, filePath) {
 	const retFiles = [];
 	const retDirs = [];
 
-	const safePath = sanitizePath(basePath, filePath);
+	const safePathFS = sanitizePath(basePath, filePath);
 
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
-	if (!fs.existsSync(safePath)) {
+	if (!fs.existsSync(safePathFS)) {
 		return {
 			dirs: [],
 			files: [],
@@ -35,9 +35,9 @@ export default function scanDirectory(basePath, filePath) {
 	}
 
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
-	const files = fs.readdirSync(safePath);
+	const files = fs.readdirSync(safePathFS);
 	for (const filename of files) {
-		const pathStr = path.join(safePath, filename);
+		const pathStr = path.join(safePathFS, filename);
 
 		// eslint-disable-next-line security/detect-non-literal-fs-filename
 		const isDir = fs.lstatSync(pathStr).isDirectory();

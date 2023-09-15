@@ -40,8 +40,8 @@ function routeHandler(req, res, parsedUrl, next) {
 
 		// If the file exists, redirect to file serve API
 		for (const basePath of SERVABLE_BASE_PATHS) {
-			const safePath = sanitizePath(basePath, filePath);
-			if (!isFileAccessible(safePath)) continue;
+			const safePathFS = sanitizePath(basePath, filePath);
+			if (!isFileAccessible(safePathFS)) continue;
 
 			try {
 				let rawQuery = req.url.split("?")[1] ?? "";

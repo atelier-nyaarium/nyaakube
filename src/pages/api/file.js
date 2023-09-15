@@ -20,8 +20,8 @@ export default createApiHandler({
 		for (const basePath in SERVE_BASE_HANDLERS) {
 			const serveHandler = SERVE_BASE_HANDLERS[basePath];
 
-			const safePath = sanitizePath(basePath, req.data?.path);
-			if (!isFileAccessible(safePath)) continue;
+			const safePathFS = sanitizePath(basePath, req.data?.path);
+			if (!isFileAccessible(safePathFS)) continue;
 
 			return serveHandler(req, res, basePath, req.data?.path);
 		}
@@ -31,32 +31,32 @@ export default createApiHandler({
 });
 
 async function servePublic(req, res, basePath, filePath) {
-	const safePath = sanitizePath(basePath, filePath);
-	if (!isFileAccessible(safePath)) {
+	const safePathFS = sanitizePath(basePath, filePath);
+	if (!isFileAccessible(safePathFS)) {
 		return respondError(req, res, `File not found`, 404);
 	}
 
 	// Pipe file reader to response `res`
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
-	const fileStream = fs.createReadStream(safePath);
+	const fileStream = fs.createReadStream(safePathFS);
 	fileStream.pipe(res);
 }
 
 async function serveUnlisted(req, res, basePath, filePath) {
-	const safePath = sanitizePath(basePath, filePath);
-	if (!isFileAccessible(safePath)) {
+	const safePathFS = sanitizePath(basePath, filePath);
+	if (!isFileAccessible(safePathFS)) {
 		return respondError(req, res, `File not found`, 404);
 	}
 
 	// Pipe file reader to response `res`
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
-	const fileStream = fs.createReadStream(safePath);
+	const fileStream = fs.createReadStream(safePathFS);
 	fileStream.pipe(res);
 }
 
 async function serveProtected(req, res, basePath, filePath) {
-	const safePath = sanitizePath(basePath, filePath);
-	if (!isFileAccessible(safePath)) {
+	const safePathFS = sanitizePath(basePath, filePath);
+	if (!isFileAccessible(safePathFS)) {
 		return respondError(req, res, `File not found`, 404);
 	}
 
@@ -72,7 +72,7 @@ async function serveProtected(req, res, basePath, filePath) {
 
 	// Pipe file reader to response `res`
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
-	const fileStream = fs.createReadStream(safePath);
+	const fileStream = fs.createReadStream(safePathFS);
 	fileStream.pipe(res);
 }
 
