@@ -37,14 +37,6 @@ jobs:
     permissions:
       contents: read
 
-  Snyk:
-    needs: Push
-    uses: ./.github/workflows/_snyk.yml
-    secrets: inherit
-    permissions:
-      contents: read
-      security-events: write
-
   Trivy:
     needs: Push
     uses: ./.github/workflows/_trivy.yml
