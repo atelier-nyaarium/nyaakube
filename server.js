@@ -1,6 +1,5 @@
 const { createServer } = require("http");
 const { parse } = require("url");
-const dotenv = require("dotenv");
 const next = require("next");
 const path = require("path");
 const fs = require("fs");
@@ -8,6 +7,7 @@ const { default: fetch } = require("node-fetch");
 
 const dev = process.env.NODE_ENV !== "production";
 if (dev) {
+	const dotenv = require("dotenv");
 	dotenv.config();
 }
 
