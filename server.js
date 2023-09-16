@@ -74,16 +74,16 @@ function routeHandler(req, res, parsedUrl, next) {
 app.prepare()
 	.then(() => {
 		createServer((req, res) => {
+			const parsedUrl = parse(req.url, true);
 			try {
-				const parsedUrl = parse(req.url, true);
 				return routeHandler(req, res, parsedUrl, () => {
 					return handle(req, res, parsedUrl);
 				});
 			} catch (error) {
-				console.log(`⛔ `, `Error occurred handling`, req.url);
+				console.log(`⛔ `, `Error in route:`, parsedUrl.pathname);
 				console.error(error);
 				res.statusCode = 500;
-				res.end("internal server error");
+				res.end("Internal server error");
 			}
 		})
 			.once("error", (error) => {
