@@ -61,7 +61,7 @@
 		"@types/multer": "^1.4.7",
 		"@types/node": "^20.6.1",
 		"@types/node-fetch": "^2.6.4",
-		"@types/react": "^18.2.21",
+		"@types/react": "^18.2.23",
 		"@types/react-image-gallery": "^1.2.0",
 		"@types/saslprep": "^1.0.1",
 		"@types/session-file-store": "^1.2.2",
