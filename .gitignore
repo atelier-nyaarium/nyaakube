@@ -5,11 +5,10 @@
 _test/
 .vscode-server/
 .vscode/
-debug.log
 node_modules/
 volumes/
 .env*
-compose*.yml
+debug.log
 
 #### OS
 Thumbs.db
