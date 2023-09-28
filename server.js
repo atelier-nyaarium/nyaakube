@@ -3,7 +3,7 @@ const { parse } = require("url");
 const next = require("next");
 const path = require("path");
 const fs = require("fs");
-const { default: fetch } = require("node-fetch");
+const { default: nodeFetch } = require("node-fetch");
 
 const dev = process.env.NODE_ENV !== "production";
 if (dev) {
@@ -47,10 +47,13 @@ function routeHandler(req, res, parsedUrl, next) {
 				let rawQuery = req.url.split("?")[1] ?? "";
 				if (rawQuery) rawQuery = `?${rawQuery}`;
 
-				return fetch(`http://localhost:${port}/api/file${rawQuery}`, {
-					method: "post",
-					body: JSON.stringify({ path: filePath }),
-				})
+				return nodeFetch(
+					`http://localhost:${port}/api/file${rawQuery}`,
+					{
+						method: "post",
+						body: JSON.stringify({ path: filePath }),
+					},
+				)
 					.then((fetchRes) => {
 						return fetchRes.body.pipe(res);
 					})
@@ -124,7 +127,9 @@ process.once("SIGTERM", (code) => {
 async function initOnce() {
 	try {
 		console.log(` ℹ️ `, `Running first time health-check`);
-		const res = await fetch(`http://localhost:${port}/api/health-check`);
+		const res = await nodeFetch(
+			`http://localhost:${port}/api/health-check`,
+		);
 
 		if (res.status !== 200) {
 			console.log(res.status, res.statusText);
