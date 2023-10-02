@@ -40,7 +40,9 @@ ENV DATA_PATH=/data
 EXPOSE $PORT
 
 COPY --from=RUNNER_PACKAGES /app/node_modules/ node_modules/
-COPY --from=BUILDER /app/.next/ .next/
+COPY --from=BUILDER /app/.next/standalone/ ./
+COPY --from=BUILDER /app/.next/static/ ./.next/static/
 COPY --from=BUILDER /app/server.js .
 
+# CMD cd /app/.next/standalone/ && node server.js
 CMD node server.js
