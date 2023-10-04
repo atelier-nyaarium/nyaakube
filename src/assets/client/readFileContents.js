@@ -1,5 +1,15 @@
 import createPromise from "@/assets/common/createPromise";
 
+/**
+ * Reads the content of a file and returns it as a Uint8Array.
+ * Browser only.
+ *
+ * @param {File} file - The file to read.
+ *
+ * @returns {Promise<Uint8Array>} A promise that resolves with the file content as a Uint8Array.
+ *
+ * @throws {Error} If there is an error reading the file.
+ */
 export default async function readFileContent(file) {
 	const pr = createPromise();
 
