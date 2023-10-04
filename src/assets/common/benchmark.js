@@ -1,10 +1,37 @@
 import bestConversion from "@/assets/common/bestConversion";
 
-export default async function benchmark(f, count, flatten) {
-	if (typeof f !== "function")
-		throw new Error(`benchmark() :: Expected a function.`);
-
-	if (typeof flatten === "undefined") flatten = false;
+/**
+ * Runs a benchmark test on a function.
+ *
+ * @param {Function} f - The function to test.
+ * @param {number} count - The number of times to run the function.
+ * @param {boolean} [flatten=false] - If true, the result will be a string. If false, the result will be an object.
+ *
+ * @returns {Promise<(string|{
+ * 	  "value": number,
+ * 	  "round": number,
+ * 	  "unit": string
+ * })>} The result of the benchmark test. If 'flatten' is true, the result will be a string instead.
+ *
+ * @throws {Error} If 'f' is not a function.
+ * @throws {Error} If 'count' is not a number. Or less than 1.
+ */
+export default async function benchmark(f, count, flatten = false) {
+	if (typeof f !== "function") {
+		throw new Error(
+			`benchmark(f, count, flatten?) : 'f' must be a function.`,
+		);
+	}
+	if (typeof count !== "number") {
+		throw new Error(
+			`benchmark(f, count, flatten?) : 'count' must be a number.`,
+		);
+	}
+	if (count < 1) {
+		throw new Error(
+			`benchmark(f, count, flatten?) : 'count' must be greater than 0.`,
+		);
+	}
 
 	const s = new Date();
 	if (f.constructor.name === "AsyncFunction") {
