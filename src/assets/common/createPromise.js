@@ -2,10 +2,17 @@
  * Promise Helper
  *
  * Returns an unresolved promise with resolve() & reject() exposed to you.
+ * Suitable for non-promise code, like FileReader.
  *
- * @returns {Promise<undefined>}
+ * @returns {{
+ * 	promise: Promise,
+ * 	resolve: Function,
+ * 	reject: Function,
+ * }} An object containing a promise, resolve(), and reject().
  *
- * @example await sleep(5000);
+ * @example const pr = createPromise();
+ * setTimeout(() => { pr.resolve(); }, 5000);
+ * await pr.promise;
  */
 export default function createPromise() {
 	let resolve, reject;
