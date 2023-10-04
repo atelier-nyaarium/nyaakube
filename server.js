@@ -3,6 +3,7 @@ const { parse } = require("url");
 const next = require("next");
 const path = require("path");
 const fs = require("fs");
+const nodeFetch = require("node-fetch");
 
 const dev = process.env.NODE_ENV !== "production";
 if (dev) {
@@ -46,10 +47,13 @@ function routeHandler(req, res, parsedUrl, next) {
 				let rawQuery = req.url.split("?")[1] ?? "";
 				if (rawQuery) rawQuery = `?${rawQuery}`;
 
-				return fetch(`http://localhost:${port}/api/file${rawQuery}`, {
-					method: "post",
-					body: JSON.stringify({ path: filePath }),
-				})
+				return nodeFetch(
+					`http://localhost:${port}/api/file${rawQuery}`,
+					{
+						method: "post",
+						body: JSON.stringify({ path: filePath }),
+					},
+				)
 					.then((fetchRes) => {
 						return fetchRes.body.pipe(res);
 					})
