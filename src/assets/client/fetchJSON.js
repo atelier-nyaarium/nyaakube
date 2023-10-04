@@ -11,9 +11,9 @@ import _ from "lodash";
  *
  * @async
  *
- * @param {string}   url      URL
- * @param {object?}  data     JSON'able object to send (will set the method to POST)
- * @param {object?}  options  Options object
+ * @param {string} url - The URL to fetch.
+ * @param {Object} [json] - Optional JSON to send.
+ * @param {Object} [options] - Optional fetch options.
  *
  * @returns {Promise<{ ok: boolean, status: number, json: JSON, text: string }>}  Promises a response object.
  *
@@ -22,42 +22,56 @@ import _ from "lodash";
  *     console.log(res.ok)
  *     console.log(res.status)
  *     console.log(res.json)
- *     console.log(res.text)
  * })
  */
-export default async function fetchJSON(url, data, optionsOverride = {}) {
+export default async function fetchJSON(url, json, options = {}) {
 	if (typeof url !== "string") {
-		throw new Error(`fetchJSON(url, data) :: Call Error. Expected a url.`);
+		throw new Error(
+			`fetchJSON(url, json?, options?) : 'url' must be a string.`,
+		);
+	}
+	if (json !== undefined && (typeof json !== "object" || json === null)) {
+		throw new Error(
+			`fetchJSON(url, json?, options?) : 'json' is optional, but must be an object.`,
+		);
+	}
+	if (
+		options !== undefined &&
+		(typeof options !== "object" || options === null)
+	) {
+		throw new Error(
+			`fetchJSON(url, json?, options?) : 'options' is optional, but must be an object.`,
+		);
 	}
 
-	const asForm = !!optionsOverride?.form;
+	const asForm = !!options?.form;
 
-	let options;
+	let fetchData = { ...options };
 
 	if (asForm) {
-		options = _.merge(
+		fetchData = _.merge(
 			{
 				method: "post",
 			},
-			optionsOverride,
+			options,
 		);
 	} else {
-		options = _.merge(
+		fetchData = _.merge(
 			{
-				method: typeof data === "undefined" ? "get" : "post",
+				method: typeof json === "undefined" ? "get" : "post",
 				headers: {
 					"Accept": "application/json",
 					"Content-Type": "application/json",
 				},
 			},
-			optionsOverride,
+			options,
 		);
 	}
 
 	if (asForm) {
 		const formData = new FormData();
 
-		Object.entries(data).forEach(([key, value]) => {
+		Object.entries(json).forEach(([key, value]) => {
 			if (value instanceof FileList || Array.isArray(value)) {
 				for (const v of value) formData.append(key, v);
 			} else {
@@ -65,32 +79,38 @@ export default async function fetchJSON(url, data, optionsOverride = {}) {
 			}
 		});
 
-		options.body = formData;
+		fetchData.body = formData;
 	} else {
-		if (typeof data !== "undefined") {
-			options.body = JSON.stringify(data);
+		if (json !== undefined) {
+			fetchData.body = JSON.stringify(json);
 		}
 	}
 
-	const res = await fetch(url, options);
+	const res = await fetch(url, fetchData);
 
 	const ret = {
 		ok: res.ok,
 		status: res.status,
 		json: undefined,
-		text: undefined,
 	};
 
 	await res
 		.clone()
 		.json()
 		.then((json) => (ret.json = json))
-		.catch(() => res.text().then((text) => (ret.text = text)));
+		.catch(() =>
+			res.text().then((unexpectedText) => {
+				if (200 <= res.status && res.status < 300) {
+					ret.ok = false;
+					ret.status = 500;
+				}
 
-	if (ret.text) {
-		console.error(`${url}\nExpected a JSON response.`);
-		console.log(ret);
-	}
+				ret.json = {
+					error: "Unexpected response",
+					text: unexpectedText,
+				};
+			}),
+		);
 
 	return ret;
 }
