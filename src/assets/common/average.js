@@ -1,35 +1,38 @@
 /**
- * Average
+ * Calculates the rolling average of a new value with an existing average.
  *
- * Helper to do running averages. Adds a single value to an average.
+ * @param {Object} stats - The existing stats object. Must have 'value' and 'weight' properties.
+ * @param {(number|Object)} value - The new value to be averaged. If it's an object, it must have 'value' and 'weight' properties.
+ * @param {number} [maxWeight] - The maximum weight that can be considered for the existing average.
  *
- * @param {{value: number, weight?: number }}  stats  Stats object containing the current average & weight (aka total count).
- * @param {number}  value      Value to average into the stats.
- * @param {number?}  maxWeight  Max weight that stats is allowed to influence.
- * @returns {{value: number, weight: number }}
+ * @throws {Error} If 'stats' is not an object, or if 'stats.value' is not a number, or if 'stats.weight' is not a number.
+ * @throws {Error} If 'value' is not a number or an object, or if it's an object and doesn't have 'value' and 'weight' properties.
+ * @throws {Error} If 'maxWeight' is defined but is not a number, or if it's a negative number.
+ *
+ * @returns {{
+ * 	value: number,
+ * 	weight: number
+ * }} An object with the new average 'value' and 'weight'.
  */
 export default function average(stats, value, maxWeight = undefined) {
 	if (typeof stats !== "object") {
 		throw new Error(
-			`average(stats, value, maxWeight) :: Expected an object { value, weight } for "stats".`,
+			`average(stats, value, maxWeight?) : 'stats' must be an object.`,
 		);
 	}
 	if (typeof stats.value !== "number") {
 		throw new Error(
-			`average(stats, value, maxWeight) :: Expected a number for "stats.value".`,
+			`average(stats, value, maxWeight?) : 'stats.value' must be a number.`,
 		);
 	}
-	if (
-		typeof stats.weight !== "undefined" &&
-		typeof stats.weight !== "number"
-	) {
+	if (stats.weight !== undefined && typeof stats.weight !== "number") {
 		throw new Error(
-			`average(stats, value, maxWeight) :: Expected a number for "stats.weight".`,
+			`average(stats, value, maxWeight?) : 'stats.weight' must be a number.`,
 		);
 	}
 	if (typeof value !== "number" && typeof value !== "object") {
 		throw new Error(
-			`average(stats, value, maxWeight) :: Expected a number or object for "value".`,
+			`average(stats, value, maxWeight?) : 'value' must be a number or an object.`,
 		);
 	}
 	if (
@@ -37,17 +40,17 @@ export default function average(stats, value, maxWeight = undefined) {
 		(typeof value.value !== "number" || typeof value.weight !== "number")
 	) {
 		throw new Error(
-			`average(stats, value, maxWeight) :: Expected stats for "value" object.`,
+			`average(stats, value, maxWeight?) : 'value' must be a number or an object with 'value' and 'weight' properties.`,
 		);
 	}
 	if (typeof maxWeight !== "undefined" && typeof maxWeight !== "number") {
 		throw new Error(
-			`average(stats, value, maxWeight) :: Optional "maxWeight" must be a number.`,
+			`average(stats, value, maxWeight?) : 'maxWeight' is optional, but must be a number.`,
 		);
 	}
 	if (typeof maxWeight === "number" && maxWeight < 0) {
 		throw new Error(
-			`average(stats, value, maxWeight) :: Expected a positive number (or zero) for "maxWeight".`,
+			`average(stats, value, maxWeight?) : 'maxWeight' is optional, but must be a positive number.`,
 		);
 	}
 
