@@ -3,7 +3,7 @@ export default function decodeQueryString(str) {
 
 	if (!str) return {};
 
-	if (str.charAt(0) === "?") str = str.substr(1);
+	if (str.charAt(0) === "?") str = str.substring(1);
 
 	if (!str.length) return {};
 
