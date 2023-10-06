@@ -1,4 +1,4 @@
-import bestConversion from "@/assets/common/bestConversion";
+import bestConversionHelper from "@/assets/common/bestConversionHelper";
 
 /**
  * Runs a benchmark test on a function.
@@ -44,15 +44,15 @@ export default async function benchmark(f, count, flatten = false) {
 	const ms = e.getTime() - s.getTime();
 	let op_s = count / (ms / 1000);
 
-	op_s = bestConversion(op_s);
+	op_s = bestConversionHelper(op_s);
 
 	if (flatten) {
-		return `${op_s.round} ${op_s.unit}OPS`;
+		return `${op_s.round} ${op_s.unit}/s`;
 	} else {
 		return {
 			value: op_s.value,
 			round: op_s.round,
-			unit: `${op_s.unit}OPS`,
+			unit: `${op_s.unit}/s`,
 		};
 	}
 }

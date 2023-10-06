@@ -1,5 +1,5 @@
 /**
- * Best Conversion
+ * Best Conversion Helper
  *
  * Helper to convert to human readable units
  *
@@ -9,12 +9,13 @@
  * @param {number}  threshold                 Multiplier before converting to the next unit (recommended: 1.2).
  * @param {[ { "unit": string, "value": number } ] }  conversions  Array of conversions.
  * @param {number}  startingConversionsIndex  Which index in `conversions` represents `startingNumber`.
+ *
  * @returns {{
  *     "unit": string,
  *     "value": number,
  * }}
  */
-export default function bestConversion(
+export default function bestConversionHelper(
 	startingNumber,
 	threshold,
 	conversions,

@@ -1,4 +1,4 @@
-import bestConversion from "@/assets/common/bestConversion";
+import bestConversionHelper from "@/assets/common/bestConversionHelper";
 
 /**
  * Best Time Unit (ms)
@@ -7,6 +7,7 @@ import bestConversion from "@/assets/common/bestConversion";
  *
  * @param {number}    ms       Value to convert
  * @param {boolean?}  flatten  Return a string instead of object
+ *
  * @returns {string | {
  *     "value": number,
  *     "round": number,
@@ -14,34 +15,7 @@ import bestConversion from "@/assets/common/bestConversion";
  * }}
  */
 export default function bestTimeUnitMS(ms, flatten = false) {
-	const conversions = [
-		{
-			unit: "μs",
-			value: 1 / 1000,
-		},
-		{
-			unit: "ms",
-			value: 1,
-		},
-		{
-			unit: "s",
-			value: 1 * 1000,
-		},
-		{
-			unit: "m",
-			value: 1 * 1000 * 60,
-		},
-		{
-			unit: "h",
-			value: 1 * 1000 * 60 * 60,
-		},
-		{
-			unit: "d",
-			value: 1 * 1000 * 60 * 60 * 24,
-		},
-	];
-
-	const conversion = bestConversion(ms, 1.2, conversions, 1);
+	const conversion = bestConversionHelper(ms, 1.2, conversions, 1);
 	const unit = conversion["unit"];
 	const value = ms / conversion["value"];
 	const round = Math.round(value * 100) / 100;
@@ -57,3 +31,30 @@ export default function bestTimeUnitMS(ms, flatten = false) {
 		};
 	}
 }
+
+const conversions = [
+	{
+		unit: "μs",
+		value: 1 / 1000,
+	},
+	{
+		unit: "ms",
+		value: 1,
+	},
+	{
+		unit: "s",
+		value: 1 * 1000,
+	},
+	{
+		unit: "m",
+		value: 1 * 1000 * 60,
+	},
+	{
+		unit: "h",
+		value: 1 * 1000 * 60 * 60,
+	},
+	{
+		unit: "d",
+		value: 1 * 1000 * 60 * 60 * 24,
+	},
+];
