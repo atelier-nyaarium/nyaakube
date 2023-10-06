@@ -1,6 +1,18 @@
 import createPromise from "@/assets/common/createPromise";
 import { spawn } from "child_process";
 
+/**
+ * Runs a script with the given parameters and returns a promise with the output.
+ *
+ * @param {string} script - The path to the script to run.
+ * @param {Array<string>} [params] - An array of parameters to pass to the script.
+ *
+ * @returns {Promise<{
+ * 	   log: string,
+ *     stdout: string,
+ *     stderr: string
+ * }>} - A promise that resolves with an object containing the output of the script.
+ */
 export default async function run(script, params = []) {
 	let log = ""; //  Both out/err in the order they appeared in
 	let stdout = "";

@@ -1,6 +1,17 @@
 import respondError from "@/assets/server/respondError";
 import JSON5 from "json5";
 
+/**
+ * Creates an API handler function that can be used with Express.js
+ *
+ * @param {Object} options - Options for the API handler
+ * @param {string} [options.label="(anonymous)"] - A label for the API handler (used for logging)
+ * @param {boolean} [options.time=true] - Whether to log the execution time of the API handler
+ * @param {boolean} [options.log=true] - Whether to log the API handler's label
+ * @param {Function} options.handler - The handler function for the API
+ *
+ * @returns {Function} - An Express.js middleware function that handles API requests
+ */
 export default function createApiHandler({
 	label = "(anonymous)",
 	time = true,
