@@ -5,9 +5,9 @@
  * Suitable for non-promise code, like FileReader.
  *
  * @returns {{
- * 	promise: Promise,
- * 	resolve: Function,
- * 	reject: Function,
+ *     "promise": Promise,
+ *     "resolve": Function,
+ *     "reject": Function,
  * }} An object containing a promise, resolve(), and reject().
  *
  * @example const pr = createPromise();
