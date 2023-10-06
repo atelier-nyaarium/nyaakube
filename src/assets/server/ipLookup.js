@@ -1,15 +1,27 @@
 import asLogTime from "@/assets/server/asLogTime";
-import fetchJSON from "@/assets/server/fetchJSON";
+import getEnv from "@/assets/server/getEnv";
 import moment from "moment-timezone";
+import nodeFetch from "node-fetch";
 
-export let lastIpCheckGood = true; // If bad, do not go forward with the next request.
-export let lastIpCheckError = "";
-export let lastIpCheckTime = moment();
-export const runningIpChecks = {};
+let lastIpCheckGood = true; // If bad, do not go forward with the next request.
+let lastIpCheckError = "";
+let lastIpCheckTime = moment();
+const runningIpChecks = {};
 
+const IP2LOCATION_KEY = getEnv("IP2LOCATION_KEY");
+
+/**
+ * Looks up the location information for a given IP address using the ip2location API.
+ *
+ * @param {string} ip - The IP address to lookup.
+ *
+ * @throws {Error} If the input is not a string or if the IP2LOCATION_KEY environment variable is missing.
+ *
+ * @returns {Promise<void>} A promise that resolves when the location information is retrieved.
+ */
 export default async function ipLookup(ip) {
 	if (!(typeof ip === "string")) throw new Error(`Expected an IP string`);
-	if (!process.env.IP2LOCATION_KEY) {
+	if (!IP2LOCATION_KEY) {
 		throw new Error(`Missing IP2LOCATION_KEY variable`);
 	}
 
@@ -34,8 +46,8 @@ export default async function ipLookup(ip) {
 			runningIpChecks[ip] = true;
 
 			try {
-				const url = `https://api.ip2location.io/?key=${process.env.IP2LOCATION_KEY}&ip=${ip}`;
-				const json = await fetchJSON(url);
+				const url = `https://api.ip2location.io/?key=${IP2LOCATION_KEY}&ip=${ip}`;
+				const json = await nodeFetch(url).then((res) => res.json());
 
 				lastIpCheckGood = true;
 				lastIpCheckError = "";
@@ -46,13 +58,13 @@ export default async function ipLookup(ip) {
 				lastIpCheckGood = false;
 
 				console.log(lastIpCheckGood);
-				lastIpCheckError = `[${ip}] :: ` + error.message;
+				lastIpCheckError = `[${ip}] ` + error.message;
 			}
 
 			delete runningIpChecks[ip];
 		}
 	} catch (error) {
-		console.log(`ipLookup() :: Error with fetch call`);
+		console.log(`ipLookup(ip) : Error with fetch call`);
 		console.log(error.message);
 
 		lastIpCheckGood = false;
