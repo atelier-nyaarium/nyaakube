@@ -1,4 +1,5 @@
 import sleep from "@/assets/common/sleep";
+import getEnv from "@/assets/server/getEnv";
 import validateTOTP from "@/assets/server/validateTOTP";
 import argon2 from "argon2";
 
@@ -63,9 +64,9 @@ async function getUserByUsername(username) {
 
 	// TODO: Implement database for other users
 
-	const ADMIN_USERNAME = process.env.ADMIN_USERNAME?.toLowerCase?.();
-	const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD?.toLowerCase?.();
-	const ADMIN_TOTP = process.env.ADMIN_TOTP?.toLowerCase?.();
+	const ADMIN_USERNAME = getEnv("ADMIN_USERNAME")?.toLowerCase?.();
+	const ADMIN_PASSWORD = getEnv("ADMIN_PASSWORD")?.toLowerCase?.();
+	const ADMIN_TOTP = getEnv("ADMIN_TOTP")?.toLowerCase?.();
 	if (ADMIN_USERNAME) {
 		if (username === ADMIN_USERNAME) {
 			return {
