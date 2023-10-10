@@ -9,6 +9,21 @@ const randomSleep = () => {
 	return sleep(R + Math.random() * 1000);
 };
 
+/**
+ * Validates user login credentials.
+ *
+ * 🚧 [WIP] Currently just has a hardcoded Admin account with TOTP.
+ *
+ * @param {string} username - The username of the user attempting to log in.
+ * @param {string} password - The password of the user attempting to log in.
+ * @param {string} totp - The TOTP token of the user attempting to log in (optional).
+ *
+ * @returns {Promise<{
+ *     valid: boolean,
+ *     code?: number,
+ *     message?: string,
+ * }>} - A promise that resolves to an object with the results.
+ */
 export default async function validateLogin(username, password, totp) {
 	try {
 		const user = await getUserByUsername(username);
