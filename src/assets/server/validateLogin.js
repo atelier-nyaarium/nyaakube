@@ -3,20 +3,14 @@ import getEnv from "@/assets/server/getEnv";
 import validateTOTP from "@/assets/server/validateTOTP";
 import argon2 from "argon2";
 
-// Randomize reply time to prevent timing attacks
-const R = ((Math.random() * 1000) | 0) + 50;
-const randomSleep = () => {
-	return sleep(R + Math.random() * 1000);
-};
-
 /**
  * Validates user login credentials.
  *
- * 🚧 [WIP] Currently just has a hardcoded Admin account with TOTP.
+ * 🚧 [WIP] Currently just has a hardcoded Admin account with TOTP. Implement this when users are needed.
  *
  * @param {string} username - The username of the user attempting to log in.
  * @param {string} password - The password of the user attempting to log in.
- * @param {string} totp - The TOTP token of the user attempting to log in (optional).
+ * @param {string} totpToken - The TOTP token of the user attempting to log in (optional).
  *
  * @returns {Promise<{
  *     valid: boolean,
@@ -24,7 +18,7 @@ const randomSleep = () => {
  *     message?: string,
  * }>} - A promise that resolves to an object with the results.
  */
-export default async function validateLogin(username, password, totp) {
+export default async function validateLogin(username, password, totpToken) {
 	try {
 		const user = await getUserByUsername(username);
 		if (!user) {
@@ -36,7 +30,7 @@ export default async function validateLogin(username, password, totp) {
 			};
 		}
 
-		if (user.totp && !totp) {
+		if (user.totp && !totpToken) {
 			await randomSleep();
 			return {
 				valid: false,
@@ -55,7 +49,7 @@ export default async function validateLogin(username, password, totp) {
 			};
 		}
 
-		const validTotp = validateTOTP(user.totp, totp);
+		const validTotp = await validateTOTP(user.totp, totpToken);
 		if (!validTotp.valid) return validTotp;
 
 		return {
@@ -96,3 +90,9 @@ async function getUserByUsername(username) {
 
 	return null;
 }
+
+// Randomize reply time to prevent timing attacks
+const R = ((Math.random() * 1000) | 0) + 50;
+const randomSleep = () => {
+	return sleep(R + Math.random() * 1000);
+};
