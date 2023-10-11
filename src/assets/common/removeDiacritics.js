@@ -1,7 +1,30 @@
+/**
+ * Remove diacritics from a string.
+ *
+ * @param {string} str - The string to remove diacritics from.
+ *
+ * @returns {string} The string without diacritics.
+ *
+ * @throws TypeError if the parameter types are bad.
+ *
+ * @example
+ * const str = removeDiacritics("Héllö, wörld!");
+ * -> "Hello, world!"
+ */
 export default function removeDiacritics(str) {
-	//	http://stackoverflow.com/questions/286921/efficiently-replace-all-accented-characters-in-a-string
+	// https://stackoverflow.com/questions/286921
+	// https://stackoverflow.com/questions/990904
 
-	if (typeof str !== "string") return str;
+	if (typeof str !== "string") {
+		throw new TypeError(`removeDiacritics(str) : 'str' must be a string.`);
+	}
+
+	// The bulk of the cleanup
+	str = str.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
+	///////////////////////////////////////
+
+	// The rest of the cleanup to catch stray diacritics
 
 	const defaultDiacriticsRemovalMap = [
 		{

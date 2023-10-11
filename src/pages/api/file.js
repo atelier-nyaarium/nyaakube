@@ -1,4 +1,5 @@
 import createApiHandler from "@/assets/server/createApiHandler";
+import getEnv from "@/assets/server/getEnv";
 import respondError from "@/assets/server/respondError";
 import sanitizePath from "@/assets/server/sanitizePath";
 import validateTOTP from "@/assets/server/validateTOTP";
@@ -20,8 +21,7 @@ export default createApiHandler({
 		for (const basePath in SERVE_BASE_HANDLERS) {
 			const serveHandler = SERVE_BASE_HANDLERS[basePath];
 
-			const safePathFS = sanitizePath(basePath, req.data?.path);
-			if (!isFileAccessible(safePathFS)) continue;
+			if (!safeIsFileAccessible(basePath, req.data?.path)) continue;
 
 			return serveHandler(req, res, basePath, req.data?.path);
 		}
@@ -31,55 +31,62 @@ export default createApiHandler({
 });
 
 async function servePublic(req, res, basePath, filePath) {
-	const safePathFS = sanitizePath(basePath, filePath);
-	if (!isFileAccessible(safePathFS)) {
+	if (!safeIsFileAccessible(basePath, req.data?.path)) {
 		return respondError(req, res, `File not found`, 404);
 	}
+
+	const safePathFS = sanitizePath(basePath, filePath);
 
 	// Pipe file reader to response `res`
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
 	const fileStream = fs.createReadStream(safePathFS);
+
 	fileStream.pipe(res);
 }
 
 async function serveUnlisted(req, res, basePath, filePath) {
-	const safePathFS = sanitizePath(basePath, filePath);
-	if (!isFileAccessible(safePathFS)) {
+	if (!safeIsFileAccessible(basePath, filePath)) {
 		return respondError(req, res, `File not found`, 404);
 	}
+
+	const safePathFS = sanitizePath();
 
 	// Pipe file reader to response `res`
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
 	const fileStream = fs.createReadStream(safePathFS);
+
 	fileStream.pipe(res);
 }
 
 async function serveProtected(req, res, basePath, filePath) {
-	const safePathFS = sanitizePath(basePath, filePath);
-	if (!isFileAccessible(safePathFS)) {
+	if (!safeIsFileAccessible(basePath, filePath)) {
 		return respondError(req, res, `File not found`, 404);
 	}
 
 	const resValid = await validateTOTP(
-		process.env.PUBLIC_TOTP_SECRET,
+		getEnv("PUBLIC_TOTP_SECRET"),
 		req.data?.token,
 	);
 	if (!resValid.valid) {
-		// TODO: Make a shield create shield handler.
-		//       Rate limit by IP
+		// TODO: Rate limit by IP
 		return respondError(req, res, resValid.message, resValid.code);
 	}
+
+	const safePathFS = sanitizePath(basePath, filePath);
 
 	// Pipe file reader to response `res`
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
 	const fileStream = fs.createReadStream(safePathFS);
+
 	fileStream.pipe(res);
 }
 
-function isFileAccessible(filePath) {
+function safeIsFileAccessible(basePath, filePath) {
 	try {
+		const safePathFS = sanitizePath(basePath, filePath);
+
 		// eslint-disable-next-line security/detect-non-literal-fs-filename
-		return fs.lstatSync(filePath).isFile();
+		return fs.lstatSync(safePathFS).isFile();
 	} catch (error) {
 		return false;
 	}

@@ -13,20 +13,29 @@ import path from "path";
  *     .
  *     -
  *
- * @param {string} workingDir - The working directory to resolve paths from
- * @param {string} filePath - The relative path to sanitize
+ * @param {string} workingDir - The working directory to resolve paths from.
+ * @param {string} filePath - The relative path to sanitize.
  *
- * @returns string - The resolved path
+ * @returns string - The resolved path.
  *
- * @throws Error if the path is outside the working directory
+ * @throws TypeError if the parameter types are bad.
+ * @throws Error if the path is outside the working directory.
+ *
+ * @example
+ * const safePath = sanitizePath("/var/data", "Foo̵̔̐Bã̸r?.txt");
+ * -> "/var/data/FooBar.txt"
  */
 export default function sanitizePath(workingDir, filePath) {
 	if (typeof workingDir !== "string") {
-		throw new Error(`Expected a working directory path string`);
+		throw new TypeError(
+			`sanitizePath(workingDir, filePath) : 'workingDir' must be a string.`,
+		);
 	}
 
 	if (typeof filePath !== "string") {
-		throw new Error(`Expected a route path string`);
+		throw new TypeError(
+			`sanitizePath(workingDir, filePath) : 'filePath' must be a string.`,
+		);
 	}
 
 	const resolvedPath = path.normalize(

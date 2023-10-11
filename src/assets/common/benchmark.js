@@ -1,10 +1,54 @@
-import bestConversion from "@/assets/common/bestConversion";
+import bestConversionHelper from "@/assets/common/bestConversionHelper";
 
-export default async function benchmark(f, count, flatten) {
-	if (typeof f !== "function")
-		throw new Error(`benchmark() :: Expected a function.`);
-
-	if (typeof flatten === "undefined") flatten = false;
+/**
+ * Runs a benchmark test on a function.
+ *
+ * @param {Function} f - The function to test.
+ * @param {number} count - The number of times to run the function.
+ * @param {boolean} [flatten=false] - If true, the result will be a string. If false, the result will be an object.
+ *
+ * @returns {Promise<(string|{
+ * 	  value: number,
+ * 	  round: number,
+ * 	  unit: string
+ * })>} The result of the benchmark test. If 'flatten' is true, the result will be a string instead.
+ *
+ * @throws {Error} If 'f' is not a function.
+ * @throws {Error} If 'count' is not a number. Or less than 1.
+ *
+ * @example
+ * console.log(`Date.now:`, await benchmark(
+ *     () => { for (let i = 0; i < 100000; i++) Date.now(); },
+ *     1000, true
+ * ));
+ * console.log(`performance.now:`, await benchmark(
+ *     () => { for (let i = 0; i < 100000; i++) performance.now(); },
+ *     1000, true
+ * ));
+ * -> Date.now: "2.53 K/s"
+ * -> performance.now: "492.37 /s"
+ */
+export default async function benchmark(f, count, flatten = false) {
+	if (typeof f !== "function") {
+		throw new Error(
+			`benchmark(f, count, flatten?) : 'f' must be a function.`,
+		);
+	}
+	if (typeof count !== "number") {
+		throw new Error(
+			`benchmark(f, count, flatten?) : 'count' must be a number.`,
+		);
+	}
+	if (count < 1) {
+		throw new Error(
+			`benchmark(f, count, flatten?) : 'count' must be greater than 0.`,
+		);
+	}
+	if (flatten !== undefined && typeof flatten !== "boolean") {
+		throw new Error(
+			`benchmark(f, count, flatten?) : 'flatten' is optional, but must be a boolean.`,
+		);
+	}
 
 	const s = new Date();
 	if (f.constructor.name === "AsyncFunction") {
@@ -15,17 +59,44 @@ export default async function benchmark(f, count, flatten) {
 	const e = new Date();
 
 	const ms = e.getTime() - s.getTime();
-	let op_s = count / (ms / 1000);
+	const opsPerSec = count / (ms / 1000);
 
-	op_s = bestConversion(op_s);
+	const conversion = bestConversionHelper(opsPerSec, 1.2, conversions, 0);
+
+	const value = opsPerSec / conversion.value;
+	const round = Math.round(value * 100) / 100;
+	const unit = conversion.unit;
 
 	if (flatten) {
-		return `${op_s.round} ${op_s.unit}OPS`;
+		return `${round} ${unit}`;
 	} else {
 		return {
-			value: op_s.value,
-			round: op_s.round,
-			unit: `${op_s.unit}OPS`,
+			value,
+			round,
+			unit,
 		};
 	}
 }
+
+const conversions = [
+	{
+		unit: "/s",
+		value: 1,
+	},
+	{
+		unit: "K/s",
+		value: 1000,
+	},
+	{
+		unit: "M/s",
+		value: 1000 * 1000,
+	},
+	{
+		unit: "B/s",
+		value: 1000 * 1000 * 1000,
+	},
+	{
+		unit: "T/s",
+		value: 1000 * 1000 * 1000 * 1000,
+	},
+];

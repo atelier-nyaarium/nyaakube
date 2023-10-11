@@ -1,11 +1,21 @@
 /**
  * Promise Helper
  *
- * Returns an unresolved promise with resolve() & reject() exposed to you.
+ * Returns an object with an unresolved promise, resolve(), & reject() exposed to you. Suitable for non-promise code, like FileReader.
  *
- * @returns {Promise<undefined>}
+ * @returns {{
+ *     promise: Promise<any>,
+ *     resolve: function,
+ *     reject: function,
+ * }}
  *
- * @example await sleep(5000);
+ * @example
+ * const pr = createPromise();
+ * const reader = new FileReader();
+ * reader.addEventListener("loadend", pr.resolve);
+ * reader.readAsArrayBuffer(file);
+ * await pr.promise;
+ * return stuff;
  */
 export default function createPromise() {
 	let resolve, reject;

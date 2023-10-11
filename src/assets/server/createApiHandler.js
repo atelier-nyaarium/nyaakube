@@ -1,6 +1,26 @@
 import respondError from "@/assets/server/respondError";
 import JSON5 from "json5";
 
+/**
+ * Creates an API handler function that can be used with Express.js.
+ *
+ * @param {string} [options.label="(anonymous)"] - A label for the API handler. Recommend to set it to: __filename
+ * @param {boolean} [options.time=true] - Whether to console.time the API handler.
+ * @param {boolean} [options.log=true] - Whether to console.log the API handler.
+ * @param {function} options.handler - The API handler function.
+ *
+ * @returns {Function} - An Express.js middleware function that handles API requests.
+ *
+ * @throws TypeError if the parameter types are bad.
+ *
+ * @example
+ * export default createApiHandler({
+ *     label: __filename,
+ *     handler: async (req, res) => {
+ *         return respondJson(req, res, { foo: "bar" });
+ *     },
+ * });
+ */
 export default function createApiHandler({
 	label = "(anonymous)",
 	time = true,
@@ -9,18 +29,35 @@ export default function createApiHandler({
 	// useTotp = false,
 	handler,
 }) {
+	if (typeof label !== "string") {
+		throw new TypeError(
+			`createApiHandler({ label?, time?, log?, handler }) : 'label' is optional, but must be a string.`,
+		);
+	}
+
+	if (typeof time !== "boolean") {
+		throw new TypeError(
+			`createApiHandler({ label?, time?, log?, handler }) : 'time' is optional, but must be a boolean.`,
+		);
+	}
+
+	if (typeof log !== "boolean") {
+		throw new TypeError(
+			`createApiHandler({ label?, time?, log?, handler }) : 'log' is optional, but must be a boolean.`,
+		);
+	}
+
+	if (typeof handler !== "function") {
+		throw new TypeError(
+			`createApiHandler({ label?, time?, log?, handler }) : 'handler' must be a function.`,
+		);
+	}
+
 	if (time || log) {
 		label = label.replace(/^.+?\/\.next\/server\/pages\//, "");
 	}
 
 	return async function apiHandler(req, res) {
-		if (typeof label !== "string") {
-			throw new Error(`Expected a label string`);
-		}
-		if (typeof handler !== "function") {
-			throw new Error(`Expected a handler function`);
-		}
-
 		try {
 			const data = Object.assign({}, req.query, parseBody(req.body));
 			req.data = data;
