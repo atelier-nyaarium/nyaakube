@@ -48,7 +48,7 @@ export default async function fetchJSON(url, json, options = {}) {
 
 	const asForm = !!options?.form;
 
-	let fetchData = { ...options };
+	let fetchData;
 
 	if (asForm) {
 		fetchData = _.merge(
