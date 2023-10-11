@@ -40,8 +40,7 @@ function routeHandler(req, res, parsedUrl, next) {
 
 		// If the file exists, redirect to file serve API
 		for (const basePath of SERVABLE_BASE_PATHS) {
-			const safePathFS = sanitizePath(basePath, filePath);
-			if (!isFileAccessible(safePathFS)) continue;
+			if (!safeIsFileAccessible(basePath, filePath)) continue;
 
 			try {
 				let rawQuery = req.url.split("?")[1] ?? "";
@@ -140,10 +139,12 @@ async function initOnce() {
 	}
 }
 
-function isFileAccessible(filePath) {
+function safeIsFileAccessible(basePath, filePath) {
 	try {
+		const safePathFS = sanitizePath(basePath, filePath);
+
 		// eslint-disable-next-line security/detect-non-literal-fs-filename
-		return fs.lstatSync(filePath).isFile();
+		return fs.lstatSync(safePathFS).isFile();
 	} catch (error) {
 		return false;
 	}
