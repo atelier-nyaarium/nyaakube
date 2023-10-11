@@ -15,14 +15,37 @@ const IP2LOCATION_KEY = getEnv("IP2LOCATION_KEY");
  *
  * @param {string} ip - The IP address to lookup.
  *
- * @throws {Error} If the input is not a string or if the IP2LOCATION_KEY environment variable is missing.
+ * @returns {Promise<Object>} - Resolves to an object with the results.
  *
- * @returns {Promise<void>} A promise that resolves when the location information is retrieved.
+ * @throws TypeError if the parameter types are bad.
+ * @throws Error if the 'IP2LOCATION_KEY' environment variable is missing.
+ *
+ * @example
+ * const res = await ipLookup("somewhere.com");
+ * -> {
+ *     "ip": "8.8.8.8",
+ *     "country_code": "US",
+ *     "country_name": "United States of America",
+ *     "region_name": "California",
+ *     "city_name": "Mountain View",
+ *     "latitude": 37.405992,
+ *     "longitude": -122.078515,
+ *     "zip_code": "94043",
+ *     "time_zone": "-07:00",
+ *     "asn": "15169",
+ *     "as": "Google LLC",
+ *     "is_proxy": false
+ * }
  */
 export default async function ipLookup(ip) {
-	if (!(typeof ip === "string")) throw new Error(`Expected an IP string`);
+	if (typeof ip !== "string") {
+		throw new Error(`ipLookup(ip) : 'ip' must be a string.`);
+	}
+
 	if (!IP2LOCATION_KEY) {
-		throw new Error(`Missing IP2LOCATION_KEY variable`);
+		throw new Error(
+			`ipLookup(ip) : 'IP2LOCATION_KEY' environment variable is missing.`,
+		);
 	}
 
 	try {
@@ -38,6 +61,7 @@ export default async function ipLookup(ip) {
 					`Skipping IP lookup due to error ${lastIpCheckTime.fromNow()}. Error:`,
 					lastIpCheckError,
 				);
+				return;
 			}
 		}
 
@@ -46,22 +70,20 @@ export default async function ipLookup(ip) {
 			runningIpChecks[ip] = true;
 
 			try {
-				const url = `https://api.ip2location.io/?key=${IP2LOCATION_KEY}&ip=${ip}`;
+				const url = `https://api.ip2location.io/?format=json&key=${IP2LOCATION_KEY}&ip=${ip}`;
 				const json = await nodeFetch(url).then((res) => res.json());
 
 				lastIpCheckGood = true;
 				lastIpCheckError = "";
 				lastIpCheckTime = moment();
 
-				console.log(json);
+				delete runningIpChecks[ip];
+				return json;
 			} catch (error) {
 				lastIpCheckGood = false;
-
-				console.log(lastIpCheckGood);
 				lastIpCheckError = `[${ip}] ` + error.message;
+				delete runningIpChecks[ip];
 			}
-
-			delete runningIpChecks[ip];
 		}
 	} catch (error) {
 		console.log(`ipLookup(ip) : Error with fetch call`);

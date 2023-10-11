@@ -1,8 +1,8 @@
-import sleep from "@/assets/common/sleep";
+import pause from "@/assets/common/pause";
 import speakeasy from "@levminer/speakeasy";
 
 /**
- * Validates a TOTP token.
+ * Validates a TOTP token
  *
  * @param {string} totpSecret - The TOTP config/secret string.
  * @param {string} token - The TOTP token from input.
@@ -11,25 +11,27 @@ import speakeasy from "@levminer/speakeasy";
  *     valid: boolean,
  *     code?: number,
  *     message?: string,
- * }>} - A promise that resolves to an object with the results.
+ * }>} - Resolves to an object with the results.
+ *
+ * @throws TypeError if the parameter types are bad.
  *
  * @example
  * const totpSecret = "6,30,30,ABCDEFGHIJKLMNOPQRSTUVWXYZ";
  * const resValid = await validateTOTP(totpSecret, "123456");
- * // { valid: true }
+ * -> { valid: true }
  */
 export default async function validateTOTP(totpSecret, token) {
 	try {
 		if (typeof totpSecret !== "string") {
-			throw new Error(
-				`validateTOTP(totpSecret, token) : Expected a string config`,
+			throw new TypeError(
+				`validateTOTP(totpSecret, token) : 'totpSecret' must be a string.`,
 			);
 		}
 
 		const split = totpSecret.split(",").map((s) => s.trim());
 		if (split.length !== 4) {
-			throw new Error(
-				`validateTOTP(totpSecret, token) : Expected a comma delimited TOTP config string: DIGITS,PERIOD,STEP,SECRET`,
+			throw new TypeError(
+				`validateTOTP(totpSecret, token) : 'totpSecret' must be in the format: 'DIGITS,PERIOD,STEP,SECRET'.`,
 			);
 		}
 
@@ -40,8 +42,8 @@ export default async function validateTOTP(totpSecret, token) {
 		period = parseInt(period);
 		step = parseInt(step);
 		if (isNaN(digits) || isNaN(period) || isNaN(step)) {
-			throw new Error(
-				`validateTOTP(totpSecret, token) : Expected a comma delimited TOTP config string: DIGITS,PERIOD,STEP,SECRET`,
+			throw new TypeError(
+				`validateTOTP(totpSecret, token) : 'totpSecret' must be in the format: 'DIGITS,PERIOD,STEP,SECRET'.`,
 			);
 		}
 
@@ -49,7 +51,7 @@ export default async function validateTOTP(totpSecret, token) {
 			return {
 				valid: false,
 				code: 403,
-				message: `An access token is required for this page`,
+				message: `An access token is required for this page.`,
 			};
 		}
 
@@ -60,7 +62,7 @@ export default async function validateTOTP(totpSecret, token) {
 			return {
 				valid: false,
 				code: 400,
-				message: `Expected a TOTP token (numbers-only, 6-25 digits)`,
+				message: `Expected a TOTP token (numbers-only, 6-25 digits).`,
 			};
 		}
 
@@ -70,7 +72,7 @@ export default async function validateTOTP(totpSecret, token) {
 			return {
 				valid: false,
 				code: 401,
-				message: `Invalid TOTP token`,
+				message: `Invalid TOTP token.`,
 			};
 		}
 
@@ -92,7 +94,7 @@ export default async function validateTOTP(totpSecret, token) {
 			return {
 				valid: false,
 				code: 401,
-				message: `Invalid TOTP token`,
+				message: `Invalid TOTP token.`,
 			};
 		}
 	} catch (error) {
@@ -101,7 +103,7 @@ export default async function validateTOTP(totpSecret, token) {
 		return {
 			valid: false,
 			code: 500,
-			message: "Internal server error",
+			message: "Internal server error.",
 		};
 	}
 }
@@ -109,5 +111,5 @@ export default async function validateTOTP(totpSecret, token) {
 // Randomize reply time
 const R = ((Math.random() * 1000) | 0) + 50;
 const randomSleep = () => {
-	return sleep(R + Math.random() * 1000);
+	return pause(R + Math.random() * 1000);
 };

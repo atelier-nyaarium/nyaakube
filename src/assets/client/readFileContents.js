@@ -8,9 +8,21 @@ import createPromise from "@/assets/common/createPromise";
  *
  * @returns {Promise<Uint8Array>} A promise that resolves with the file content as a Uint8Array.
  *
+ * @throws {TypeError} If the parameter types are bad.
  * @throws {Error} If there is an error reading the file.
+ *
+ * @example
+ * const file = files[0];
+ * const content = await readFileContent(file);
+ * -> Uint8Array(123456) [ 0, 1, 2, 3, 4, 5, ... ]
  */
 export default async function readFileContent(file) {
+	if (!(file instanceof File)) {
+		throw new TypeError(
+			`readFileContent(file) : 'file' must be a File object.`,
+		);
+	}
+
 	const pr = createPromise();
 
 	const views = [];

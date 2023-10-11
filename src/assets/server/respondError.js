@@ -1,3 +1,21 @@
+import { ServerRequest, ServerResponse } from "http";
+
+/**
+ * Respond with error and status
+ *
+ * @param {ServerRequest} req - The request object.
+ * @param {ServerResponse} res - The response object.
+ * @param {Error|string} error - The error to send.
+ * @param {number} [status=500] - The status code to send.
+ * @param {boolean} [logError=true] - Whether to console log the error.
+ *
+ * @returns {ServerResponse} - The response object.
+ *
+ * @throws TypeError if the parameter types are bad.
+ *
+ * @example
+ * return respondError(req, res, "Error message here");
+ */
 export default function respondError(
 	req,
 	res,
@@ -5,6 +23,36 @@ export default function respondError(
 	status = 500,
 	logError = true,
 ) {
+	if (!(req instanceof ServerRequest)) {
+		throw new TypeError(
+			`respondError(req, res, error, status?, logError?) : 'req' must be a ServerRequest.`,
+		);
+	}
+
+	if (!(res instanceof ServerResponse)) {
+		throw new TypeError(
+			`respondError(req, res, error, status?, logError?) : 'res' must be a ServerResponse.`,
+		);
+	}
+
+	if (!(error instanceof Error) && typeof error !== "string") {
+		throw new TypeError(
+			`respondError(req, res, error, status?, logError?) : 'error' must be an Error or a string.`,
+		);
+	}
+
+	if (typeof status !== "number") {
+		throw new TypeError(
+			`respondError(req, res, error, status?, logError?) : 'status' is optional, but must be a number.`,
+		);
+	}
+
+	if (typeof logError !== "boolean") {
+		throw new TypeError(
+			`respondError(req, res, error, status?, logError?) : 'logError' is optional, but must be a boolean.`,
+		);
+	}
+
 	let message;
 
 	if (error?.message) {

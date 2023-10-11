@@ -17,6 +17,8 @@ import _ from "lodash";
  *
  * @returns {Promise<{ ok: boolean, status: number, json: JSON, text: string }>}  Promises a response object.
  *
+ * @throws {TypeError} If the parameter types are bad.
+ *
  * @example await fetchJSON(`/api/session/login`, { username, password })
  * .then(async res => {
  *     console.log(res.ok)
@@ -26,12 +28,12 @@ import _ from "lodash";
  */
 export default async function fetchJSON(url, json, options = {}) {
 	if (typeof url !== "string") {
-		throw new Error(
+		throw new TypeError(
 			`fetchJSON(url, json?, options?) : 'url' must be a string.`,
 		);
 	}
 	if (json !== undefined && (typeof json !== "object" || json === null)) {
-		throw new Error(
+		throw new TypeError(
 			`fetchJSON(url, json?, options?) : 'json' is optional, but must be an object.`,
 		);
 	}
@@ -39,7 +41,7 @@ export default async function fetchJSON(url, json, options = {}) {
 		options !== undefined &&
 		(typeof options !== "object" || options === null)
 	) {
-		throw new Error(
+		throw new TypeError(
 			`fetchJSON(url, json?, options?) : 'options' is optional, but must be an object.`,
 		);
 	}

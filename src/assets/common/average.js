@@ -10,9 +10,16 @@
  * @throws {Error} If 'maxWeight' is defined but is not a number, or if it's a negative number.
  *
  * @returns {{
- * 	value: number,
- * 	weight: number
+ * 	   value: number,
+ * 	   weight: number
  * }} An object with the new average 'value' and 'weight'.
+ *
+ * @example
+ * let stats = { value: 0 };
+ * stats = average(stats, 42);
+ * -> { value: 42, weight: 1 }
+ * stats = average(stats, 50);
+ * -> { value: 46, weight: 2 }
  */
 export default function average(stats, value, maxWeight = undefined) {
 	if (typeof stats !== "object") {

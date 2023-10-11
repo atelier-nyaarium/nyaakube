@@ -6,7 +6,11 @@
  *
  * @returns {string} - The encoded query string or the original string if `data` is not an object.
  *
- * @throws {TypeError} - If `data` is not an object or `url` is not a string (if provided).
+ * @throws {TypeError} If the parameter types are bad.
+ *
+ * @example
+ * const url = encodeQueryString({ foo: "bar" }, "https://example.com");
+ * -> "https://example.com?foo=bar"
  */
 export default function encodeQueryString(data, url) {
 	if (typeof data !== "object" || data === null) {
@@ -14,6 +18,7 @@ export default function encodeQueryString(data, url) {
 			"encodeQueryString(data, url?) : 'data' must be an object.",
 		);
 	}
+
 	if (url !== undefined && typeof url !== "string") {
 		throw new TypeError(
 			"encodeQueryString(data, url?) : 'url' is optional, but must be a string.",

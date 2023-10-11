@@ -5,7 +5,11 @@
  *
  * @returns {Object} An object containing key-value pairs from the query string.
  *
- * @throws {TypeError} If the argument is not a string.
+ * @throws {TypeError} If the parameter types are bad.
+ *
+ * @example
+ * const query = decodeQueryString("?foo=bar");
+ * -> { foo: "bar" }
  */
 export default function decodeQueryString(str) {
 	const query = {};

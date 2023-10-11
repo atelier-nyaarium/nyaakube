@@ -1,13 +1,31 @@
 import json5 from "json5";
 
 /**
- * Returns the value of the specified environment variable after parsing it.
+ * Get environment variable and parse it if applicable.
  *
- * @param {string} variableName - The name of the environment variable to retrieve.
+ * If ends in ".json5", it will be parsed as JSON5.
  *
- * @returns {*} The parsed value of the environment variable, or null if it is not defined or cannot be parsed.
+ * @param {string} variableName - Name of the environment variable. Case sensitive.
+ *
+ * @returns {any} - The parsed environment variable.
+ *
+ * @throws TypeError if the parameter types are bad.
+ *
+ * @example
+ * const config = getEnv("CONFIG");
+ * -> "Test value"
+ *
+ * @example
+ * const config = getEnv("config.json5");
+ * -> { foo: "Test value" }
  */
 export default function getEnv(variableName) {
+	if (typeof variableName !== "string") {
+		throw new TypeError(
+			`getEnv(variableName) : 'variableName' must be a string.`,
+		);
+	}
+
 	if (!(variableName in process.env)) {
 		console.log(`⚠️ `, `Missing ${variableName} environment variable`);
 		return null;

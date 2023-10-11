@@ -5,16 +5,34 @@ import bestConversionHelper from "@/assets/common/bestConversionHelper";
  *
  * Convert a byte number to human readable units
  *
- * @param {number}    byte     Value to convert
- * @param {boolean?}  flatten  Return a string instead of object
+ * @param {number} byte - Value to convert.
+ * @param {boolean} [flatten] - Return a string instead of object.
  *
  * @returns {string | {
- *     "value": number,
- *     "round": number,
- *     "unit": string,
+ *     value: number,
+ *     round: number,
+ *     unit: string,
  * }}
+ *
+ * @throws TypeError if the parameter types are bad.
+ *
+ * @example
+ * bestByteUnit(2000000, true);
+ * -> "1.91 MB"
  */
 export default function bestByteUnit(byte, flatten = false) {
+	if (typeof byte !== "number") {
+		throw new TypeError(
+			`bestByteUnit(byte, flatten?) : 'byte' must be a number.`,
+		);
+	}
+
+	if (flatten !== undefined && typeof flatten !== "boolean") {
+		throw new TypeError(
+			`bestByteUnit(byte, flatten?) : 'flatten' is optional, but must be a boolean.`,
+		);
+	}
+
 	const conversion = bestConversionHelper(byte, 1.2, conversions, 0);
 	const unit = conversion["unit"];
 	const value = byte / conversion["value"];

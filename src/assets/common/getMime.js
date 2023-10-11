@@ -3,13 +3,17 @@
  *
  * @param {string} fileName - The name of the file.
  *
- * @returns {string} The MIME type of the file.
+ * @returns {string} - The MIME type of the file.
  *
- * @throws {Error} If fileName is not a string.
+ * @throws TypeError if the parameter types are bad.
+ *
+ * @example
+ * const mime = getMime("Gachi.mp3");
+ * -> "audio/mpeg"
  */
 export default function getMime(fileName) {
 	if (typeof fileName !== "string") {
-		throw new Error("Expected a string for fileName.");
+		throw new TypeError(`getMime(fileName) : 'fileName' must be a string.`);
 	}
 
 	fileName = fileName.toLowerCase();
