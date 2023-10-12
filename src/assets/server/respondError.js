@@ -1,9 +1,9 @@
-import { ServerRequest, ServerResponse } from "http";
+import { IncomingMessage, ServerResponse } from "http";
 
 /**
  * Respond with error and status
  *
- * @param {ServerRequest} req - The request object.
+ * @param {IncomingMessage} req - The request object.
  * @param {ServerResponse} res - The response object.
  * @param {Error|string} error - The error to send.
  * @param {number} [status=500] - The status code to send.
@@ -23,9 +23,9 @@ export default function respondError(
 	status = 500,
 	logError = true,
 ) {
-	if (!(req instanceof ServerRequest)) {
+	if (!(req instanceof IncomingMessage)) {
 		throw new TypeError(
-			`respondError(req, res, error, status?, logError?) : 'req' must be a ServerRequest.`,
+			`respondError(req, res, error, status?, logError?) : 'req' must be a IncomingMessage.`,
 		);
 	}
 
