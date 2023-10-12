@@ -1,3 +1,4 @@
+import cloneDeepOmitProto from "@/assets/common/cloneDeepOmitProto";
 import json5 from "json5";
 
 /**
@@ -55,7 +56,7 @@ export default function getEnv(variableName) {
 				);
 			}
 
-			parsedConfig = json5.parse(parsedConfig);
+			parsedConfig = cloneDeepOmitProto(json5.parse(parsedConfig));
 		}
 	} catch (error) {
 		console.log(`⚠️ `, `Failed to parse ${variableName}`);

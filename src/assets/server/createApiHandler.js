@@ -1,5 +1,7 @@
+import cloneDeepOmitProto from "@/assets/common/cloneDeepOmitProto";
 import respondError from "@/assets/server/respondError";
 import JSON5 from "json5";
+import _ from "lodash";
 
 /**
  * Creates an API handler function that can be used with Express.js.
@@ -59,8 +61,8 @@ export default function createApiHandler({
 
 	return async function apiHandler(req, res) {
 		try {
-			const data = Object.assign({}, req.query, parseBody(req.body));
-			req.data = data;
+			// Stuff query & body into req.data
+			safeParseRequestData(req);
 
 			let logLabel = label;
 			if (time || log) {
@@ -84,6 +86,17 @@ export default function createApiHandler({
 	};
 }
 
+function safeParseRequestData(req) {
+	const query = cloneDeepOmitProto(req.query);
+	const body = cloneDeepOmitProto(parseBody(req.body));
+
+	delete req.query;
+	delete req.body;
+
+	req.data = _.merge({}, query, body);
+	return req.data;
+}
+
 function parseBody(raw) {
 	if (typeof raw === "object") {
 		// Already parsed by body-parser
@@ -99,6 +112,6 @@ function parseBody(raw) {
 	} catch (error) {
 		console.log(`⛔ `, `Error parsing JSON`);
 		console.error(error);
-		throw error;
+		return undefined;
 	}
 }
