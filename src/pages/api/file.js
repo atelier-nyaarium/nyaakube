@@ -1,6 +1,7 @@
 import createApiHandler from "@/assets/server/createApiHandler";
 import getEnv from "@/assets/server/getEnv";
 import respondError from "@/assets/server/respondError";
+import safeIsFileAccessible from "@/assets/server/safeIsFileAccessible";
 import sanitizePath from "@/assets/server/sanitizePath";
 import validateTOTP from "@/assets/server/validateTOTP";
 import fs from "fs";
@@ -17,6 +18,7 @@ const SERVE_BASE_HANDLERS = Object.freeze({
 
 export default createApiHandler({
 	label: __filename,
+	time: false,
 	handler: async (req, res) => {
 		for (const basePath in SERVE_BASE_HANDLERS) {
 			const serveHandler = SERVE_BASE_HANDLERS[basePath];
@@ -49,7 +51,7 @@ async function serveUnlisted(req, res, basePath, filePath) {
 		return respondError(req, res, `File not found`, 404);
 	}
 
-	const safePathFS = sanitizePath();
+	const safePathFS = sanitizePath(basePath, filePath);
 
 	// Pipe file reader to response `res`
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
@@ -79,15 +81,4 @@ async function serveProtected(req, res, basePath, filePath) {
 	const fileStream = fs.createReadStream(safePathFS);
 
 	fileStream.pipe(res);
-}
-
-function safeIsFileAccessible(basePath, filePath) {
-	try {
-		const safePathFS = sanitizePath(basePath, filePath);
-
-		// eslint-disable-next-line security/detect-non-literal-fs-filename
-		return fs.lstatSync(safePathFS).isFile();
-	} catch (error) {
-		return false;
-	}
 }
