@@ -1,3 +1,4 @@
+import { QueryProvider } from "@/hooks/useQuery";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import PropTypes from "prop-types";
@@ -11,10 +12,12 @@ const darkTheme = createTheme({
 
 export default function App({ Component, pageProps }) {
 	return (
-		<ThemeProvider theme={darkTheme}>
-			<CssBaseline />
-			<Component {...pageProps} />
-		</ThemeProvider>
+		<QueryProvider>
+			<ThemeProvider theme={darkTheme}>
+				<CssBaseline />
+				<Component {...pageProps} />
+			</ThemeProvider>
+		</QueryProvider>
 	);
 }
 
