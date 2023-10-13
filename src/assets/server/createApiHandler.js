@@ -94,7 +94,6 @@ function safeParseRequestData(req) {
 	delete req.body;
 
 	req.data = _.merge({}, query, body);
-	return req.data;
 }
 
 function parseBody(raw) {
