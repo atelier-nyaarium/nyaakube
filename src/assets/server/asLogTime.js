@@ -22,5 +22,9 @@ export default function asLogTime(date = undefined) {
 
 	if (date === undefined) date = new Date();
 
-	return moment(date).toISOString().replace(/T/, " ").replace(/\..*/, "");
+	return moment(date)
+		.toISOString()
+		.replace(/T/, " ")
+		.replace(/\..*/, "")
+		.replace(/:/g, "-");
 }
