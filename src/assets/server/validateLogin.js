@@ -2,6 +2,7 @@ import pause from "@/assets/common/pause";
 import getEnv from "@/assets/server/getEnv";
 import validateTOTP from "@/assets/server/validateTOTP";
 import argon2 from "argon2";
+import saslPrep from "saslprep";
 
 /**
  * Validates user login credentials
@@ -48,7 +49,7 @@ export default async function validateLogin(
 			);
 		}
 
-		const user = await getUserByUsername(username);
+		const user = await getUserByUsername(saslPrep(username));
 		if (!user) {
 			await randomSleep();
 			return {
@@ -67,7 +68,10 @@ export default async function validateLogin(
 			};
 		}
 
-		const passwordMatch = await argon2.verify(user.password, password);
+		const passwordMatch = await argon2.verify(
+			user.password,
+			saslPrep(password),
+		);
 		if (!passwordMatch) {
 			await randomSleep();
 			return {
@@ -77,7 +81,7 @@ export default async function validateLogin(
 			};
 		}
 
-		const validTotp = await validateTOTP(user.totp, totpToken);
+		const validTotp = await validateTOTP(user.totp, saslPrep(totpToken));
 		if (!validTotp.valid) return validTotp;
 
 		return {
