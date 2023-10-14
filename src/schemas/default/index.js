@@ -1,5 +1,5 @@
-import RootMutation from "@/schema/RootMutation";
-import RootQuery from "@/schema/RootQuery";
+import RootMutation from "@/schemas/default/RootMutation";
+import RootQuery from "@/schemas/default/RootQuery";
 import { GraphQLSchema } from "graphql";
 
 const schema = new GraphQLSchema({

@@ -1,4 +1,4 @@
-import data from "@/schema/api/testData";
+import data from "@/schemas/default/api/testData";
 
 export default class ServerAPI {
 	constructor() {

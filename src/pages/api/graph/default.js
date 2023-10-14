@@ -1,7 +1,7 @@
 import { runGraph } from "@/assets/common";
 import { createApiHandler, respondError, respondJson } from "@/assets/server";
-import schema from "@/schema";
-import ServerAPI from "@/schema/api/ServerAPI";
+import schema from "@/schemas/default";
+import ServerAPI from "@/schemas/default/api/ServerAPI";
 
 const DEV = process.env.NODE_ENV === "development";
 

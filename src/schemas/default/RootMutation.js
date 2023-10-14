@@ -1,4 +1,4 @@
-import PostType from "@/schema/types/PostType";
+import PostType from "@/schemas/default/types/PostType";
 import {
 	GraphQLID,
 	GraphQLNonNull,
@@ -16,7 +16,7 @@ const RootMutation = new GraphQLObjectType({
 				content: { type: new GraphQLNonNull(GraphQLString) },
 				authorId: { type: new GraphQLNonNull(GraphQLID) },
 			},
-			resolve: (parent, args, context) => {
+			resolve(parent, args, context) {
 				return context.api.createPost(parent, args, context);
 			},
 		},
@@ -27,7 +27,7 @@ const RootMutation = new GraphQLObjectType({
 				title: { type: GraphQLString },
 				content: { type: GraphQLString },
 			},
-			resolve: (parent, args, context) => {
+			resolve(parent, args, context) {
 				return context.api.updatePost(parent, args, context);
 			},
 		},
@@ -36,7 +36,7 @@ const RootMutation = new GraphQLObjectType({
 			args: {
 				id: { type: new GraphQLNonNull(GraphQLID) },
 			},
-			resolve: (parent, args, context) => {
+			resolve(parent, args, context) {
 				return context.api.deletePost(parent, args, context);
 			},
 		},

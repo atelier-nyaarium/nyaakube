@@ -1,5 +1,5 @@
-import CommentType from "@/schema/types/CommentType";
-import UserType from "@/schema/types/UserType";
+import CommentType from "@/schemas/default/types/CommentType";
+import UserType from "@/schemas/default/types/UserType";
 import {
 	GraphQLID,
 	GraphQLList,
@@ -15,13 +15,13 @@ const PostType = new GraphQLObjectType({
 		content: { type: GraphQLString },
 		user: {
 			type: UserType,
-			resolve: (parent, args, context) => {
+			resolve(parent, args, context) {
 				return context.api.getPostAuthor(parent, args);
 			},
 		},
 		comments: {
 			type: new GraphQLList(CommentType),
-			resolve: (parent, args, context) => {
+			resolve(parent, args, context) {
 				return context.api.getPostComments(parent, args);
 			},
 		},

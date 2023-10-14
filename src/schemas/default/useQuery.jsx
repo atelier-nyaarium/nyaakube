@@ -1,6 +1,6 @@
 import { runGraph } from "@/assets/common";
-import schema from "@/schema";
-import ClientAPI from "@/schema/api/ClientAPI";
+import schema from "@/schemas/default";
+import ClientAPI from "@/schemas/default/api/ClientAPI";
 import PropTypes from "prop-types";
 import React, { createContext, useCallback, useContext, useMemo } from "react";
 

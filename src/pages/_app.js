@@ -1,4 +1,4 @@
-import { QueryProvider } from "@/hooks/useQuery";
+import { QueryProvider } from "@/schemas/default/useQuery";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import PropTypes from "prop-types";

@@ -1,4 +1,4 @@
-import PostType from "@/schema/types/PostType";
+import PostType from "@/schemas/default/types/PostType";
 import {
 	GraphQLID,
 	GraphQLList,
@@ -14,7 +14,7 @@ const UserType = new GraphQLObjectType({
 		email: { type: GraphQLString },
 		posts: {
 			type: new GraphQLList(PostType),
-			resolve: (parent, args, context) => {
+			resolve(parent, args, context) {
 				return context.api.getUserPosts(parent, args);
 			},
 		},
