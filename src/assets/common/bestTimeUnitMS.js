@@ -1,4 +1,4 @@
-import bestConversionHelper from "@/assets/common/bestConversionHelper";
+import { bestConversionHelper } from "@/assets/common";
 
 /**
  * Best Time Unit (ms)
@@ -20,7 +20,7 @@ import bestConversionHelper from "@/assets/common/bestConversionHelper";
  * bestTimeUnitMS(4500000, true);
  * -> "1.25 h"
  */
-export default function bestTimeUnitMS(ms, flatten = false) {
+export function bestTimeUnitMS(ms, flatten = false) {
 	if (typeof ms !== "number") {
 		throw new TypeError(
 			`bestTimeUnitMS(ms, flatten?) : 'ms' must be a number.`,

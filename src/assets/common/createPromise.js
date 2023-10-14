@@ -17,7 +17,7 @@
  * await pr.promise;
  * return stuff;
  */
-export default function createPromise() {
+export function createPromise() {
 	let resolve, reject;
 	const promise = new Promise((rs, rj) => {
 		resolve = rs;

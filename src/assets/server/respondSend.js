@@ -1,4 +1,4 @@
-const { ServerResponse } = require("http");
+import { ServerResponse } from "http";
 
 /**
  * Respond with data and status
@@ -14,7 +14,7 @@ const { ServerResponse } = require("http");
  * @example
  * return respondSend(res, "Hello, world!");
  */
-export default function respondSend(res, data, status = 200) {
+export function respondSend(res, data, status = 200) {
 	if (!(res instanceof ServerResponse)) {
 		throw new TypeError(
 			`respondSend(res, data, status?) : 'res' must be a ServerResponse.`,

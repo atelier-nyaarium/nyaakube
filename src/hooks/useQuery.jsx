@@ -1,4 +1,4 @@
-import runGraph from "@/assets/common/runGraph";
+import { runGraph } from "@/assets/common";
 import schema from "@/schema";
 import ClientAPI from "@/schema/api/ClientAPI";
 import PropTypes from "prop-types";

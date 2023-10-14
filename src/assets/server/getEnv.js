@@ -1,4 +1,4 @@
-import cloneDeepOmitProto from "@/assets/common/cloneDeepOmitProto";
+import { cloneDeepOmitProto } from "@/assets/common";
 import json5 from "json5";
 
 /**
@@ -20,7 +20,7 @@ import json5 from "json5";
  * const config = getEnv("config.json5");
  * -> { foo: "Test value" }
  */
-export default function getEnv(variableName) {
+export function getEnv(variableName) {
 	if (typeof variableName !== "string") {
 		throw new TypeError(
 			`getEnv(variableName) : 'variableName' must be a string.`,

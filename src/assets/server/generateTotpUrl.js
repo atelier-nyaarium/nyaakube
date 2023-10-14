@@ -19,7 +19,7 @@ const issuer = `Atelier Nyaarium`;
  * generateTotpUrl("Foo Bar:user@email", 6, 30, 30, "ABC");
  * -> "otpauth://totp/Foo%20Bar:user@email?digits=6&period=30&step=30&secret=ABC&issuer=Atelier%20Nyaarium"
  */
-export default function generateTotpUrl(label, digits, period, step, secret) {
+export function generateTotpUrl(label, digits, period, step, secret) {
 	if (typeof label !== "string") {
 		throw new TypeError(
 			`generateTotpUrl(label, digits, period, step, secret) : 'label' must be a string.`,

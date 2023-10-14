@@ -1,4 +1,4 @@
-import createPromise from "@/assets/common/createPromise";
+import { createPromise } from "@/assets/common";
 import { spawn } from "child_process";
 
 /**
@@ -18,7 +18,7 @@ import { spawn } from "child_process";
  * @example
  * const { log, stdout, stderr } = await run("ls", ["-1", "~/"]);
  */
-export default async function run(script, params = []) {
+export async function run(script, params = []) {
 	if (typeof script !== "string") {
 		throw new TypeError(
 			`run(script, params?) : 'script' must be a string.`,

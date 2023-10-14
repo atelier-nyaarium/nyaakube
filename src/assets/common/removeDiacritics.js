@@ -11,7 +11,7 @@
  * const str = removeDiacritics("Héllö, wörld!");
  * -> "Hello, world!"
  */
-export default function removeDiacritics(str) {
+export function removeDiacritics(str) {
 	// https://stackoverflow.com/questions/286921
 	// https://stackoverflow.com/questions/990904
 

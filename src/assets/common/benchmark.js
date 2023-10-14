@@ -1,4 +1,4 @@
-import bestConversionHelper from "@/assets/common/bestConversionHelper";
+import { bestConversionHelper } from "@/assets/common";
 
 /**
  * Runs a benchmark test on a function.
@@ -28,7 +28,7 @@ import bestConversionHelper from "@/assets/common/bestConversionHelper";
  * -> Date.now: "2.53 K/s"
  * -> performance.now: "492.37 /s"
  */
-export default async function benchmark(f, count, flatten = false) {
+export async function benchmark(f, count, flatten = false) {
 	if (typeof f !== "function") {
 		throw new Error(
 			`benchmark(f, count, flatten?) : 'f' must be a function.`,

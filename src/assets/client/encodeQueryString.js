@@ -12,7 +12,7 @@
  * const url = encodeQueryString({ foo: "bar" }, "https://example.com");
  * -> "https://example.com?foo=bar"
  */
-export default function encodeQueryString(data, url) {
+export function encodeQueryString(data, url) {
 	if (typeof data !== "object" || data === null) {
 		throw new TypeError(
 			"encodeQueryString(data, url?) : 'data' must be an object.",

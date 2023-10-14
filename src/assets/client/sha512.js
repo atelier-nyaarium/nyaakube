@@ -13,7 +13,7 @@ import { createHash } from "crypto";
  * const checksum = sha512("Hello world!");
  * -> "f6cde2a0f819314cdde55fc2 . . . "
  */
-export default function sha512(data) {
+export function sha512(data) {
 	if (!Buffer.isBuffer(data) && typeof data !== "string") {
 		throw new TypeError(
 			"sha512(data) : 'data' must be a Buffer or a string.",

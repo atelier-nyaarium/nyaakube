@@ -14,7 +14,7 @@ import { ServerResponse } from "http";
  * @example
  * return respondJson(res, { foo: "bar" });
  */
-export default function respondJson(res, data, status = 200) {
+export function respondJson(res, data, status = 200) {
 	if (!(res instanceof ServerResponse)) {
 		throw new TypeError(
 			`respondJson(res, data, status?) : 'res' must be a ServerResponse.`,

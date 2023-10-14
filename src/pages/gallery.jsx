@@ -1,4 +1,4 @@
-import fetchJSON from "@/assets/client/fetchJSON";
+import { fetchJSON } from "@/assets/client";
 import {
 	Box,
 	Button,
@@ -8,7 +8,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useEffect, useMemo, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ImageGallery from "react-image-gallery";
 
 const styles = {
@@ -44,7 +44,12 @@ export default function PageGallery() {
 			});
 			if (reply.ok) {
 				setReadyStatus(true);
-				setListing(reply.json);
+				setListing({
+					dirs: reply.json.dirs,
+					files: reply.json.files.map(
+						(fileName) => `${path}/${fileName}`,
+					),
+				});
 			} else {
 				setReadyStatus(reply.status);
 				setListing(null);

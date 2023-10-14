@@ -1,4 +1,4 @@
-import asLogTime from "@/assets/server/asLogTime";
+import { asLogTime } from "@/assets/server";
 
 describe("asLogTime", () => {
 	it("returns a string in the correct format", () => {

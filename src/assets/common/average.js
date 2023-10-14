@@ -21,7 +21,7 @@
  * stats = average(stats, 50);
  * -> { value: 46, weight: 2 }
  */
-export default function average(stats, value, maxWeight = undefined) {
+export function average(stats, value, maxWeight = undefined) {
 	if (typeof stats !== "object") {
 		throw new Error(
 			`average(stats, value, maxWeight?) : 'stats' must be an object.`,

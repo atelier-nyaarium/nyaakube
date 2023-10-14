@@ -1,4 +1,4 @@
-import pause from "@/assets/common/pause";
+import { pause } from "@/assets/common";
 import speakeasy from "@levminer/speakeasy";
 
 /**
@@ -20,7 +20,7 @@ import speakeasy from "@levminer/speakeasy";
  * const resValid = await validateTOTP(totpSecret, "123456");
  * -> { valid: true }
  */
-export default async function validateTOTP(totpSecret, token) {
+export async function validateTOTP(totpSecret, token) {
 	try {
 		if (typeof totpSecret !== "string") {
 			throw new TypeError(

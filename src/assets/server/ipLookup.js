@@ -1,5 +1,5 @@
-import asLogTime from "@/assets/server/asLogTime";
-import getEnv from "@/assets/server/getEnv";
+import { asLogTime } from "@/assets/server/asLogTime";
+import { getEnv } from "@/assets/server/getEnv";
 import moment from "moment-timezone";
 import nodeFetch from "node-fetch";
 
@@ -37,7 +37,7 @@ const IP2LOCATION_KEY = getEnv("IP2LOCATION_KEY");
  *     "is_proxy": false
  * }
  */
-export default async function ipLookup(ip) {
+export async function ipLookup(ip) {
 	if (typeof ip !== "string") {
 		throw new Error(`ipLookup(ip) : 'ip' must be a string.`);
 	}

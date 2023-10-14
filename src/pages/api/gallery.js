@@ -1,7 +1,9 @@
-import createApiHandler from "@/assets/server/createApiHandler";
-import respondError from "@/assets/server/respondError";
-import respondJson from "@/assets/server/respondJson";
-import scanDirectory from "@/assets/server/scanDirectory";
+import {
+	createApiHandler,
+	respondError,
+	respondJson,
+	scanDirectory,
+} from "@/assets/server";
 import path from "path";
 
 const BASE_UNLISTED = path.join(process.env.DATA_PATH, "unlisted");

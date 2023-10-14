@@ -1,4 +1,4 @@
-import sanitizePath from "@/assets/server/sanitizePath";
+import { sanitizePath } from "@/assets/server";
 import fs from "fs";
 import path from "path";
 
@@ -33,7 +33,7 @@ import path from "path";
  *     files: ["index.html"],
  * }
  */
-export default function scanDirectory(basePath, filePath) {
+export function scanDirectory(basePath, filePath) {
 	if (typeof basePath !== "string") {
 		throw new TypeError(
 			`scanDirectory(basePath, filePath) : 'basePath' must be a string.`,
