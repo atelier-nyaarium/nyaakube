@@ -25,7 +25,7 @@ import path from "path";
  * const safePath = sanitizePath("/var/data", "Foo̵̔̐Bã̸r?.txt");
  * -> "/var/data/FooBar.txt"
  */
-export default function sanitizePath(workingDir, filePath) {
+export function sanitizePath(workingDir, filePath) {
 	if (typeof workingDir !== "string") {
 		throw new TypeError(
 			`sanitizePath(workingDir, filePath) : 'workingDir' must be a string.`,

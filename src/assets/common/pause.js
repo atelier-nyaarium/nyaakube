@@ -10,7 +10,7 @@
  * @example
  * await pause(5000);
  */
-export default function pause(time) {
+export function pause(time) {
 	if (typeof time !== "number" || time < 0) {
 		throw new TypeError(`pause(time) : 'time' must be a positive number.`);
 	}

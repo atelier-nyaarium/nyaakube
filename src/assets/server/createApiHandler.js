@@ -1,5 +1,5 @@
-import cloneDeepOmitProto from "@/assets/common/cloneDeepOmitProto";
-import respondError from "@/assets/server/respondError";
+import { cloneDeepOmitProto } from "@/assets/common";
+import { respondError } from "@/assets/server";
 import JSON5 from "json5";
 import _ from "lodash";
 
@@ -23,7 +23,7 @@ import _ from "lodash";
  *     },
  * });
  */
-export default function createApiHandler({
+export function createApiHandler({
 	label = "(anonymous)",
 	time = true,
 	log = true,

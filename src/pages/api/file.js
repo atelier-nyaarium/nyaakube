@@ -1,9 +1,11 @@
-import createApiHandler from "@/assets/server/createApiHandler";
-import getEnv from "@/assets/server/getEnv";
-import respondError from "@/assets/server/respondError";
-import safeIsFileAccessible from "@/assets/server/safeIsFileAccessible";
-import sanitizePath from "@/assets/server/sanitizePath";
-import validateTOTP from "@/assets/server/validateTOTP";
+import {
+	createApiHandler,
+	getEnv,
+	respondError,
+	safeIsFileAccessible,
+	sanitizePath,
+	validateTOTP,
+} from "@/assets/server";
 import fs from "fs";
 import path from "path";
 
@@ -11,9 +13,9 @@ const BASE_PUBLIC = path.join(process.env.DATA_PATH, "public");
 const BASE_UNLISTED = path.join(process.env.DATA_PATH, "unlisted");
 const BASE_PROTECTED = path.join(process.env.DATA_PATH, "protected");
 const SERVE_BASE_HANDLERS = Object.freeze({
-	[BASE_PUBLIC]: servePublic,
-	[BASE_UNLISTED]: serveUnlisted,
 	[BASE_PROTECTED]: serveProtected,
+	[BASE_UNLISTED]: serveUnlisted,
+	[BASE_PUBLIC]: servePublic,
 });
 
 export default createApiHandler({

@@ -1,4 +1,4 @@
-import bestConversionHelper from "@/assets/common/bestConversionHelper";
+import { bestConversionHelper } from "@/assets/common";
 
 /**
  * Best Byte Unit (byte)
@@ -20,7 +20,7 @@ import bestConversionHelper from "@/assets/common/bestConversionHelper";
  * bestByteUnit(2000000, true);
  * -> "1.91 MB"
  */
-export default function bestByteUnit(byte, flatten = false) {
+export function bestByteUnit(byte, flatten = false) {
 	if (typeof byte !== "number") {
 		throw new TypeError(
 			`bestByteUnit(byte, flatten?) : 'byte' must be a number.`,

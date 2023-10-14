@@ -16,13 +16,7 @@ import { IncomingMessage, ServerResponse } from "http";
  * @example
  * return respondError(req, res, "Error message here");
  */
-export default function respondError(
-	req,
-	res,
-	error,
-	status = 500,
-	logError = true,
-) {
+export function respondError(req, res, error, status = 500, logError = true) {
 	if (!(req instanceof IncomingMessage)) {
 		throw new TypeError(
 			`respondError(req, res, error, status?, logError?) : 'req' must be a IncomingMessage.`,

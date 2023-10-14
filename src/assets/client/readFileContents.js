@@ -1,4 +1,4 @@
-import createPromise from "@/assets/common/createPromise";
+import { createPromise } from "@/assets/common";
 
 /**
  * Reads the content of a file and returns it as a Uint8Array.
@@ -16,7 +16,7 @@ import createPromise from "@/assets/common/createPromise";
  * const content = await readFileContent(file);
  * -> Uint8Array(123456) [ 0, 1, 2, 3, 4, 5, ... ]
  */
-export default async function readFileContent(file) {
+export async function readFileContent(file) {
 	if (!(file instanceof File)) {
 		throw new TypeError(
 			`readFileContent(file) : 'file' must be a File object.`,

@@ -26,7 +26,7 @@ import _ from "lodash";
  *     console.log(res.json)
  * })
  */
-export default async function fetchJSON(url, json, options = {}) {
+export async function fetchJSON(url, json, options = {}) {
 	if (typeof url !== "string") {
 		throw new TypeError(
 			`fetchJSON(url, json?, options?) : 'url' must be a string.`,

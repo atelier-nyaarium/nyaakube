@@ -1,6 +1,5 @@
-import pause from "@/assets/common/pause";
-import getEnv from "@/assets/server/getEnv";
-import validateTOTP from "@/assets/server/validateTOTP";
+import { pause } from "@/assets/common";
+import { getEnv, validateTOTP } from "@/assets/server";
 import argon2 from "argon2";
 import saslPrep from "saslprep";
 
@@ -25,11 +24,7 @@ import saslPrep from "saslprep";
  * const resValid = await validateLogin("foo", "bar", "123456");
  * -> { valid: true }
  */
-export default async function validateLogin(
-	username,
-	password,
-	totpToken = undefined,
-) {
+export async function validateLogin(username, password, totpToken = undefined) {
 	try {
 		if (typeof username !== "string") {
 			throw new TypeError(

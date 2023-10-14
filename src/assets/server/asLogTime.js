@@ -13,7 +13,7 @@ import moment from "moment-timezone";
  * const timestamp = asLogTime(new Date());
  * -> "2020-01-01 01-23-45"
  */
-export default function asLogTime(date = undefined) {
+export function asLogTime(date = undefined) {
 	if (date !== undefined && !(date instanceof Date)) {
 		throw new TypeError(
 			`asLogTime(date?) : 'date' is optional, but must be a Date.`,

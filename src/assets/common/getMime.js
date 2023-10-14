@@ -11,7 +11,7 @@
  * const mime = getMime("Gachi.mp3");
  * -> "audio/mpeg"
  */
-export default function getMime(fileName) {
+export function getMime(fileName) {
 	if (typeof fileName !== "string") {
 		throw new TypeError(`getMime(fileName) : 'fileName' must be a string.`);
 	}

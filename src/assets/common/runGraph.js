@@ -1,6 +1,6 @@
 import { GraphQLSchema, graphql } from "graphql";
 
-export default async function runGraph({ schema, context, source }) {
+export async function runGraph({ schema, context, source }) {
 	if (!(schema instanceof GraphQLSchema)) {
 		throw new TypeError(
 			"runGraph({ schema, context, source }) : 'schema' must be an instance of GraphQLSchema.",

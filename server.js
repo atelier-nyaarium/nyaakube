@@ -24,9 +24,9 @@ const BASE_PUBLIC = path.join(process.env.DATA_PATH, "public");
 const BASE_UNLISTED = path.join(process.env.DATA_PATH, "unlisted");
 const BASE_PROTECTED = path.join(process.env.DATA_PATH, "protected");
 const SERVABLE_BASE_PATHS = Object.freeze([
-	BASE_PUBLIC,
-	BASE_UNLISTED,
 	BASE_PROTECTED,
+	BASE_UNLISTED,
+	BASE_PUBLIC,
 ]);
 
 function routeHandler(req, res, parsedUrl, next) {

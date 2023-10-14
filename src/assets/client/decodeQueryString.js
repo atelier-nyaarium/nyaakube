@@ -11,7 +11,7 @@
  * const query = decodeQueryString("?foo=bar");
  * -> { foo: "bar" }
  */
-export default function decodeQueryString(str) {
+export function decodeQueryString(str) {
 	const query = {};
 
 	if (typeof str !== "string") {

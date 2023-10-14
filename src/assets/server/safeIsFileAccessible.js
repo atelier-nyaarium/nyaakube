@@ -1,4 +1,4 @@
-import sanitizePath from "@/assets/server/sanitizePath";
+import { sanitizePath } from "@/assets/server";
 import { lstatSync } from "fs";
 
 /**
@@ -25,7 +25,7 @@ import { lstatSync } from "fs";
  * @example
  * if (safeIsFileAccessible("/var/data", "Foo̵̔̐Bã̸r?.txt"))
  */
-export default function safeIsFileAccessible(workDir, filePath) {
+export function safeIsFileAccessible(workDir, filePath) {
 	try {
 		const safePathFS = sanitizePath(workDir, filePath);
 

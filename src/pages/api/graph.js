@@ -1,7 +1,5 @@
-import runGraph from "@/assets/common/runGraph";
-import createApiHandler from "@/assets/server/createApiHandler";
-import respondError from "@/assets/server/respondError";
-import respondJson from "@/assets/server/respondJson";
+import { runGraph } from "@/assets/common";
+import { createApiHandler, respondError, respondJson } from "@/assets/server";
 import schema from "@/schema";
 import ServerAPI from "@/schema/api/ServerAPI";
 

@@ -15,7 +15,7 @@
  * @example
  * See bestByteUnit.js and bestTimeUnitMS.js
  */
-export default function bestConversionHelper(
+export function bestConversionHelper(
 	startingNumber,
 	threshold,
 	conversions,
