@@ -39,11 +39,11 @@ const IP2LOCATION_KEY = getEnv("IP2LOCATION_KEY");
  */
 export async function ipLookup(ip) {
 	if (typeof ip !== "string") {
-		throw new Error(`ipLookup(ip) : 'ip' must be a string.`);
+		throw new TypeError(`ipLookup(ip) : 'ip' must be a string.`);
 	}
 
 	if (!IP2LOCATION_KEY) {
-		throw new Error(
+		throw new TypeError(
 			`ipLookup(ip) : 'IP2LOCATION_KEY' environment variable is missing.`,
 		);
 	}

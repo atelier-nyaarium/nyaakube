@@ -12,11 +12,11 @@
  * -> { foo: "bar" }
  */
 export function decodeQueryString(str) {
-	const query = {};
-
 	if (typeof str !== "string") {
 		throw new TypeError("decodeQueryString(str) : 'str' must be a string.");
 	}
+
+	const query = {};
 
 	if (!str) return {};
 
