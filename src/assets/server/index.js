@@ -6,7 +6,7 @@ export { ipLookup } from "./ipLookup";
 export { respondError } from "./respondError";
 export { respondJson } from "./respondJson";
 export { respondSend } from "./respondSend";
-export { run } from "./run";
+export { runProcess } from "./runProcess";
 export { safeIsFileAccessible } from "./safeIsFileAccessible";
 export { sanitizePath } from "./sanitizePath";
 export { scanDirectory } from "./scanDirectory";
