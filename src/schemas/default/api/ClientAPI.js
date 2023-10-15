@@ -1,3 +1,6 @@
+/**
+ * If this file was used, it would look something like this:
+ */
 export default class ClientAPI {
 	constructor() {
 		// TODO: Initialize any API stuff
