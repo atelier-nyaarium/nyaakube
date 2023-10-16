@@ -45,8 +45,6 @@ function pureReducer(state, action) {
 			};
 		}
 		case "DISMISS_SNACK": {
-			console.log(queue, state.count, state.length);
-
 			if (queue.length === 1) {
 				return {
 					...state,
