@@ -16,7 +16,7 @@ import { IncomingMessage, ServerResponse } from "http";
  * @example
  * return respondError(req, res, "Error message here");
  */
-export function respondError(req, res, error, status = 500, logError = true) {
+export function respondError(req, res, error, status, logError) {
 	if (!(req instanceof IncomingMessage)) {
 		throw new TypeError(
 			`respondError(req, res, error, status?, logError?) : 'req' must be a IncomingMessage.`,
@@ -35,11 +35,15 @@ export function respondError(req, res, error, status = 500, logError = true) {
 		);
 	}
 
+	if (status === undefined) status = 500;
+
 	if (typeof status !== "number") {
 		throw new TypeError(
 			`respondError(req, res, error, status?, logError?) : 'status' is optional, but must be a number.`,
 		);
 	}
+
+	if (logError === undefined) logError = true;
 
 	if (typeof logError !== "boolean") {
 		throw new TypeError(
