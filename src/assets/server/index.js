@@ -4,6 +4,7 @@ export { generateTotpUrl } from "./generateTotpUrl";
 export { getEnv } from "./getEnv";
 export { ipLookup } from "./ipLookup";
 export { respondError } from "./respondError";
+export { respondGraphError } from "./respondGraphError";
 export { respondJson } from "./respondJson";
 export { respondSend } from "./respondSend";
 export { runProcess } from "./runProcess";

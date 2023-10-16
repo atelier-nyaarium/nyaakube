@@ -1,9 +1,11 @@
 import { runGraph } from "@/assets/common";
-import { createApiHandler, respondError, respondJson } from "@/assets/server";
+import {
+	createApiHandler,
+	respondGraphError,
+	respondJson,
+} from "@/assets/server";
 import schema from "@/schemas/default";
 import ServerAPI from "@/schemas/default/api/ServerAPI";
-
-const DEV = process.env.NODE_ENV === "development";
 
 const api = new ServerAPI();
 
@@ -24,21 +26,7 @@ export default createApiHandler({
 			source,
 		});
 		if (result.errors) {
-			let shortenedQuery;
-			if (DEV) {
-				shortenedQuery = source.trim();
-			} else {
-				shortenedQuery =
-					`<base64> ` + Buffer.from(source).toString("base64");
-			}
-
-			const errorList = result.errors
-				.map((err) => `   - ${err.message}`)
-				.join("\n");
-
-			console.log(`⚠️ `, `GraphQL: ${shortenedQuery}\n${errorList}`);
-
-			return respondError(req, res, `GraphQL failed to execute.`);
+			return respondGraphError(req, res, result.errors);
 		} else {
 			return respondJson(res, result.data);
 		}
