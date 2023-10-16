@@ -23,7 +23,7 @@ export function QueryProvider({ children }) {
 		if (reply.ok) {
 			return reply.json;
 		} else {
-			throw new Error(reply.message);
+			throw new Error(reply.json.message);
 		}
 	}, []);
 
