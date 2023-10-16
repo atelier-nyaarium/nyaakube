@@ -11,10 +11,8 @@ export class UnauthorizedError extends Error {
 	 *
 	 * @param {string} [message] - The error message. Pass a message to override the default.
 	 */
-	constructor(message = "Please sign in and try again.") {
+	constructor(message = "[401] Unauthorized. Please sign in and try again.") {
 		super(message);
-		this.name = "Unauthorized";
-		this.code = 401;
 	}
 }
 
@@ -32,10 +30,8 @@ export class AccessDeniedError extends Error {
 	 * @param {string} [message] - The error message. Pass a message to override the default.
 	 */
 	constructor(
-		message = "You do not have permission to access this resource.",
+		message = "[403] Access Denied. You do not have permission to access this resource.",
 	) {
 		super(message);
-		this.name = "Access Denied";
-		this.code = 403;
 	}
 }
