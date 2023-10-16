@@ -1,6 +1,6 @@
+import AlignScreenMiddle from "@/components/AlignScreenMiddle";
 import {
 	Avatar,
-	Box,
 	Card,
 	CardActionArea,
 	CardHeader,
@@ -9,25 +9,6 @@ import {
 import React from "react";
 
 const styles = {
-	centerAlignOuter: {
-		display: `flex`,
-		width: `100%`,
-		alignItems: `center`,
-		flexFlow: `column`,
-	},
-	centerAlignInner: {
-		display: `flex`,
-		height: `100vh`,
-		alignItems: `center`,
-		textAlign: `center`,
-	},
-	centerAlignContent: {
-		"maxWidth": `600px`,
-
-		"& > *": {
-			textAlign: `initial`,
-		},
-	},
 	navigationCard: {
 		display: `inline-block`,
 		margin: `4px`,
@@ -43,135 +24,115 @@ export default function PageIndex() {
 		<>
 			<title>Index | Nyaarium</title>
 
-			<Box sx={styles.centerAlignOuter}>
-				<Box sx={styles.centerAlignInner}>
-					<Box sx={styles.centerAlignContent}>
-						<Card sx={styles.navigationCard}>
-							<CardHeader
-								avatar={
-									<Avatar
-										src="files/logos/discord.png"
-										sx={{
-											borderRadius: "0",
-											filter,
-										}}
-									/>
-								}
-								title={
-									<Typography variant="h5">
-										Nyaarium#0001
-									</Typography>
-								}
+			<AlignScreenMiddle>
+				<Card sx={styles.navigationCard}>
+					<CardHeader
+						avatar={
+							<Avatar
+								src="files/logos/discord.png"
+								sx={{
+									borderRadius: "0",
+									filter,
+								}}
 							/>
-						</Card>
+						}
+						title={
+							<Typography variant="h5">Nyaarium#0001</Typography>
+						}
+					/>
+				</Card>
 
-						<Card sx={styles.navigationCard}>
-							<CardActionArea href="https://steam.nyaarium.com">
-								<CardHeader
-									avatar={
-										<Avatar
-											src="files/logos/steam.png"
-											sx={{
-												borderRadius: "0",
-												filter,
-											}}
-										/>
-									}
-									title={
-										<Typography variant="h5">
-											Steam
-										</Typography>
-									}
+				<Card sx={styles.navigationCard}>
+					<CardActionArea href="https://steam.nyaarium.com">
+						<CardHeader
+							avatar={
+								<Avatar
+									src="files/logos/steam.png"
+									sx={{
+										borderRadius: "0",
+										filter,
+									}}
 								/>
-							</CardActionArea>
-						</Card>
+							}
+							title={<Typography variant="h5">Steam</Typography>}
+						/>
+					</CardActionArea>
+				</Card>
 
-						<Card sx={styles.navigationCard}>
-							<CardActionArea href="https://chilloutvr.nyaarium.com">
-								<CardHeader
-									avatar={
-										<Avatar
-											src="files/logos/chilloutvr.png"
-											sx={{
-												borderRadius: "0",
-												filter,
-											}}
-										/>
-									}
-									title={
-										<Typography variant="h5">
-											ChilloutVR
-										</Typography>
-									}
+				<Card sx={styles.navigationCard}>
+					<CardActionArea href="https://chilloutvr.nyaarium.com">
+						<CardHeader
+							avatar={
+								<Avatar
+									src="files/logos/chilloutvr.png"
+									sx={{
+										borderRadius: "0",
+										filter,
+									}}
 								/>
-							</CardActionArea>
-						</Card>
+							}
+							title={
+								<Typography variant="h5">ChilloutVR</Typography>
+							}
+						/>
+					</CardActionArea>
+				</Card>
 
-						<Card sx={styles.navigationCard}>
-							<CardActionArea href="https://twitch.nyaarium.com">
-								<CardHeader
-									avatar={
-										<Avatar
-											src="files/logos/twitch.png"
-											sx={{
-												borderRadius: "0",
-												filter,
-											}}
-										/>
-									}
-									title={
-										<Typography variant="h5">
-											Twitch
-										</Typography>
-									}
+				<Card sx={styles.navigationCard}>
+					<CardActionArea href="https://twitch.nyaarium.com">
+						<CardHeader
+							avatar={
+								<Avatar
+									src="files/logos/twitch.png"
+									sx={{
+										borderRadius: "0",
+										filter,
+									}}
 								/>
-							</CardActionArea>
-						</Card>
+							}
+							title={<Typography variant="h5">Twitch</Typography>}
+						/>
+					</CardActionArea>
+				</Card>
 
-						<Card sx={styles.navigationCard}>
-							<CardActionArea href="https://youtube.nyaarium.com">
-								<CardHeader
-									avatar={
-										<Avatar
-											src="files/logos/youtube.png"
-											sx={{
-												borderRadius: "0",
-												filter,
-											}}
-										/>
-									}
-									title={
-										<Typography variant="h5">
-											Youtube
-										</Typography>
-									}
+				<Card sx={styles.navigationCard}>
+					<CardActionArea href="https://youtube.nyaarium.com">
+						<CardHeader
+							avatar={
+								<Avatar
+									src="files/logos/youtube.png"
+									sx={{
+										borderRadius: "0",
+										filter,
+									}}
 								/>
-							</CardActionArea>
-						</Card>
+							}
+							title={
+								<Typography variant="h5">Youtube</Typography>
+							}
+						/>
+					</CardActionArea>
+				</Card>
 
-						<Card sx={styles.navigationCard}>
-							<CardActionArea href="https://twitter.nyaarium.com">
-								<CardHeader
-									avatar={
-										<Avatar
-											src="files/logos/twitter.png"
-											sx={{
-												borderRadius: "0",
-												filter,
-											}}
-										/>
-									}
-									title={
-										<Typography variant="h5">
-											Twitter
-										</Typography>
-									}
+				<Card sx={styles.navigationCard}>
+					<CardActionArea href="https://twitter.nyaarium.com">
+						<CardHeader
+							avatar={
+								<Avatar
+									src="files/logos/twitter.png"
+									sx={{
+										borderRadius: "0",
+										filter,
+									}}
 								/>
-							</CardActionArea>
-						</Card>
-					</Box>
-				</Box>
-			</Box>
+							}
+							title={
+								<Typography variant="h5">Twitter</Typography>
+							}
+						/>
+					</CardActionArea>
+				</Card>
+			</AlignScreenMiddle>
 		</>
 	);
 }

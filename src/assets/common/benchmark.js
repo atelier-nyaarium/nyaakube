@@ -13,8 +13,8 @@ import { bestConversionHelper } from "@/assets/common";
  * 	  unit: string
  * })>} The result of the benchmark test. If 'flatten' is true, the result will be a string instead.
  *
- * @throws {Error} If 'f' is not a function.
- * @throws {Error} If 'count' is not a number. Or less than 1.
+ * @throws {TypeError} If 'f' is not a function.
+ * @throws {TypeError} If 'count' is not a number. Or less than 1.
  *
  * @example
  * console.log(`Date.now:`, await benchmark(
@@ -30,22 +30,25 @@ import { bestConversionHelper } from "@/assets/common";
  */
 export async function benchmark(f, count, flatten = false) {
 	if (typeof f !== "function") {
-		throw new Error(
+		throw new TypeError(
 			`benchmark(f, count, flatten?) : 'f' must be a function.`,
 		);
 	}
+
 	if (typeof count !== "number") {
-		throw new Error(
+		throw new TypeError(
 			`benchmark(f, count, flatten?) : 'count' must be a number.`,
 		);
 	}
+
 	if (count < 1) {
-		throw new Error(
+		throw new TypeError(
 			`benchmark(f, count, flatten?) : 'count' must be greater than 0.`,
 		);
 	}
+
 	if (flatten !== undefined && typeof flatten !== "boolean") {
-		throw new Error(
+		throw new TypeError(
 			`benchmark(f, count, flatten?) : 'flatten' is optional, but must be a boolean.`,
 		);
 	}
