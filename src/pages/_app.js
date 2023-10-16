@@ -1,3 +1,4 @@
+import { SnackbarProvider } from "@/components/Snackbar";
 import { QueryProvider } from "@/schemas/default/useQuery";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -12,12 +13,14 @@ const darkTheme = createTheme({
 
 export default function App({ Component, pageProps }) {
 	return (
-		<QueryProvider>
-			<ThemeProvider theme={darkTheme}>
-				<CssBaseline />
-				<Component {...pageProps} />
-			</ThemeProvider>
-		</QueryProvider>
+		<SnackbarProvider>
+			<QueryProvider>
+				<ThemeProvider theme={darkTheme}>
+					<CssBaseline />
+					<Component {...pageProps} />
+				</ThemeProvider>
+			</QueryProvider>
+		</SnackbarProvider>
 	);
 }
 
