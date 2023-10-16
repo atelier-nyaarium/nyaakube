@@ -9,8 +9,6 @@ import _ from "lodash";
  * Response's `res.json`  will contain the JSON response.
  * If the server fails to return a JSON (typically fatal errors), the raw response string will be stuffed in `res.text`.
  *
- * @async
- *
  * @param {string} url - The URL to fetch.
  * @param {Object} [json] - Optional JSON to send.
  * @param {Object} [options] - Optional fetch options.
