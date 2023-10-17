@@ -1,3 +1,7 @@
+import {
+	AccessDeniedError,
+	UnauthorizedError,
+} from "@/assets/common/ErrorTypes";
 import _ from "lodash";
 
 /**
@@ -6,33 +10,33 @@ import _ from "lodash";
  * Formats a fetch call to send & accept JSON.
  * Sets the method to POST if a JSON is provided.
  *
- * Response's `res.json`  will contain the JSON response.
- * If the server fails to return a JSON (typically fatal errors), the raw response string will be stuffed in `res.text`.
+ * If the server fails to return a JSON (typically fatal errors), this will error with the whole HTML response.
  *
  * @param {string} url - The URL to fetch.
- * @param {Object} [json] - Optional JSON to send.
+ * @param {Object} [data] - Optional JSON data to send.
  * @param {Object} [options] - Optional fetch options.
  *
- * @returns {Promise<{ ok: boolean, status: number, json: JSON, text: string }>}  Promises a response object.
+ * @returns {Promise<Object>} - The JSON response.
  *
  * @throws {TypeError} If the parameter types are bad.
+ * @throws {UnauthorizedError} If the response status is 401.
+ * @throws {AccessDeniedError} If the response status is 403.
+ * @throws {Error} If the response status is not 200-299.
+ * @throws {Error} If the response is not JSON.
  *
- * @example await fetchJSON(`/api/session/login`, { username, password })
- * .then(async res => {
- *     console.log(res.ok)
- *     console.log(res.status)
- *     console.log(res.json)
- * })
+ * @example
+ * const data = await fetchJSON(`/api/session/login`, { email, password });
+ * -> { success: true, message: "Login successful." }
  */
-export async function fetchJSON(url, json, options = {}) {
+export async function fetchJSON(url, data, options = {}) {
 	if (typeof url !== "string") {
 		throw new TypeError(
-			`fetchJSON(url, json?, options?) : 'url' must be a string.`,
+			`fetchJSON(url, data?, options?) : 'url' must be a string.`,
 		);
 	}
-	if (json !== undefined && (typeof json !== "object" || json === null)) {
+	if (data !== undefined && (typeof data !== "object" || data === null)) {
 		throw new TypeError(
-			`fetchJSON(url, json?, options?) : 'json' is optional, but must be an object.`,
+			`fetchJSON(url, data?, options?) : 'data' is optional, but must be an object.`,
 		);
 	}
 	if (
@@ -40,7 +44,7 @@ export async function fetchJSON(url, json, options = {}) {
 		(typeof options !== "object" || options === null)
 	) {
 		throw new TypeError(
-			`fetchJSON(url, json?, options?) : 'options' is optional, but must be an object.`,
+			`fetchJSON(url, data?, options?) : 'options' is optional, but must be an object.`,
 		);
 	}
 
@@ -58,7 +62,7 @@ export async function fetchJSON(url, json, options = {}) {
 	} else {
 		fetchData = _.merge(
 			{
-				method: typeof json === "undefined" ? "get" : "post",
+				method: typeof data === "undefined" ? "get" : "post",
 				headers: {
 					"Accept": "application/json",
 					"Content-Type": "application/json",
@@ -71,7 +75,7 @@ export async function fetchJSON(url, json, options = {}) {
 	if (asForm) {
 		const formData = new FormData();
 
-		Object.entries(json).forEach(([key, value]) => {
+		Object.entries(data).forEach(([key, value]) => {
 			if (value instanceof FileList || Array.isArray(value)) {
 				for (const v of value) formData.append(key, v);
 			} else {
@@ -81,36 +85,44 @@ export async function fetchJSON(url, json, options = {}) {
 
 		fetchData.body = formData;
 	} else {
-		if (json !== undefined) {
-			fetchData.body = JSON.stringify(json);
+		if (data !== undefined) {
+			fetchData.body = JSON.stringify(data);
 		}
 	}
 
 	const res = await fetch(url, fetchData);
 
-	const ret = {
-		ok: res.ok,
-		status: res.status,
-		json: undefined,
-	};
+	let json;
+	try {
+		json = await res.clone().json();
+	} catch (err) {
+		return res.text().then((unexpectedText) => {
+			if (res.status === 401) {
+				throw new UnauthorizedError(unexpectedText);
+			}
 
-	await res
-		.clone()
-		.json()
-		.then((json) => (ret.json = json))
-		.catch(() =>
-			res.text().then((unexpectedText) => {
-				if (200 <= res.status && res.status < 300) {
-					ret.ok = false;
-					ret.status = 500;
-				}
+			if (res.status === 403) {
+				throw new AccessDeniedError(unexpectedText);
+			}
 
-				ret.json = {
-					error: "Unexpected response",
-					text: unexpectedText,
-				};
-			}),
-		);
+			throw new Error(
+				`[${res.status}] Unexpected non-json response: ` +
+					unexpectedText,
+			);
+		});
+	}
 
-	return ret;
+	if (200 <= res.status && res.status < 300) {
+		return json;
+	} else {
+		if (res.status === 401) {
+			throw new UnauthorizedError(json.message);
+		}
+
+		if (res.status === 403) {
+			throw new AccessDeniedError(json.message);
+		}
+
+		throw new Error(json.message ?? JSON.stringify(json));
+	}
 }
