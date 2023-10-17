@@ -1,3 +1,7 @@
+import {
+	AccessDeniedError,
+	UnauthorizedError,
+} from "@/assets/common/ErrorTypes";
 import { IncomingMessage, ServerResponse } from "http";
 
 /**
@@ -80,9 +84,20 @@ export function respondError(req, res, error, status, logError) {
 
 	if (error instanceof Error) {
 		console.log(`⚠️ `, message);
-		return res.status(error.status ?? status ?? 500).json({
-			message,
-		});
+
+		if (status === 401 || error instanceof UnauthorizedError) {
+			return res.status(401).json({
+				message,
+			});
+		} else if (status === 403 || error instanceof AccessDeniedError) {
+			return res.status(403).json({
+				message,
+			});
+		} else {
+			return res.status(error.status ?? status ?? 500).json({
+				message,
+			});
+		}
 	} else if (typeof error === "string") {
 		console.log(`⚠️ `, `Error:`, error);
 		return res.status(status ?? 500).json({
