@@ -23,6 +23,10 @@
 		"no-var": "warn",
 		"prefer-arrow-callback": "warn",
 		"prefer-const": "warn",
+		"react-hooks/exhaustive-deps": [
+			"warn",
+			{ "additionalHooks": "(useLoadingCallback)" }
+		],
 		"security/detect-object-injection": "off"
 	}
 }
