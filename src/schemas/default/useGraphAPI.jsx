@@ -30,7 +30,7 @@ export function QueryProvider({ children }) {
 }
 
 QueryProvider.propTypes = {
-	children: PropTypes.node,
+	children: PropTypes.any,
 };
 
 /* If GraphQL is hosted in memory, use this instead:

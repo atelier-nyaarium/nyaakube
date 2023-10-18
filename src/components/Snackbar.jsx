@@ -200,5 +200,5 @@ export function SnackbarProvider({ children }) {
 }
 
 SnackbarProvider.propTypes = {
-	children: PropTypes.node,
+	children: PropTypes.any,
 };
