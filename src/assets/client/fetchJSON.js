@@ -1,5 +1,6 @@
 import {
 	AccessDeniedError,
+	TooManyRequestsError,
 	UnauthorizedError,
 } from "@/assets/common/ErrorTypes";
 import _ from "lodash";
@@ -21,6 +22,7 @@ import _ from "lodash";
  * @throws {TypeError} If the parameter types are bad.
  * @throws {UnauthorizedError} If the response status is 401.
  * @throws {AccessDeniedError} If the response status is 403.
+ * @throws {TooManyRequestsError} If the response status is 429.
  * @throws {Error} If the response status is not 200-299.
  * @throws {Error} If the response is not JSON.
  *
@@ -105,6 +107,10 @@ export async function fetchJSON(url, data, options = {}) {
 				throw new AccessDeniedError(unexpectedText);
 			}
 
+			if (res.status === 429) {
+				throw new TooManyRequestsError(unexpectedText);
+			}
+
 			throw new Error(
 				`[${res.status}] Unexpected non-json response: ` +
 					unexpectedText,
@@ -118,9 +124,11 @@ export async function fetchJSON(url, data, options = {}) {
 		if (res.status === 401) {
 			throw new UnauthorizedError(json.message);
 		}
-
 		if (res.status === 403) {
 			throw new AccessDeniedError(json.message);
+		}
+		if (res.status === 429) {
+			throw new TooManyRequestsError(json.message);
 		}
 
 		throw new Error(json.message ?? JSON.stringify(json));

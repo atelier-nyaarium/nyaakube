@@ -36,3 +36,23 @@ export class AccessDeniedError extends Error {
 		super(message);
 	}
 }
+
+/**
+ * Too Many Requests Error
+ *
+ * The user has sent too many requests in a given amount of time.
+ *
+ * @extends Error
+ */
+export class TooManyRequestsError extends Error {
+	/**
+	 * Create a TooManyRequestsError.
+	 *
+	 * @param {string} [message] - The error message. Pass a message to override the default.
+	 */
+	constructor(message = undefined) {
+		message ??=
+			"[429] Too Many Requests. You have sent too many requests in a given amount of time.";
+		super(message);
+	}
+}

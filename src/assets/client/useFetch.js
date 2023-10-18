@@ -17,6 +17,7 @@ const DEV = process.env.NODE_ENV !== "production";
  * @throws {TypeError} If the parameter types are bad.
  * @throws {UnauthorizedError} If the response status is 401.
  * @throws {AccessDeniedError} If the response status is 403.
+ * @throws {TooManyRequestsError} If the response status is 429.
  * @throws {Error} If the response status is not 200-299.
  * @throws {Error} If the response is not JSON.
  *
