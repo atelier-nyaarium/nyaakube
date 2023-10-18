@@ -28,4 +28,12 @@ describe("bestTimeUnitMS", () => {
 	it(`should throw error if flatten is not a boolean`, () => {
 		expect(() => bestTimeUnitMS(1024, "test")).toThrow(TypeError);
 	});
+
+	it("should throw TypeError if the parameters are bad", () => {
+		expect(() => bestTimeUnitMS("1234")).toThrow(TypeError);
+		expect(() => bestTimeUnitMS({})).toThrow(TypeError);
+		expect(() => bestTimeUnitMS([])).toThrow(TypeError);
+		expect(() => bestTimeUnitMS(null)).toThrow(TypeError);
+		expect(() => bestTimeUnitMS(undefined)).toThrow(TypeError);
+	});
 });
