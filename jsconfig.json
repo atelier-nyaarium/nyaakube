@@ -1,6 +1,5 @@
 {
 	"compilerOptions": {
-		"target": "es6",
 		"baseUrl": "./src/",
 		"paths": {
 			// For VSCode, change the preferences:
