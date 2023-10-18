@@ -86,7 +86,17 @@ export function SnackbarProvider({ children }) {
 	);
 
 	const appendSnack = useCallback((snackConfig) => {
-		dispatch({ type: "APPEND_SNACK", snackConfig });
+		let message = snackConfig.message;
+		if (typeof message !== "string") {
+			message = JSON.stringify(message);
+		}
+		dispatch({
+			type: "APPEND_SNACK",
+			snackConfig: {
+				...snackConfig,
+				message,
+			},
+		});
 	}, []);
 
 	const errorSnack = useCallback(
