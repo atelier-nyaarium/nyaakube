@@ -1,4 +1,3 @@
-import { cloneDeepOmitProto } from "@/assets/common";
 import { respondError } from "@/assets/server";
 import JSON5 from "json5";
 import _ from "lodash";
@@ -87,8 +86,8 @@ export function createApiHandler({
 }
 
 function safeParseRequestData(req) {
-	const query = cloneDeepOmitProto(req.query);
-	const body = cloneDeepOmitProto(parseBody(req.body));
+	const query = structuredClone(req.query);
+	const body = structuredClone(parseBody(req.body));
 
 	delete req.query;
 	delete req.body;
