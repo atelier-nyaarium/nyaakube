@@ -1,4 +1,4 @@
-import { sha512 } from "@/assets/client";
+import { sha512 } from "@/assets/client/sha512";
 
 describe("sha512", () => {
 	it("returns the correct hash for a string input", () => {

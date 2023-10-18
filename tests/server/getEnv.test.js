@@ -1,4 +1,4 @@
-import { getEnv } from "@/assets/server";
+import { getEnv } from "@/assets/server/getEnv";
 
 describe("getEnv", () => {
 	it("returns the value of the environment variable", () => {
