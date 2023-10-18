@@ -25,7 +25,7 @@
 		"prefer-const": "warn",
 		"react-hooks/exhaustive-deps": [
 			"warn",
-			{ "additionalHooks": "(useLoadingCallback)" }
+			{ "additionalHooks": "(useFetch|useLoadingCallback)" }
 		],
 		"security/detect-object-injection": "off"
 	}
