@@ -48,24 +48,16 @@ export function bestConversionHelper(
 	startingNumber = Math.abs(startingNumber);
 
 	let i = startingConversionsIndex;
-	if (0 < i && startingNumber < conversions[i]["value"]) {
+
+	while (0 < i && startingNumber <= conversions[i - 1]["value"] * threshold) {
 		i--;
-		for (; 0 < i; i--) {
-			if (startingNumber < conversions[i]["value"]) {
-				continue;
-			} else {
-				break;
-			}
-		}
-	} else if (conversions[i + 1]["value"] * threshold <= startingNumber) {
+	}
+
+	while (
+		i < conversions.length - 1 &&
+		conversions[i + 1]["value"] * threshold <= startingNumber
+	) {
 		i++;
-		for (; i < conversions.length - 1; i++) {
-			if (conversions[i + 1]["value"] * threshold <= startingNumber) {
-				continue;
-			} else {
-				break;
-			}
-		}
 	}
 
 	return conversions[i];
