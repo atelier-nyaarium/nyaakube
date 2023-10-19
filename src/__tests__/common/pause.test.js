@@ -4,8 +4,6 @@ describe("pause", () => {
 	it(`should pause execution for the specified time`, async () => {
 		let timedValue = await timePause(200);
 
-		console.log(timedValue);
-
 		if (10 < timedValue) {
 			// Try again, just in case the runner is having a performance hiccup
 			timedValue = await timePause(200);
