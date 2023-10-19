@@ -6,7 +6,6 @@ describe("sha512", () => {
 		const expectedOutput =
 			"f6cde2a0f819314cdde55fc227d8d7dae3d28cc556222a0a8ad66d91ccad4aad6094f517a2182360c9aacf6a3dc323162cb6fd8cdffedb0fe038f55e85ffb5b6";
 
-		console.log(sha512(input));
 		expect(sha512(input)).toEqual(expectedOutput);
 	});
 
