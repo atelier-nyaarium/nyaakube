@@ -13,7 +13,10 @@ RUN npm ci --include=dev
 # Build project
 COPY . .
 
-RUN npx next telemetry disable && npm run build
+RUN npx next telemetry disable \
+	&& npm run lint \
+	&& npm run test \
+	&& npm run build
 
 
 
