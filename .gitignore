@@ -3,6 +3,7 @@
 
 # Development
 _test/
+/coverage/
 .vscode-server/
 .vscode/
 node_modules/
