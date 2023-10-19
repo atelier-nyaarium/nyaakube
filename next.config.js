@@ -19,6 +19,10 @@ module.exports = (phase, { defaultConfig }) => {
 				// Not stable for turbo builds
 				output: "standalone",
 
+				eslint: {
+					ignoreDuringBuilds: true,
+				},
+
 				headers,
 			});
 			break;

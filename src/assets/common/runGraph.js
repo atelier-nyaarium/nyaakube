@@ -4,7 +4,11 @@ import { jsonToGraphQLQuery } from "json-to-graphql-query";
 /**
  * Executes a GraphQL query or mutation.
  *
- * `query` and `source` are optional, but one must be provided.
+ * - `params.query` and `params.source` are optional, but one must be provided.
+ *
+ * - If using `params.query` mode:
+ *     - Outer most `query` and `mutation` keys are case sensitive for type checking.
+ *     - It will default to GraphQLQuery (`query`) if you omit both.
  *
  * Uses json-to-graphql-query to convert object to query string
  * > https://www.npmjs.com/package/json-to-graphql-query
@@ -59,7 +63,13 @@ export async function runGraph({ schema, context, query, source }) {
 		);
 	}
 
-	if (query) source = jsonToGraphQLQuery(query, { pretty: true });
+	if (query) {
+		if (!("query" in query) && !("mutation" in query)) {
+			query = { query };
+		}
+
+		source = jsonToGraphQLQuery(query, { pretty: true });
+	}
 
 	return await graphql({
 		schema,

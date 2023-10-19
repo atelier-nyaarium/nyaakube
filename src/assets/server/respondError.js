@@ -1,5 +1,6 @@
 import {
 	AccessDeniedError,
+	TooManyRequestsError,
 	UnauthorizedError,
 } from "@/assets/common/ErrorTypes";
 import { IncomingMessage, ServerResponse } from "http";
@@ -91,6 +92,10 @@ export function respondError(req, res, error, status, logError) {
 			});
 		} else if (status === 403 || error instanceof AccessDeniedError) {
 			return res.status(403).json({
+				message,
+			});
+		} else if (status === 429 || error instanceof TooManyRequestsError) {
+			return res.status(429).json({
 				message,
 			});
 		} else {

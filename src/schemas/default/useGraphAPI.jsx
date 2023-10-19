@@ -17,14 +17,9 @@ export function QueryProvider({ children }) {
 	const namespace = "default";
 
 	const graph = useCallback(async (query) => {
-		const reply = await fetchJSON(`/api/graph/${namespace}`, {
+		return await fetchJSON(`/api/graph/${namespace}`, {
 			source: jsonToGraphQLQuery(query, { pretty: true }),
 		});
-		if (reply.ok) {
-			return reply.json;
-		} else {
-			throw new Error(reply.json.message);
-		}
 	}, []);
 
 	return (
@@ -35,7 +30,7 @@ export function QueryProvider({ children }) {
 }
 
 QueryProvider.propTypes = {
-	children: PropTypes.node,
+	children: PropTypes.any,
 };
 
 /* If GraphQL is hosted in memory, use this instead:

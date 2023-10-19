@@ -35,5 +35,5 @@ export default function AlignScreenMiddle({ children }) {
 }
 
 AlignScreenMiddle.propTypes = {
-	children: PropTypes.node.isRequired,
+	children: PropTypes.any,
 };

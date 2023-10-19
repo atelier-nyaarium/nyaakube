@@ -22,6 +22,7 @@
 		"build": "npm run clean && npx next build",
 		"lint": "npx next lint",
 		"test": "jest",
+		"coverage": "jest --coverage",
 		"patch": "npm --no-git-tag-version version patch",
 		"minor": "npm --no-git-tag-version version minor",
 		"major": "npm --no-git-tag-version version major",
