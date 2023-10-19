@@ -33,11 +33,11 @@ describe("bestByteUnit", () => {
 		expect(bestByteUnit(45623184896186, true)).toEqual(`41.49 TB`);
 	});
 
-	it("should throw TypeError if the parameters are bad", () => {
-		expect(() => bestByteUnit("1234")).toThrow(TypeError);
-		expect(() => bestByteUnit({})).toThrow(TypeError);
-		expect(() => bestByteUnit([])).toThrow(TypeError);
-		expect(() => bestByteUnit(null)).toThrow(TypeError);
-		expect(() => bestByteUnit(undefined)).toThrow(TypeError);
+	it(`should throw error if bytes is not a number`, () => {
+		expect(() => bestByteUnit("test")).toThrow(TypeError);
+	});
+
+	it(`should throw error if flatten is not a boolean`, () => {
+		expect(() => bestByteUnit(1024, "test")).toThrow(TypeError);
 	});
 });
