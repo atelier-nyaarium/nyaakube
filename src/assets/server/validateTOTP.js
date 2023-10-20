@@ -99,7 +99,6 @@ export async function validateTOTP(totpSecret, token) {
 		}
 	} catch (error) {
 		console.error(error);
-		await randomSleep();
 		return {
 			valid: false,
 			code: 500,
