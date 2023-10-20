@@ -8,7 +8,7 @@ import saslPrep from "saslprep";
  *
  * 🚧 [WIP] Currently just has a hardcoded Admin account with TOTP. Implement this when users are needed.
  *
- * @param {string} username - The username of the user attempting to log in.
+ * @param {string} email - The email of the user attempting to log in.
  * @param {string} password - The password of the user attempting to log in.
  * @param {string} [totpToken] - The TOTP token from the user attempting to log in.
  *
@@ -24,33 +24,33 @@ import saslPrep from "saslprep";
  * const resValid = await validateLogin("foo", "bar", "123456");
  * -> { valid: true }
  */
-export async function validateLogin(username, password, totpToken = undefined) {
+export async function validateLogin(email, password, totpToken = undefined) {
 	try {
-		if (typeof username !== "string") {
+		if (typeof email !== "string") {
 			throw new TypeError(
-				`validateLogin(username, password, totpToken?) : 'username' must be a string.`,
+				`validateLogin(email, password, totpToken?) : 'email' must be a string.`,
 			);
 		}
 
 		if (typeof password !== "string") {
 			throw new TypeError(
-				`validateLogin(username, password, totpToken?) : 'password' must be a string.`,
+				`validateLogin(email, password, totpToken?) : 'password' must be a string.`,
 			);
 		}
 
 		if (totpToken !== undefined && typeof totpToken !== "string") {
 			throw new TypeError(
-				`validateLogin(username, password, totpToken?) : 'totpToken' is optional, but must be a string.`,
+				`validateLogin(email, password, totpToken?) : 'totpToken' is optional, but must be a string.`,
 			);
 		}
 
-		const user = await getUserByUsername(saslPrep(username));
+		const user = await getUserByEmail(saslPrep(email));
 		if (!user) {
 			await randomSleep();
 			return {
 				valid: false,
 				code: 401,
-				message: "Invalid username or password.",
+				message: "Invalid email or password.",
 			};
 		}
 
@@ -72,7 +72,7 @@ export async function validateLogin(username, password, totpToken = undefined) {
 			return {
 				valid: false,
 				code: 401,
-				message: "Invalid username or password.",
+				message: "Invalid email or password.",
 			};
 		}
 
@@ -93,21 +93,21 @@ export async function validateLogin(username, password, totpToken = undefined) {
 	}
 }
 
-async function getUserByUsername(username) {
-	if (typeof username !== "string") throw new Error("Invalid username");
-	username = username.trim().toLowerCase();
-	if (!username) throw new Error("Invalid username");
+async function getUserByEmail(email) {
+	if (typeof email !== "string") throw new Error("Invalid email");
+	email = email.trim().toLowerCase();
+	if (!email) throw new Error("Invalid email");
 
 	// TODO: Implement database for other users
 
-	const ADMIN_USERNAME = getEnv("ADMIN_USERNAME")?.toLowerCase?.();
+	const ADMIN_EMAIL = getEnv("ADMIN_EMAIL")?.toLowerCase?.();
 	const ADMIN_PASSWORD = getEnv("ADMIN_PASSWORD")?.toLowerCase?.();
 	const ADMIN_TOTP = getEnv("ADMIN_TOTP")?.toLowerCase?.();
-	if (ADMIN_USERNAME) {
-		if (username === ADMIN_USERNAME) {
+	if (ADMIN_EMAIL) {
+		if (email === ADMIN_EMAIL) {
 			return {
 				id: 1,
-				username: ADMIN_USERNAME,
+				email: ADMIN_EMAIL,
 				password: ADMIN_PASSWORD,
 				totp: ADMIN_TOTP,
 				roles: [],
