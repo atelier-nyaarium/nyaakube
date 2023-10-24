@@ -91,6 +91,11 @@ export async function assertValidLogin(email, password, totpToken = undefined) {
 			}
 		}
 	}
+
+	return {
+		email: user.email,
+		roles: user.roles,
+	};
 }
 
 async function getUserByEmail(email) {
