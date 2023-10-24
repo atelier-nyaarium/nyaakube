@@ -103,8 +103,7 @@ async function getUserByEmail(email) {
 	email = email.trim().toLowerCase();
 	if (!email) throw new Error("Invalid email");
 
-	// TODO: Implement database for other users
-
+	// TODO: Implement database, instead of a hardcoded user
 	const ADMIN_EMAIL = getEnv("ADMIN_EMAIL")?.toLowerCase?.();
 	const ADMIN_PASSWORD = getEnv("ADMIN_PASSWORD");
 	const ADMIN_TOTP = getEnv("ADMIN_TOTP");
@@ -115,7 +114,11 @@ async function getUserByEmail(email) {
 				email: ADMIN_EMAIL,
 				password: ADMIN_PASSWORD,
 				totp: ADMIN_TOTP,
-				roles: [],
+				roles: [
+					{
+						admin: {},
+					},
+				],
 			};
 		}
 	}
