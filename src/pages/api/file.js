@@ -20,7 +20,6 @@ const SERVE_BASE_HANDLERS = Object.freeze({
 
 export default createApiHandler({
 	label: __filename,
-	time: false,
 	handler: async (req, res) => {
 		for (const basePath in SERVE_BASE_HANDLERS) {
 			const serveHandler = SERVE_BASE_HANDLERS[basePath];
