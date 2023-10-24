@@ -13,6 +13,7 @@ RUN npm ci --include=dev
 # Build project
 COPY . .
 
+RUN rm -rf src/pages/dev/ src/pages/api/dev/
 RUN npx next telemetry disable \
 	&& npm run lint \
 	&& npm run test \
