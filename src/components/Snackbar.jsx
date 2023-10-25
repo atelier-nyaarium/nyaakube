@@ -107,6 +107,12 @@ export function SnackbarProvider({ children }) {
 				message,
 				options,
 			};
+
+			if (message instanceof Error) {
+				snackConfig.error = message;
+				snackConfig.message = message.message;
+			}
+
 			appendSnack(snackConfig);
 		},
 		[appendSnack],
