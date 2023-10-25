@@ -1,4 +1,4 @@
-import { bestConversionHelper } from "@/assets/common";
+import { bestConversionHelper } from "@/assets/common/bestConversionHelper";
 
 /**
  * Runs a benchmark test on a function.

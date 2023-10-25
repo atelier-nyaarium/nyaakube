@@ -107,6 +107,12 @@ export function SnackbarProvider({ children }) {
 				message,
 				options,
 			};
+
+			if (message instanceof Error) {
+				snackConfig.error = message;
+				snackConfig.message = message.message;
+			}
+
 			appendSnack(snackConfig);
 		},
 		[appendSnack],
@@ -170,7 +176,7 @@ export function SnackbarProvider({ children }) {
 				TransitionComponent={Grow}
 				key="snackbar"
 			>
-				{!!currentSnackConfig && (
+				{currentSnackConfig ? (
 					<Alert
 						severity={currentSnackConfig?.variant || "info"}
 						action={
@@ -192,7 +198,7 @@ export function SnackbarProvider({ children }) {
 						)}
 						{currentSnackConfig?.message}
 					</Alert>
-				)}
+				) : undefined}
 			</Snackbar>
 			{children}
 		</SnackbarContext.Provider>

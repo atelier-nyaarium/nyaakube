@@ -1,4 +1,4 @@
-import { pause } from "@/assets/common";
+import { pause } from "@/assets/common/pause";
 import speakeasy from "@levminer/speakeasy";
 
 /**
@@ -99,7 +99,6 @@ export async function validateTOTP(totpSecret, token) {
 		}
 	} catch (error) {
 		console.error(error);
-		await randomSleep();
 		return {
 			valid: false,
 			code: 500,

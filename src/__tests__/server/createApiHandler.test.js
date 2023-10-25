@@ -14,13 +14,6 @@ describe("createApiHandler", () => {
 		);
 	});
 
-	it(`should throw error if time is not a boolean`, () => {
-		const handler = jest.fn();
-		expect(() => createApiHandler({ time: "true", handler })).toThrow(
-			TypeError,
-		);
-	});
-
 	it(`should throw error if log is not a boolean`, () => {
 		const handler = jest.fn();
 		expect(() => createApiHandler({ log: "true", handler })).toThrow(

@@ -1,4 +1,4 @@
-import { bestConversionHelper } from "@/assets/common";
+import { bestConversionHelper } from "@/assets/common/bestConversionHelper";
 
 /**
  * Best Time Unit (ms)

@@ -1,4 +1,4 @@
-import { sanitizePath } from "@/assets/server";
+import { sanitizePath } from "@/assets/server/sanitizePath";
 import { lstatSync } from "fs";
 
 /**

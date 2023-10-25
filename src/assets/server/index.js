@@ -1,4 +1,5 @@
 export { asLogTime } from "./asLogTime";
+export { assertValidLogin } from "./assertValidLogin";
 export { createApiHandler } from "./createApiHandler";
 export { generateTotpUrl } from "./generateTotpUrl";
 export { getEnv } from "./getEnv";
@@ -11,5 +12,4 @@ export { runProcess } from "./runProcess";
 export { safeIsFileAccessible } from "./safeIsFileAccessible";
 export { sanitizePath } from "./sanitizePath";
 export { scanDirectory } from "./scanDirectory";
-export { validateLogin } from "./validateLogin";
 export { validateTOTP } from "./validateTOTP";

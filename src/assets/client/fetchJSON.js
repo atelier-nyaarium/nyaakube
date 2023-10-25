@@ -3,6 +3,7 @@ import {
 	TooManyRequestsError,
 	UnauthorizedError,
 } from "@/assets/common/ErrorTypes";
+import json5 from "json5";
 import _ from "lodash";
 
 /**
@@ -90,6 +91,11 @@ export async function fetchJSON(url, data, options = {}) {
 		if (data !== undefined) {
 			fetchData.body = JSON.stringify(data);
 		}
+	}
+
+	// If data is being sent by headers, stringify it.
+	if (fetchData.headers?.data) {
+		fetchData.headers.data = json5.stringify(fetchData.headers.data);
 	}
 
 	const res = await fetch(url, fetchData);
