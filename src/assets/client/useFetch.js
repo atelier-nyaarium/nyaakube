@@ -97,23 +97,17 @@ export function useFetch(paramsCallback, watchList) {
 			);
 		}
 
-		// Params: Expect optional params.onSuccess
-		if (
-			params.onSuccess !== undefined &&
-			typeof params.onSuccess !== "function"
-		) {
+		// Params: Expect optional params.ok
+		if (params.ok !== undefined && typeof params.ok !== "function") {
 			throw new TypeError(
-				`useFetch(paramsCallback, watchList) : 'paramsCallback().onSuccess' is optional, but must be a function.`,
+				`useFetch(paramsCallback, watchList) : 'paramsCallback().ok' is optional, but must be a function.`,
 			);
 		}
 
-		// Params: Expect optional params.onError
-		if (
-			params.onError !== undefined &&
-			typeof params.onError !== "function"
-		) {
+		// Params: Expect optional params.error
+		if (params.error !== undefined && typeof params.error !== "function") {
 			throw new TypeError(
-				`useFetch(paramsCallback, watchList) : 'paramsCallback().onError' is optional, but must be a function.`,
+				`useFetch(paramsCallback, watchList) : 'paramsCallback().error' is optional, but must be a function.`,
 			);
 		}
 	}
@@ -131,13 +125,13 @@ export function useFetch(paramsCallback, watchList) {
 					params.data,
 					params.options,
 				);
-				if (params.onSuccess) {
-					await params.onSuccess(data);
+				if (params.ok) {
+					await params.ok(data);
 				}
 				return data;
 			} catch (err) {
-				if (params.onError) {
-					await params.onError(err);
+				if (params.error) {
+					await params.error(err);
 				} else {
 					errorSnack(err.message);
 				}
