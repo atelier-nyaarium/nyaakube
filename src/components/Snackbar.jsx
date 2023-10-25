@@ -170,7 +170,7 @@ export function SnackbarProvider({ children }) {
 				TransitionComponent={Grow}
 				key="snackbar"
 			>
-				{!!currentSnackConfig && (
+				{currentSnackConfig ? (
 					<Alert
 						severity={currentSnackConfig?.variant || "info"}
 						action={
@@ -192,7 +192,7 @@ export function SnackbarProvider({ children }) {
 						)}
 						{currentSnackConfig?.message}
 					</Alert>
-				)}
+				) : undefined}
 			</Snackbar>
 			{children}
 		</SnackbarContext.Provider>
