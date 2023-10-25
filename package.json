@@ -33,7 +33,7 @@
 		"purge": "rm -rf .next/ node_modules/ package-lock.json"
 	},
 	"dependencies": {
-		"next": "^13.5.5"
+		"next": "^13.5.6"
 	},
 	"devDependencies": {
 		"@emotion/react": "^11.11.1",
@@ -57,7 +57,7 @@
 		"argon2": "^0.31.1",
 		"dotenv": "^16.3.1",
 		"eslint": "^8.51.0",
-		"eslint-config-next": "^13.5.5",
+		"eslint-config-next": "^13.5.6",
 		"eslint-plugin-security": "^1.7.1",
 		"express-session": "^1.17.3",
 		"graphql": "^16.8.1",
