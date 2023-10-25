@@ -1,4 +1,4 @@
-import { respondError } from "@/assets/server";
+import { respondError } from "@/assets/server/respondError";
 import { GraphQLError } from "graphql";
 import { IncomingMessage, ServerResponse } from "http";
 

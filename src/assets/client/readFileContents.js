@@ -1,4 +1,4 @@
-import { createPromise } from "@/assets/common";
+import { createPromise } from "@/assets/common/createPromise";
 
 /**
  * Reads the content of a file and returns it as a Uint8Array.

@@ -1,6 +1,7 @@
-import { pause } from "@/assets/common";
 import { UnauthorizedError } from "@/assets/common/ErrorTypes";
-import { getEnv, validateTOTP } from "@/assets/server";
+import { pause } from "@/assets/common/pause";
+import { getEnv } from "@/assets/server/getEnv";
+import { validateTOTP } from "@/assets/server/validateTOTP";
 import argon2 from "argon2";
 import saslPrep from "saslprep";
 
@@ -114,11 +115,9 @@ async function getUserByEmail(email) {
 				email: ADMIN_EMAIL,
 				password: ADMIN_PASSWORD,
 				totp: ADMIN_TOTP,
-				roles: [
-					{
-						admin: {},
-					},
-				],
+				roles: {
+					admin: {},
+				},
 			};
 		}
 	}

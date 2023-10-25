@@ -1,4 +1,4 @@
-import { createPromise } from "@/assets/common";
+import { createPromise } from "@/assets/common/createPromise";
 import { spawn } from "child_process";
 
 /**

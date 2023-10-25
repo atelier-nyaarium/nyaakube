@@ -1,4 +1,4 @@
-import { pause } from "@/assets/common";
+import { pause } from "@/assets/common/pause";
 import speakeasy from "@levminer/speakeasy";
 
 /**
