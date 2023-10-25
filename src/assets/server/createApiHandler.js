@@ -1,21 +1,22 @@
-import { createPromise } from "@/assets/common";
+import { createPromise } from "@/assets/common/createPromise";
 import { UnauthorizedError } from "@/assets/common/ErrorTypes";
-import { getEnv, respondError } from "@/assets/server";
+import { getEnv } from "@/assets/server/getEnv";
+import { respondError } from "@/assets/server/respondError";
 import session from "express-session";
-import { IncomingMessage, ServerResponse } from "http";
 import JSON5 from "json5";
 import _ from "lodash";
-import { v4 as uuid } from "uuid";
 
 const DEV = process.env.NODE_ENV !== "production";
 
 const handlerSession = session({
-	secret: getEnv("SESSION_SECRET") || uuid(),
+	secret: getEnv("SESSION_SECRET"),
 	resave: false,
-	saveUninitialized: true,
+	saveUninitialized: false,
 	cookie: {
-		//
+		maxAge: 24 * 60 * 60 * 1000,
+		expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
 		secure: !DEV,
+		sameSite: !DEV ? "secure" : "lax",
 	},
 });
 
@@ -79,24 +80,6 @@ export function createApiHandler({
 		label = label.replace(/^.+?\/\.next\/server\/pages\//, "");
 	}
 
-	const attachSession = async (req, res) => {
-		if (!(req instanceof IncomingMessage)) {
-			throw new TypeError(
-				`attachSession(req, res) : 'req' must be an express request.`,
-			);
-		}
-
-		if (!(res instanceof ServerResponse)) {
-			throw new TypeError(
-				`attachSession(req, res) : 'res' must be an express response.`,
-			);
-		}
-
-		const pr = createPromise();
-		handlerSession(req, res, () => pr.resolve());
-		await pr.promise;
-	};
-
 	return async function apiHandler(req, res) {
 		let timeStart;
 		let logLabel = label;
@@ -118,14 +101,12 @@ export function createApiHandler({
 		}
 
 		try {
-			// For deferred session loading
-			req.attachSession = attachSession;
+			// Provide Express Session on req.session
+			const pr = createPromise();
+			handlerSession(req, res, () => pr.resolve());
+			await pr.promise;
 
-			// Load user session if provided
-			if (req.cookies["connect.sid"]) {
-				await attachSession(req, res);
-			}
-
+			// Call passed in handler
 			if (useSession) {
 				if (!req.session?.user) throw new UnauthorizedError();
 
