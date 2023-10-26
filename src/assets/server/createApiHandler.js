@@ -16,7 +16,7 @@ const handlerSession = session({
 		maxAge: 24 * 60 * 60 * 1000,
 		expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
 		secure: !DEV,
-		sameSite: !DEV ? "secure" : "lax",
+		sameSite: !DEV ? "strict" : "lax",
 	},
 });
 
