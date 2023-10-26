@@ -14,9 +14,12 @@ import _ from "lodash";
  *
  * If the server fails to return a JSON (typically fatal errors), this will error with the whole HTML response.
  *
+ * @typedef {Object} FetchOptions
+ * @property {boolean} [form=false] - Whether to send the data as form data.
+ *
  * @param {string} url - The URL to fetch.
  * @param {Object} [data] - Optional JSON data to send.
- * @param {Object} [options] - Optional fetch options.
+ * @param {FetchOptions} [options] - Optional fetch options.
  *
  * @returns {Promise<Object>} - The JSON response.
  *

@@ -8,7 +8,7 @@ import { createPromise } from "@/assets/common/createPromise";
  *
  * @returns {Promise<Uint8Array>} A promise that resolves with the file content as a Uint8Array.
  *
- * @throws {TypeError} If the parameter types are bad.
+ * @throws {TypeError} If the 'file' parameter is not a File object.
  * @throws {Error} If there is an error reading the file.
  *
  * @example

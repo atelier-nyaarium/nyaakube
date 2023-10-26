@@ -3,18 +3,18 @@ import {
 	TooManyRequestsError,
 	UnauthorizedError,
 } from "@/assets/common/ErrorTypes";
-import { IncomingMessage, ServerResponse } from "http";
+import { IncomingMessage as ServerRequest, ServerResponse } from "http";
 
 /**
  * Respond with error and status
  *
- * @param {IncomingMessage} req - The request object.
- * @param {ServerResponse} res - The response object.
+ * @param {ServerRequest} req - The Express.js request object.
+ * @param {ServerResponse} res - The Express.js response object.
  * @param {Error|string} error - The error to send.
  * @param {number} [status=500] - The status code to send.
  * @param {boolean} [logError=true] - Whether to console log the error.
  *
- * @returns {ServerResponse} - The response object.
+ * @returns {ServerResponse} - The Express.js response object.
  *
  * @throws TypeError if the parameter types are bad.
  *
@@ -22,9 +22,9 @@ import { IncomingMessage, ServerResponse } from "http";
  * return respondError(req, res, "Error message here");
  */
 export function respondError(req, res, error, status, logError) {
-	if (!(req instanceof IncomingMessage)) {
+	if (!(req instanceof ServerRequest)) {
 		throw new TypeError(
-			`respondError(req, res, error, status?, logError?) : 'req' must be a IncomingMessage.`,
+			`respondError(req, res, error, status?, logError?) : 'req' must be a ServerRequest.`,
 		);
 	}
 

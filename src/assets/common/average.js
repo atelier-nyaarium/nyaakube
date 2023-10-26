@@ -1,21 +1,26 @@
 /**
  * Calculates the rolling average of a new value with an existing average.
  *
- * @param {{ value: number, weight: number }} stats - The existing stats object. Must have 'value' and 'weight' properties.
- * @param {number|{ value: number, weight: number }} value - The new value to be averaged. If it's an object, it must have 'value' and 'weight' properties.
+ * @typedef {Object} Stats
+ * @property {number} value - The existing average value.
+ * @property {number} weight - The weight of the existing average value.
+ *
+ * @typedef {Object} ValueObject
+ * @property {number} value - The new value to be averaged.
+ * @property {number} weight - The weight of the new value.
+ *
+ * @param {Stats} stats - The existing stats object. Must have 'value' and 'weight' properties.
+ * @param {number|ValueObject} value - The new value to be averaged. If it's an object, it must have 'value' and 'weight' properties.
  * @param {number} [maxWeight] - The maximum weight that can be considered for the existing average.
  *
- * @throws {TypeError} If 'stats' is not an object, or if 'stats.value' is not a number, or if 'stats.weight' is not a number.
+ * @throws {TypeError} If 'stats' is not an object, or if 'stats.value' or 'stats.weight' is not a number.
  * @throws {TypeError} If 'value' is not a number or an object, or if it's an object and doesn't have 'value' and 'weight' properties.
- * @throws {TypeError} If 'maxWeight' is defined but is not a number, or if it's a negative number.
+ * @throws {TypeError} If 'maxWeight' is defined but is not a positive number.
  *
- * @returns {{
- * 	   value: number,
- * 	   weight: number
- * }} An object with the new average 'value' and 'weight'.
+ * @returns {Stats} An object with the new average 'value' and 'weight'.
  *
  * @example
- * let stats = { value: 0 };
+ * let stats = { value: 0, weight: 0 };
  * stats = average(stats, 42);
  * -> { value: 42, weight: 1 }
  * stats = average(stats, 50);

@@ -6,14 +6,20 @@ import { useMemo } from "react";
 const DEV = process.env.NODE_ENV !== "production";
 
 /**
- * A custom hook that uses `fetchJSON` to make API calls and wraps around `useLoadingCallback`.
+ * A custom React hook that uses `fetchJSON` to make API calls and wraps around `useLoadingCallback`.
  *
- * This hook is useful for making API calls and managing the loading and error states. It also provides snack bar notifications for errors.
+ * @typedef {Object} FetchParams
+ * @property {string} url - The URL to fetch.
+ * @property {Object} [data] - The data to send with the request.
+ * @property {Object} [options] - The options for the fetch call.
+ * @property {function(): Promise<boolean>} [validate] - An optional validation function that returns a promise resolving to a boolean.
+ * @property {function(Object): void} [ok] - An optional function to call when the fetch is successful.
+ * @property {function(Error): void} [error] - An optional function to call when the fetch fails.
  *
- * @param {Function} paramsCallback - A callback function that returns an object containing the URL, data, and options for the fetch call.
+ * @param {function(): FetchParams} paramsCallback - A callback function that returns an object containing the URL, data, and options for the fetch call.
  * @param {Array} watchList - Watch list like with regular useCallback.
  *
- * @returns {[Function, boolean, Error?]} - A hook containing: fetch function, loading state, and Error.
+ * @returns {[function(Object): Promise<void>, boolean, Error?]} - A hook containing: fetch function, loading state, and Error.
  *
  * @throws {TypeError} If the parameter types are bad.
  * @throws {UnauthorizedError} If the response status is 401.
