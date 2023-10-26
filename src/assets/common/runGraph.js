@@ -13,15 +13,18 @@ import { jsonToGraphQLQuery } from "json-to-graphql-query";
  * Uses json-to-graphql-query to convert object to query string
  * > https://www.npmjs.com/package/json-to-graphql-query
  *
- * @param {GraphQLSchema} params.schema - The GraphQL schema to be used.
- * @param {Object} params.context - The context to be used. Must have an 'api' property that is a collection of functions used by the schema.
- * @param {Object} [params.query] - The GraphQL object to be executed. May be a Query or Mutation json.
- * @param {string} [params.source] - The GraphQL string to be executed. May be a Query or Mutation string.
+ * @typedef {Object} RunGraphParams
+ * @property {GraphQLSchema} schema - The GraphQL schema to be used.
+ * @property {Object} context - The context to be used. Must have an 'api' property that is a collection of functions used by the schema.
+ * @property {Object} [query] - The GraphQL object to be executed. May be a Query or Mutation json.
+ * @property {string} [source] - The GraphQL string to be executed. May be a Query or Mutation string.
+ *
+ * @param {RunGraphParams} params - The parameters for the GraphQL operation.
  *
  * @throws {TypeError} If 'params.schema' is not an instance of GraphQLSchema.
  * @throws {TypeError} If 'params.context.api' is not defined.
  * @throws {TypeError} If 'params.query' is not an object.
- * @throws {TypeError} If 'params.source' is not an object.
+ * @throws {TypeError} If 'params.source' is not a string.
  *
  * @returns {Promise<Object>} A promise that resolves to the result of the GraphQL operation.
  *

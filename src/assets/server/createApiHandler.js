@@ -1,5 +1,5 @@
-import { createPromise } from "@/assets/common/createPromise";
 import { UnauthorizedError } from "@/assets/common/ErrorTypes";
+import { createPromise } from "@/assets/common/createPromise";
 import { getEnv } from "@/assets/server/getEnv";
 import { respondError } from "@/assets/server/respondError";
 import session from "express-session";
@@ -16,7 +16,7 @@ const handlerSession = session({
 		maxAge: 24 * 60 * 60 * 1000,
 		expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
 		secure: !DEV,
-		sameSite: !DEV ? "secure" : "lax",
+		sameSite: !DEV ? "strict" : "lax",
 	},
 });
 
@@ -27,10 +27,16 @@ const handlerSession = session({
  *
  * `req.attachSession` is added to the request. Use it to begin/resume a session in authentication routes.
  *
- * @param {string} [options.label="(anonymous)"] - A label for the API handler. Recommend to set it to: __filename
- * @param {boolean} [options.log=true] - Whether to console.log the API handler.
- * @param {boolean} [options.useSession=false] - Whether to require a session handler.
- * @param {function} options.handler - The API handler function.
+ * @typedef {import("http").IncomingMessage} ServerRequest - The Express.js request object.
+ * @typedef {import("http").ServerResponse} ServerResponse - The Express.js response object.
+ *
+ * @typedef {Object} ApiHandlerOptions
+ * @property {string} [label="(anonymous)"] - A label for the API handler. Recommend to set it to: __filename
+ * @property {boolean} [log=true] - Whether to console.log the API handler.
+ * @property {boolean} [useSession=false] - Whether to require a session handler.
+ * @property {function(ServerRequest, ServerResponse): void} handler - The API handler function.
+ *
+ * @param {ApiHandlerOptions} options - The options for the API handler.
  *
  * @returns {Function} - An Express.js middleware function that handles API requests.
  *
@@ -81,6 +87,19 @@ export function createApiHandler({
 	}
 
 	return async function apiHandler(req, res) {
+		// TODO: Dockerfile grab this list:
+		//  https://www.cloudflare.com/ips-v4
+		//  https://www.cloudflare.com/ips-v6
+		//
+		// npm i -D ip6
+
+		const host = req.headers.host;
+		const cfConnectingIp = req.headers["cf-connecting-ip"];
+		const remoteIp = req.connection.remoteAddress;
+		console.log(
+			`Connection from ${cfConnectingIp} (${remoteIp}) intended for ${host}`,
+		);
+
 		let timeStart;
 		let logLabel = label;
 		if (log) {
@@ -88,7 +107,7 @@ export function createApiHandler({
 				logLabel = label + `  :  ${req.data.path}  `;
 			}
 
-			timeStart = new Date();
+			timeStart = new Date().getTime();
 		}
 
 		try {
@@ -127,12 +146,12 @@ export function createApiHandler({
 /**
  * Logs a message and time difference between startTime and now.
  *
- * @param {Date} timeStart - The start time to calculate the time difference from.
+ * @param {number} timeStart - The start time to calculate the time difference from.
  *
  * @param {...any} message - The message(s) to log.
  */
 function timedLog(timeStart, ...message) {
-	const timeEnd = new Date();
+	const timeEnd = new Date().getTime();
 	const timeDiffSec = (timeEnd - timeStart) / 1000;
 	console.log(...message, `:`, timeDiffSec, `s`);
 }
@@ -147,7 +166,7 @@ function timedLog(timeStart, ...message) {
  *
  * `req.query` and `req.body` will be deleted from `req`.
  *
- * @param {IncomingMessage} req - The express request object.
+ * @param {http.IncomingMessage} req - The express request object.
  */
 function safeParseRequestData(req) {
 	const query = structuredClone(req.query);

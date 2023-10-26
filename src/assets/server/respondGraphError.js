@@ -1,6 +1,6 @@
 import { respondError } from "@/assets/server/respondError";
 import { GraphQLError } from "graphql";
-import { IncomingMessage, ServerResponse } from "http";
+import { IncomingMessage as ServerRequest, ServerResponse } from "http";
 
 export const DEV = process.env.NODE_ENV === "development";
 
@@ -10,8 +10,8 @@ export const DEV = process.env.NODE_ENV === "development";
  * - Client will get a generic message.
  * - Server log will have the full error.
  *
- * @param {Object} req - The request object.
- * @param {Object} res - The response object.
+ * @param {ServerRequest} req - The Express.js request object.
+ * @param {ServerResponse} res - The Express.js response object.
  * @param {GraphQLError[]} errors - An array of GraphQL errors.
  *
  * @returns {ServerResponse} - The response object.
@@ -27,9 +27,9 @@ export const DEV = process.env.NODE_ENV === "development";
  * return respondGraphError(req, res, result.errors);
  */
 export function respondGraphError(req, res, errors) {
-	if (!(req instanceof IncomingMessage)) {
+	if (!(req instanceof ServerRequest)) {
 		throw new TypeError(
-			`respondGraphError(req, res, errors) : 'req' must be a IncomingMessage.`,
+			`respondGraphError(req, res, errors) : 'req' must be a ServerRequest.`,
 		);
 	}
 

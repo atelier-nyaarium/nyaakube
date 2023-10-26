@@ -3,7 +3,7 @@ import { ServerResponse } from "http";
 /**
  * Respond with JSON and status
  *
- * @param {ServerResponse} res - The response object.
+ * @param {ServerResponse} res - The Express.js response object.
  * @param {Object} data - The JSON data to send.
  * @param {number} [status=200] - The status code to send.
  *

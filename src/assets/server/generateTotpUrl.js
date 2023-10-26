@@ -64,7 +64,7 @@ export function generateTotpUrl(
 
 	return speakeasy.otpauthURL({
 		encoding: "base32",
-		algorithm: "SHA1",
+		algorithm: "sha1",
 		issuer: encodeURIComponent(issuerLabel),
 		label: encodeURIComponent(userLabel),
 		digits,

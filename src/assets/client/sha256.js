@@ -7,7 +7,7 @@ import { createHash } from "crypto";
  *
  * @returns {string} The generated SHA-256 hash.
  *
- * @throws TypeError if the parameter types are bad.
+ * @throws {TypeError} If the 'data' parameter is not a Buffer or a string.
  *
  * @example
  * const checksum = sha256("Hello world!");
