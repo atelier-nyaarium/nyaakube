@@ -1,58 +1,96 @@
-import data from "@/schemas/default/api/testData";
+import {
+	AccessDeniedError,
+	UnauthorizedError,
+} from "@/assets/common/ErrorTypes";
+import { Role } from "@/schemas/default/entities/role.entity";
+import { User } from "@/schemas/default/entities/user.entity";
+import { DataSource } from "typeorm";
 
 export default class ServerAPI {
-	constructor() {
-		// TODO: Initialize any API stuff
+	constructor(dataSourceOptions) {
+		this.dataSource = new DataSource(dataSourceOptions);
+
+		// Initialize the DataSource
+		this.dataSource.initialize().then(() => {
+			this.UserRepository = this.dataSource.getRepository(User);
+			this.RoleRepository = this.dataSource.getRepository(Role);
+		});
+	}
+
+	_assertAuth(context) {
+		if (!context.user) {
+			throw new UnauthorizedError();
+		}
+	}
+
+	_assertSelfAccess(id, context) {
+		this._assertAuth(context);
+
+		if (context.user.id !== id) {
+			throw new AccessDeniedError();
+		}
 	}
 
 	async getUserById(parent, { id }, context) {
-		return data.users.find((user) => user.id === Number(id));
+		this._assertSelfAccess(id, context);
+
+		const manager = this.dataSource.manager;
+		return await manager.findOne(User, { where: { id: id } });
 	}
 
-	async getPostById(parent, { id }, context) {
-		return data.posts.find((post) => post.id === Number(id));
+	async getUsersByRoleId(parent, { roleId }, context) {
+		this._assertAuth(context);
+		const manager = this.dataSource.manager;
+		const role = await manager.findOne(Role, {
+			where: { id: roleId },
+			relations: ["users"],
+		});
+		return role ? role.users : [];
 	}
 
-	async getCommentById(parent, { id }, context) {
-		return data.comments.find((comment) => comment.id === Number(id));
+	async getUserByEmail(parent, { email }, context) {
+		this._assertAuth(context);
+
+		const manager = this.dataSource.manager;
+		return await manager.findOne(User, {
+			where: { email: email.toLowerCase() },
+		});
 	}
 
-	async getCommentPost(parent, args, context) {
-		return this.getPostById(parent, args, context);
+	async getRole(parent, { id }, context) {
+		this._assertAuth(context);
+
+		const manager = this.dataSource.manager;
+		return await manager.findOne(Role, { where: { id: id } });
 	}
 
-	async getCommentAuthor(parent, args, context) {
-		return this.getUserById(parent, args, context);
+	async allUsers(parent, args, context) {
+		const manager = this.dataSource.manager;
+		return await manager.find(User);
 	}
 
-	async getPostAuthor(parent, args, context) {
-		return this.getUserById(parent, args, context);
+	async allRoles(parent, args, context) {
+		const manager = this.dataSource.manager;
+		return await manager.find(Role);
 	}
 
-	async getPostComments(parent, { id }, context) {
-		return data.comments.filter((comment) => comment.post === Number(id));
+	async getRolesByUserId(parent, { userId }, context) {
+		this._assertSelfAccess(userId, context);
+		const manager = this.dataSource.manager;
+		const user = await manager.findOne(User, {
+			where: { id: userId },
+			relations: ["roles"],
+		});
+		return user ? user.roles : [];
 	}
 
-	async getUserPosts(parent, { id }, context) {
-		return data.posts.filter((post) => post.user === Number(id));
-	}
-
-	async createPost(parent, { title, content, authorId }, context) {
-		console.log(`Create post:`, title, content, authorId);
-		return {
-			title,
-			content,
-			authorId,
-		};
-	}
-
-	async updatePost(parent, { id, title, content }, context) {
-		console.log(`Update post:`, id, title, content);
-		return { id, title, content };
-	}
-
-	async deletePost(parent, { id }, context) {
-		console.log(`Delete post:`, id);
-		return { id };
+	async getNumberOfUsersByRoleId(parent, { roleId }, context) {
+		this._assertAuth(context);
+		const manager = this.dataSource.manager;
+		const role = await manager.findOne(Role, {
+			where: { id: roleId },
+			relations: ["users"],
+		});
+		return role ? role.users.length : 0;
 	}
 }
