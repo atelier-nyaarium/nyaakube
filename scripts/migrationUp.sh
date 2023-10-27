@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
-npx typeorm-ts-node-esm \
+npx ts-node ./node_modules/typeorm/cli.js \
 	migration:run \
 	-d "./src/typeorm/cliDataSource.ts"
+

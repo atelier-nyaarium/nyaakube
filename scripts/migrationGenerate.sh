@@ -13,7 +13,7 @@ if [ -z "$migrationName" ]; then
     exit 1
 fi
 
-npx typeorm-ts-node-esm \
+npx ts-node ./node_modules/typeorm/cli.js \
 	migration:generate \
 	-d "./src/typeorm/cliDataSource.ts" \
 	"src/typeorm/migrations/$migrationName"
