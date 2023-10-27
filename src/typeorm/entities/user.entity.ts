@@ -30,6 +30,6 @@ export class User {
 	totp_secret?: string;
 
 	@ManyToMany(() => Role, (role) => role.users)
-	@JoinTable()
+	@JoinTable({ name: "user_role_assignments" })
 	roles: Role[];
 }

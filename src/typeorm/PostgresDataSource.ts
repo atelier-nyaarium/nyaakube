@@ -2,10 +2,8 @@ import { DataSource } from "typeorm";
 
 let postgresDataSource = null;
 
-export default function PostgresDataSource() {
+export default function PostgresDataSource(configOverrides) {
 	if (postgresDataSource) return postgresDataSource;
-
-	console.log(`Creating PostgresDataSource at ${__dirname}`);
 
 	postgresDataSource = new DataSource({
 		type: "postgres",
@@ -16,9 +14,7 @@ export default function PostgresDataSource() {
 		database: process.env.POSTGRES_DB,
 		synchronize: true,
 		logging: true,
-		entities: [`${__dirname}/entities/**/*.entity.ts`],
-		subscribers: [`${__dirname}/subscriber/**/*.ts`],
-		migrations: [`${__dirname}/migrations/**/*.ts`],
+		...configOverrides,
 	});
 
 	return postgresDataSource;
