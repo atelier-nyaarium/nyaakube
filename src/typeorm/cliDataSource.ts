@@ -1,7 +1,9 @@
 import dotenv from "dotenv";
 import PostgresDataSource from "./PostgresDataSource";
 
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+	dotenv.config();
+}
 
 const datasource = PostgresDataSource({
 	entities: [`src/typeorm/entities/**/*.entity.ts`],
