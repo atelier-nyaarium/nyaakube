@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 echo ""
 echo " ✏️  Enter the TypeORM migration name:"

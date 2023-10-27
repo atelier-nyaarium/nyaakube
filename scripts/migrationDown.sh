@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 npx typeorm-ts-node-esm \
 	migration:revert \
