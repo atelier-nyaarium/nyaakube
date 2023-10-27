@@ -114,7 +114,7 @@ export function createApiHandler({
 			// Stuff query & body into req.data
 			safeParseRequestData(req);
 		} catch (error) {
-			if (log) timedLog(timeStart, `🚫 `, logLabel);
+			if (log) timedLog(timeStart, `🚫`, logLabel);
 
 			return await respondError(req, res, `Error parsing user data`, 400);
 		}
@@ -134,9 +134,9 @@ export function createApiHandler({
 				await handler(req, res);
 			}
 
-			if (log) timedLog(timeStart, `⚡ `, logLabel);
+			if (log) timedLog(timeStart, `⚡`, logLabel);
 		} catch (error) {
-			if (log) timedLog(timeStart, `🚫 `, logLabel);
+			if (log) timedLog(timeStart, `🚫`, logLabel);
 
 			return await respondError(req, res, error);
 		}
