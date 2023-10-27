@@ -1,0 +1,11 @@
+services:
+  postgres-dev:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: nyaakube
+    volumes:
+      - ./volumes/data/db:/var/lib/postgresql/data
