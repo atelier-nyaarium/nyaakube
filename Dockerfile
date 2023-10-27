@@ -52,6 +52,7 @@ COPY --from=BUILDER /app/server.js .
 # TypeORM
 COPY src/typeorm/ src/typeorm/
 COPY scripts/ scripts/
+RUN chmod +x scripts/*.sh
 
 # CMD cd /app/.next/standalone/ && node server.js
-CMD scripts/migrationUp.sh && node server.js
+CMD ls -hal && scripts/migrationUp.sh && node server.js
