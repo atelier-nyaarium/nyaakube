@@ -2,40 +2,25 @@ import {
 	AccessDeniedError,
 	UnauthorizedError,
 } from "@/assets/common/ErrorTypes";
-import { Role } from "@/schemas/default/entities/role.entity";
-import { User } from "@/schemas/default/entities/user.entity";
-import { DataSource } from "typeorm";
-
-let postgresDatasource = null;
+import PostgresDataSource from "@/typeorm/PostgresDataSource";
+import { Role } from "@/typeorm/entities/role.entity";
+import { User } from "@/typeorm/entities/user.entity";
 
 export default class ServerAPI {
 	constructor() {
-		if (!postgresDatasource) {
-			postgresDatasource = new DataSource({
-				type: "postgres",
-				host: process.env.POSTGRES_HOST || "localhost",
-				port: Number(process.env.POSTGRES_PORT) || 5432,
-				username: process.env.POSTGRES_USER,
-				password: process.env.POSTGRES_PASSWORD,
-				database: process.env.POSTGRES_DB,
-				synchronize: true,
-				logging: true,
-				entities: ["src/schemas/default/entity/**/*.ts"],
-				migrations: ["src/schemas/default/migration/**/*.ts"],
-				subscribers: ["src/schemas/default/subscriber/**/*.ts"],
-			});
-		}
-
-		this.pg = postgresDatasource;
+		this.pg = PostgresDataSource();
 		this.pgm = this.pg.manager;
 
 		// Initialize the DataSource
-		postgresDatasource
+		this.pg
 			.initialize()
-			.then(() => postgresDatasource.runMigrations())
 			.then(() => {
-				this.UserRepository = postgresDatasource.getRepository(User);
-				this.RoleRepository = postgresDatasource.getRepository(Role);
+				this.UserRepository = this.pg.getRepository(User);
+				this.RoleRepository = this.pg.getRepository(Role);
+			})
+			.catch((error) => {
+				console.error(error);
+				process.exit(1);
 			});
 	}
 
