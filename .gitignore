@@ -5,8 +5,10 @@
 _test/
 /.env*
 /.swc/
+/.git*
 /.vscode-server/
 /.vscode/
+/compose*.yml
 /coverage/
 /debug.log
 /node_modules/
