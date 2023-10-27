@@ -17,7 +17,7 @@
 	"licensesDenied": [],
 	"scripts": {
 		"====[ Build ]====": "",
-		"dev": "node server.js",
+		"dev": "scripts/migrationUp.sh && node server.js",
 		"start": "NODE_ENV=production node server.js",
 		"build": "npm run clean && npx next build",
 		"migrate:generate": "scripts/migrationGenerate.sh",
