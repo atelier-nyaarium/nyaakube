@@ -1,4 +1,4 @@
-FROM node:20-alpine AS BUILDER
+FROM node:21-alpine AS BUILDER
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -21,7 +21,7 @@ RUN npx next telemetry disable \
 
 
 
-FROM node:20-alpine as RUNNER_PACKAGES
+FROM node:21-alpine as RUNNER_PACKAGES
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -31,7 +31,7 @@ RUN npm ci --omit=dev
 
 
 
-FROM node:20-alpine AS RUNNER
+FROM node:21-alpine AS RUNNER
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -49,11 +49,12 @@ COPY --from=BUILDER /app/.next/standalone/ ./
 COPY --from=BUILDER /app/.next/static/ ./.next/static/
 COPY --from=BUILDER /app/server.js .
 
-# TypeORM
-COPY src/typeorm/ src/typeorm/
-COPY scripts/ scripts/
-COPY tsconfig.json ./
-RUN chmod +x scripts/*.sh
+# # TypeORM
+# COPY src/typeorm/ src/typeorm/
+# COPY scripts/ scripts/
+# COPY tsconfig.json ./
+# RUN chmod +x scripts/*.sh
 
 # CMD cd /app/.next/standalone/ && node server.js
-CMD ls -hal && scripts/migrationUp.sh && node server.js
+# CMD scripts/migrationUp.sh && node server.js
+CMD node server.js
