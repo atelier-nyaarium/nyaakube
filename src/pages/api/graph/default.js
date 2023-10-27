@@ -5,9 +5,9 @@ import {
 	respondJson,
 } from "@/assets/server";
 import schema from "@/schemas/default";
-import ServerAPI from "@/schemas/default/api/ServerAPI";
+// import ServerAPI from "@/schemas/default/api/ServerAPI";
 
-const api = new ServerAPI();
+// const api = new ServerAPI();
 
 export default createApiHandler({
 	label: __filename,
@@ -22,7 +22,9 @@ export default createApiHandler({
 
 		const result = await runGraph({
 			schema,
-			context: { api },
+			// DISABLED
+			// context: { api },
+			context: { api: { DISABLED: true } },
 			source,
 		});
 		if (result.errors) {
