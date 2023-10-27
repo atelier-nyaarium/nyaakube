@@ -50,11 +50,11 @@ COPY --from=BUILDER /app/.next/static/ ./.next/static/
 COPY --from=BUILDER /app/server.js .
 
 # # TypeORM
-# COPY src/typeorm/ src/typeorm/
-# COPY scripts/ scripts/
-# COPY tsconfig.json ./
-# RUN chmod +x scripts/*.sh
+COPY src/typeorm/ src/typeorm/
+COPY scripts/ scripts/
+COPY tsconfig.json ./
+RUN chmod +x scripts/*.sh
 
 # CMD cd /app/.next/standalone/ && node server.js
-# CMD scripts/migrationUp.sh && node server.js
-CMD node server.js
+CMD scripts/migrationUp.sh && node server.js
+# CMD node server.js
