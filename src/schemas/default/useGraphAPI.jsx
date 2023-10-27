@@ -13,14 +13,15 @@ export function useGraphAPI() {
 	return api;
 }
 
-export function QueryProvider({ children }) {
-	const namespace = "default";
-
-	const graph = useCallback(async (query) => {
+export function QueryProvider({ children, namespace = "default" }) {
+	const graph = useCallback(
+		async (query) => {
 		return await fetchJSON(`/api/graph/${namespace}`, {
 			source: jsonToGraphQLQuery(query, { pretty: true }),
 		});
-	}, []);
+		},
+		[namespace],
+	);
 
 	return (
 		<QueryAPIContext.Provider value={graph}>
@@ -31,6 +32,7 @@ export function QueryProvider({ children }) {
 
 QueryProvider.propTypes = {
 	children: PropTypes.any,
+	namespace: PropTypes.string,
 };
 
 /* If GraphQL is hosted in memory, use this instead:
