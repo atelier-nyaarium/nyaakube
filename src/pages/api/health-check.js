@@ -1,8 +1,13 @@
+import ServerAPI from "@/schemas/default/api/ServerAPI";
+
 let firstRun = true;
 
 export default async function handler(req, res) {
 	if (firstRun) {
 		firstRun = false;
+
+		// Initialize the ServerAPI
+		new ServerAPI();
 
 		// console.log(` ℹ️ `, `Starting up services`);
 

@@ -6,15 +6,37 @@ import { Role } from "@/schemas/default/entities/role.entity";
 import { User } from "@/schemas/default/entities/user.entity";
 import { DataSource } from "typeorm";
 
+let postgresDatasource = null;
+
 export default class ServerAPI {
-	constructor(dataSourceOptions) {
-		this.dataSource = new DataSource(dataSourceOptions);
+	constructor() {
+		if (!postgresDatasource) {
+			postgresDatasource = new DataSource({
+				type: "postgres",
+				host: process.env.POSTGRES_HOST || "localhost",
+				port: Number(process.env.POSTGRES_PORT) || 5432,
+				username: process.env.POSTGRES_USER,
+				password: process.env.POSTGRES_PASSWORD,
+				database: process.env.POSTGRES_DB,
+				synchronize: true,
+				logging: true,
+				entities: ["src/schemas/default/entity/**/*.ts"],
+				migrations: ["src/schemas/default/migration/**/*.ts"],
+				subscribers: ["src/schemas/default/subscriber/**/*.ts"],
+			});
+		}
+
+		this.pg = postgresDatasource;
+		this.pgm = this.pg.manager;
 
 		// Initialize the DataSource
-		this.dataSource.initialize().then(() => {
-			this.UserRepository = this.dataSource.getRepository(User);
-			this.RoleRepository = this.dataSource.getRepository(Role);
-		});
+		postgresDatasource
+			.initialize()
+			.then(() => postgresDatasource.runMigrations())
+			.then(() => {
+				this.UserRepository = postgresDatasource.getRepository(User);
+				this.RoleRepository = postgresDatasource.getRepository(Role);
+			});
 	}
 
 	_assertAuth(context) {
@@ -34,14 +56,12 @@ export default class ServerAPI {
 	async getUserById(parent, { id }, context) {
 		this._assertSelfAccess(id, context);
 
-		const manager = this.dataSource.manager;
-		return await manager.findOne(User, { where: { id: id } });
+		return await this.pgm.findOne(User, { where: { id: id } });
 	}
 
 	async getUsersByRoleId(parent, { roleId }, context) {
 		this._assertAuth(context);
-		const manager = this.dataSource.manager;
-		const role = await manager.findOne(Role, {
+		const role = await this.pgm.findOne(Role, {
 			where: { id: roleId },
 			relations: ["users"],
 		});
@@ -51,8 +71,7 @@ export default class ServerAPI {
 	async getUserByEmail(parent, { email }, context) {
 		this._assertAuth(context);
 
-		const manager = this.dataSource.manager;
-		return await manager.findOne(User, {
+		return await this.pgm.findOne(User, {
 			where: { email: email.toLowerCase() },
 		});
 	}
@@ -60,24 +79,20 @@ export default class ServerAPI {
 	async getRole(parent, { id }, context) {
 		this._assertAuth(context);
 
-		const manager = this.dataSource.manager;
-		return await manager.findOne(Role, { where: { id: id } });
+		return await this.pgm.findOne(Role, { where: { id: id } });
 	}
 
 	async allUsers(parent, args, context) {
-		const manager = this.dataSource.manager;
-		return await manager.find(User);
+		return await this.pgm.find(User);
 	}
 
 	async allRoles(parent, args, context) {
-		const manager = this.dataSource.manager;
-		return await manager.find(Role);
+		return await this.pgm.find(Role);
 	}
 
 	async getRolesByUserId(parent, { userId }, context) {
 		this._assertSelfAccess(userId, context);
-		const manager = this.dataSource.manager;
-		const user = await manager.findOne(User, {
+		const user = await this.pgm.findOne(User, {
 			where: { id: userId },
 			relations: ["roles"],
 		});
@@ -86,8 +101,7 @@ export default class ServerAPI {
 
 	async getNumberOfUsersByRoleId(parent, { roleId }, context) {
 		this._assertAuth(context);
-		const manager = this.dataSource.manager;
-		const role = await manager.findOne(Role, {
+		const role = await this.pgm.findOne(Role, {
 			where: { id: roleId },
 			relations: ["users"],
 		});

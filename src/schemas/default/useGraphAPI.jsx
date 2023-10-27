@@ -16,9 +16,9 @@ export function useGraphAPI() {
 export function QueryProvider({ children, namespace = "default" }) {
 	const graph = useCallback(
 		async (query) => {
-		return await fetchJSON(`/api/graph/${namespace}`, {
-			source: jsonToGraphQLQuery(query, { pretty: true }),
-		});
+			return fetchJSON(`/api/graph/${namespace}`, {
+				source: jsonToGraphQLQuery(query, { pretty: true }),
+			});
 		},
 		[namespace],
 	);
