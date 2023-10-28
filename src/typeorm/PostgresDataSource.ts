@@ -1,7 +1,5 @@
 import { DataSource } from "typeorm";
 
-console.log(`NODE_ENV:`, process.env.NODE_ENV);
-
 if (!process.env.POSTGRES_DB) {
 	throw new Error(`POSTGRES_DB variable is missing`);
 }
