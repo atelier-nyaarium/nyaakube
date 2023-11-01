@@ -1,3 +1,4 @@
+// Do not import anything outside of /src/typeorm/ stuff
 import { DataSource } from "typeorm";
 
 if (!process.env.POSTGRES_DB) {

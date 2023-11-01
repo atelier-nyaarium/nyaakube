@@ -5,8 +5,8 @@
 	"license": "MIT",
 	"scripts": {
 		"====[ Build ]====": "",
-		"dev": "scripts/migrationUp.sh && node server.js",
-		"start": "NODE_ENV=production node server.js",
+		"dev": "scripts/migrationUp.sh && npx next dev",
+		"start": "NODE_ENV=production scripts/migrationUp.sh && npx next start",
 		"build": "npm run clean && npx next build",
 		"migrate:generate": "scripts/migrationGenerate.sh",
 		"lint": "npx next lint",
