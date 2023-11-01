@@ -22,7 +22,9 @@ export default function PostgresDataSource(configOverrides) {
 	const database = process.env.POSTGRES_DB;
 
 	console.log(
-		` ℹ️  Connecting to: postgresql://${username}:****@${host}:${port}/${database}`,
+		` ℹ️`,
+		`Connecting to:`,
+		`postgresql://${username}:****@${host}:${port}/${database}`,
 	);
 
 	postgresDataSource = new DataSource({
