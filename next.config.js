@@ -16,7 +16,6 @@ module.exports = (phase, { defaultConfig }) => {
 			break;
 		case PHASE_PRODUCTION_BUILD:
 			merge(config, {
-				// Not stable for turbo builds
 				output: "standalone",
 
 				eslint: {
