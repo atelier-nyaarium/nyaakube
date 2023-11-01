@@ -1,4 +1,16 @@
 services:
+  app:
+    depends_on:
+      - postgres-dev
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    volumes:
+      - ./volume/data:/data
+
   postgres-dev:
     image: postgres:latest
     ports:
