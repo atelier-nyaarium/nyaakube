@@ -1,6 +1,6 @@
 FROM node:21-alpine AS BUILDER
 WORKDIR /app
-
+RUN npm install -g npm@latest
 ENV NODE_ENV=production
 
 # React security setting
@@ -12,28 +12,44 @@ RUN npm ci --include=dev
 
 # Build project
 COPY . .
-
 RUN rm -rf src/pages/dev/ src/pages/api/dev/
 RUN npx next telemetry disable \
 	&& npm run lint \
 	&& npm run test \
 	&& npm run build
 
+# Next Standalone
+RUN mkdir -p deployment/
+RUN cp -R .next/ deployment/
+RUN cp -R .next/standalone/* deployment/
+RUN rm -rf deployment/.next/standalone/
+RUN cp -R public/ deployment/   || true
+RUN cp next.config.js deployment/
+RUN cp package*.json deployment/
 
 
-FROM node:21-alpine as RUNNER_PACKAGES
+
+FROM node:21-alpine as MIGRATION_RUNNER
 WORKDIR /app
-
+RUN npm install -g npm@latest
 ENV NODE_ENV=production
 
 COPY package*.json ./
 RUN npm ci --omit=dev
 
+# Scripts
+COPY scripts/ scripts/
+RUN chmod +x scripts/*.sh
+
+# TypeORM
+COPY src/typeorm/ src/typeorm/
+COPY tsconfig.json ./
+
 
 
 FROM node:21-alpine AS RUNNER
 WORKDIR /app
-
+RUN npm install -g npm@latest
 ENV NODE_ENV=production
 
 ARG PORT=80
@@ -43,18 +59,10 @@ ENV DATA_PATH=/data
 
 EXPOSE $PORT
 
-# Node
-COPY --from=RUNNER_PACKAGES /app/node_modules/ node_modules/
-COPY --from=BUILDER /app/.next/standalone/ ./
-COPY --from=BUILDER /app/.next/static/ ./.next/static/
-COPY --from=BUILDER /app/server.js .
+COPY --from=BUILDER /app/deployment/ ./
+COPY --from=MIGRATION_RUNNER /app/ migration/
 
-# # TypeORM
-COPY src/typeorm/ src/typeorm/
-COPY scripts/ scripts/
-COPY tsconfig.json ./
-RUN chmod +x scripts/*.sh
-
-# CMD cd /app/.next/standalone/ && node server.js
-CMD scripts/migrationUp.sh && node server.js
-# CMD node server.js
+CMD echo "🛠️  Starting TypeORM migration" \
+	&& cd "migration" && scripts/migrationUp.sh && cd ".." rm -rf migration \
+	&& echo "🛠️  Starting node process" \
+	&& node server.js
