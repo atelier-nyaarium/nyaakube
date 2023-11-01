@@ -1,10 +1,12 @@
 FROM node:21-alpine AS BUILDER
 WORKDIR /app
-RUN npm install -g npm@latest
+
 ENV NODE_ENV=production
 
 # React security setting
 ENV INLINE_RUNTIME_CHUNK=false
+
+RUN npm config set update-notifier false
 
 # Build node_modules first
 COPY package*.json ./
@@ -31,8 +33,10 @@ RUN cp package*.json deployment/
 
 FROM node:21-alpine as MIGRATION_RUNNER
 WORKDIR /app
-RUN npm install -g npm@latest
+
 ENV NODE_ENV=production
+
+RUN npm config set update-notifier false
 
 COPY package*.json ./
 RUN npm ci --omit=dev
@@ -49,7 +53,7 @@ COPY tsconfig.json ./
 
 FROM node:21-alpine AS RUNNER
 WORKDIR /app
-RUN npm install -g npm@latest
+
 ENV NODE_ENV=production
 
 ARG PORT=80
@@ -58,6 +62,8 @@ ENV APP_PATH=/app
 ENV DATA_PATH=/data
 
 EXPOSE $PORT
+
+RUN npm config set update-notifier false
 
 COPY --from=BUILDER /app/deployment/ ./
 COPY --from=MIGRATION_RUNNER /app/ migration/
