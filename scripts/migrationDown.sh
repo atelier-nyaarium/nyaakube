@@ -1,5 +1,7 @@
-#!/usr/bin/env sh
+#!/bin/bash
+set -e
 
-npx ts-node ./node_modules/typeorm/cli.js \
+scripts/loadEnv.sh \
+    npx ts-node ./node_modules/typeorm/cli.js \
 	migration:revert \
 	-d "./src/typeorm/cliDataSource.ts"

@@ -1,4 +1,5 @@
-#!/usr/bin/env sh
+#!/bin/bash
+set -e
 
 echo ""
 echo " ✏️  Enter the TypeORM migration name:"
@@ -13,7 +14,8 @@ if [ -z "$migrationName" ]; then
     exit 1
 fi
 
-npx ts-node ./node_modules/typeorm/cli.js \
+scripts/loadEnv.sh \
+    npx ts-node ./node_modules/typeorm/cli.js \
 	migration:generate \
 	-d "./src/typeorm/cliDataSource.ts" \
 	"src/typeorm/migrations/$migrationName"

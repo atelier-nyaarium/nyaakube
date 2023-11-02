@@ -1,10 +1,12 @@
 FROM node:21-alpine AS BUILDER
 WORKDIR /app
-RUN npm install -g npm@latest
+
 ENV NODE_ENV=production
 
 # React security setting
 ENV INLINE_RUNTIME_CHUNK=false
+
+RUN npm config set update-notifier false
 
 # Build node_modules first
 COPY package*.json ./
@@ -31,8 +33,10 @@ RUN cp package*.json deployment/
 
 FROM node:21-alpine as MIGRATION_RUNNER
 WORKDIR /app
-RUN npm install -g npm@latest
+
 ENV NODE_ENV=production
+
+RUN npm config set update-notifier false
 
 COPY package*.json ./
 RUN npm ci --omit=dev
@@ -49,7 +53,7 @@ COPY tsconfig.json ./
 
 FROM node:21-alpine AS RUNNER
 WORKDIR /app
-RUN npm install -g npm@latest
+
 ENV NODE_ENV=production
 
 ARG PORT=80
@@ -59,10 +63,13 @@ ENV DATA_PATH=/data
 
 EXPOSE $PORT
 
+RUN apk add bash \
+	&& npm config set update-notifier false
+
 COPY --from=BUILDER /app/deployment/ ./
 COPY --from=MIGRATION_RUNNER /app/ migration/
 
 CMD echo "🛠️  Starting TypeORM migration" \
-	&& cd "migration" && scripts/migrationUp.sh && cd ".." rm -rf migration \
+	&& cd "migration" && scripts/migrationUp.sh && cd .. && rm -rf migration \
 	&& echo "🛠️  Starting node process" \
 	&& node server.js
