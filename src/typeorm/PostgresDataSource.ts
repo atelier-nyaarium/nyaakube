@@ -1,20 +1,20 @@
 // Do not import anything outside of /src/typeorm/ stuff
 import { DataSource } from "typeorm";
 
-if (!process.env.POSTGRES_DB) {
-	throw new Error(`POSTGRES_DB variable is missing`);
-}
-if (!process.env.POSTGRES_USER) {
-	throw new Error(`POSTGRES_USER variable is missing`);
-}
-if (!process.env.POSTGRES_PASSWORD) {
-	throw new Error(`POSTGRES_PASSWORD variable is missing`);
-}
-
 let postgresDataSource = null;
 
 export default function PostgresDataSource(configOverrides) {
 	if (postgresDataSource) return postgresDataSource;
+
+	if (!process.env.POSTGRES_DB) {
+		throw new Error(`POSTGRES_DB variable is missing`);
+	}
+	if (!process.env.POSTGRES_USER) {
+		throw new Error(`POSTGRES_USER variable is missing`);
+	}
+	if (!process.env.POSTGRES_PASSWORD) {
+		throw new Error(`POSTGRES_PASSWORD variable is missing`);
+	}
 
 	console.log(
 		` ℹ️`,

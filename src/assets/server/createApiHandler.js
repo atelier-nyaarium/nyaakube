@@ -2,16 +2,23 @@ import { UnauthorizedError } from "@/assets/common/ErrorTypes";
 import { createPromise } from "@/assets/common/createPromise";
 import { getEnv } from "@/assets/server/getEnv";
 import { respondError } from "@/assets/server/respondError";
+import { createPostgresUrl } from "@/typeorm/PostgresDataSource";
+import pgSession from "connect-pg-simple";
 import session from "express-session";
 import JSON5 from "json5";
 import _ from "lodash";
 
 const DEV = process.env.NODE_ENV !== "production";
 
+const pgStore = pgSession(session);
+
 const handlerSession = session({
 	secret: getEnv("SESSION_SECRET"),
 	resave: false,
 	saveUninitialized: false,
+	store: new pgStore({
+		conString: createPostgresUrl(),
+	}),
 	cookie: {
 		maxAge: 24 * 60 * 60 * 1000,
 		expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
@@ -88,17 +95,22 @@ export function createApiHandler({
 
 	return async function apiHandler(req, res) {
 		// TODO: Dockerfile grab this list:
-		//  https://www.cloudflare.com/ips-v4
-		//  https://www.cloudflare.com/ips-v6
-		//
-		// npm i -D ip6
+		//   npm i -D ip6
+		// https://www.cloudflare.com/ips-v4
+		// https://www.cloudflare.com/ips-v6
 
 		const host = req.headers.host;
 		const cfConnectingIp = req.headers["cf-connecting-ip"];
 		const remoteIp = req.connection.remoteAddress;
-		console.log(
-			`Connection from ${cfConnectingIp} (${remoteIp}) intended for ${host}`,
-		);
+		if (cfConnectingIp) {
+			console.log(
+				` ℹ️ CloudFlare connection  ${cfConnectingIp}  ( ${remoteIp} ) intended for ${host}`,
+			);
+		} else {
+			console.log(
+				` ℹ️ Direct connection  ${remoteIp}  intended for ${host}`,
+			);
+		}
 
 		let timeStart;
 		let logLabel = label;
@@ -121,6 +133,7 @@ export function createApiHandler({
 
 		try {
 			// Provide Express Session on req.session
+			// With `saveUninitialized: false`, no cookies will be created until `req.session` is used.
 			const pr = createPromise();
 			handlerSession(req, res, () => pr.resolve());
 			await pr.promise;
@@ -164,19 +177,23 @@ function timedLog(timeStart, ...message) {
  * 2. req.query
  * 3. req.headers.data
  *
- * `req.query` and `req.body` will be deleted from `req`.
+ * Data is cloned using `structuredClone` to strip any weird prototype stuff a malicious actor might try.
+ *
+ * `req.query` and `req.body` will be deleted from `req` for safety from accidental usage.
  *
  * @param {http.IncomingMessage} req - The express request object.
  */
 function safeParseRequestData(req) {
-	const query = structuredClone(req.query);
-	const body = structuredClone(parseJSON(req.body));
-	const headers = structuredClone(parseJSON(req.headers.data));
+	const query = req.query;
+	const body = parseJSON5(req.body);
+	const headerData = parseJSON5(req.headers.data || req.headers.Data);
+
+	const mergedData = _.merge({}, query, headerData, body);
+
+	req.data = structuredClone(mergedData);
 
 	delete req.query;
 	delete req.body;
-
-	req.data = _.merge({}, query, headers, body);
 }
 
 /**
@@ -186,7 +203,7 @@ function safeParseRequestData(req) {
  *
  * @returns {object|undefined} - JSON object
  */
-function parseJSON(str) {
+function parseJSON5(str) {
 	if (typeof str === "object") {
 		// Already parsed by body-parser
 		return str;

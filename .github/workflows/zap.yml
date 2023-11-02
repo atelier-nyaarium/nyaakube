@@ -1,5 +1,6 @@
 # Uses secrets:
-#   WEBSITE_URL
+#   WEBSITE_URL           - Web address of the site
+#   ZAP_AUTH_HEADER_VALUE - Secret value to inform your server this attack is authorized
 
 name: ZAP Scanner
 
@@ -12,9 +13,12 @@ jobs:
   zap:
     name: ZAP Scanner
     runs-on: ubuntu-latest
+    env:
+      ZAP_AUTH_HEADER_VALUE: ${{ secrets.ZAP_AUTH_HEADER_VALUE }}
+      ZAP_AUTH_HEADER_SITE: ${{ secrets.WEBSITE_URL }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.7.0
+        uses: zaproxy/action-full-scan@v0.8.0
         with:
           target: "${{ secrets.WEBSITE_URL }}"
           allow_issue_writing: false

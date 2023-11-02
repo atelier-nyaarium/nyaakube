@@ -1,13 +1,14 @@
 import {
 	createApiHandler,
+	getEnv,
 	respondError,
 	respondJson,
 	scanDirectory,
 } from "@/assets/server";
 import path from "path";
 
-const BASE_UNLISTED = path.join(process.env.DATA_PATH, "unlisted");
-
+const DATA_PATH = getEnv("DATA_PATH");
+const BASE_UNLISTED = path.join(DATA_PATH, "unlisted");
 const BASE_GALLERY = path.join(BASE_UNLISTED, "gallery");
 
 export default createApiHandler({

@@ -1,3 +1,6 @@
+# Uses secrets:
+#   KUBECONFIG - base64 encoded kubeconfig file
+
 name: Workflow Call - K8s Rollout Restart
 
 on:

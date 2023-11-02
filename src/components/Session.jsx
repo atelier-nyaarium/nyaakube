@@ -16,7 +16,13 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 const SessionContext = createContext();
 
 export function useSession() {
-	return useContext(SessionContext);
+	const context = useContext(SessionContext);
+
+	if (!context) {
+		throw new Error(`useSession() : must be used within a <Session> tree.`);
+	}
+
+	return context;
 }
 
 export default function Session({ children }) {
@@ -25,9 +31,7 @@ export default function Session({ children }) {
 	const [checkSession] = useFetch(
 		() => ({
 			url: `/api/session/check`,
-			ok(data) {
-				setSessionData(data);
-			},
+			ok: setSessionData,
 		}),
 		[],
 	);

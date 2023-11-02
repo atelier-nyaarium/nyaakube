@@ -9,9 +9,10 @@ import {
 import fs from "fs";
 import path from "path";
 
-const BASE_PUBLIC = path.join(process.env.DATA_PATH, "public");
-const BASE_UNLISTED = path.join(process.env.DATA_PATH, "unlisted");
-const BASE_PROTECTED = path.join(process.env.DATA_PATH, "protected");
+const DATA_PATH = getEnv("DATA_PATH");
+const BASE_PUBLIC = path.join(DATA_PATH, "public");
+const BASE_UNLISTED = path.join(DATA_PATH, "unlisted");
+const BASE_PROTECTED = path.join(DATA_PATH, "protected");
 const SERVE_BASE_HANDLERS = Object.freeze({
 	[BASE_PROTECTED]: serveProtected,
 	[BASE_UNLISTED]: serveUnlisted,
