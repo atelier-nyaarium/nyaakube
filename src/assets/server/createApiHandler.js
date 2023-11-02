@@ -2,16 +2,23 @@ import { UnauthorizedError } from "@/assets/common/ErrorTypes";
 import { createPromise } from "@/assets/common/createPromise";
 import { getEnv } from "@/assets/server/getEnv";
 import { respondError } from "@/assets/server/respondError";
+import { createPostgresUrl } from "@/typeorm/PostgresDataSource";
+import pgSession from "connect-pg-simple";
 import session from "express-session";
 import JSON5 from "json5";
 import _ from "lodash";
 
 const DEV = process.env.NODE_ENV !== "production";
 
+const pgStore = pgSession(session);
+
 const handlerSession = session({
 	secret: getEnv("SESSION_SECRET"),
 	resave: false,
 	saveUninitialized: false,
+	store: new pgStore({
+		conString: createPostgresUrl(),
+	}),
 	cookie: {
 		maxAge: 24 * 60 * 60 * 1000,
 		expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
@@ -121,6 +128,7 @@ export function createApiHandler({
 
 		try {
 			// Provide Express Session on req.session
+			// With `saveUninitialized: false`, no cookies will be created until `req.session` is used.
 			const pr = createPromise();
 			handlerSession(req, res, () => pr.resolve());
 			await pr.promise;
