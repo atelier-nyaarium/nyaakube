@@ -164,19 +164,23 @@ function timedLog(timeStart, ...message) {
  * 2. req.query
  * 3. req.headers.data
  *
- * `req.query` and `req.body` will be deleted from `req`.
+ * Data is cloned using `structuredClone` to strip any weird prototype stuff a malicious actor might try.
+ *
+ * `req.query` and `req.body` will be deleted from `req` for safety from accidental usage.
  *
  * @param {http.IncomingMessage} req - The express request object.
  */
 function safeParseRequestData(req) {
-	const query = structuredClone(req.query);
-	const body = structuredClone(parseJSON(req.body));
-	const headers = structuredClone(parseJSON(req.headers.data));
+	const query = req.query;
+	const body = parseJSON5(req.body);
+	const headerData = parseJSON5(req.headers.data || req.headers.Data);
+
+	const mergedData = _.merge({}, query, headerData, body);
+
+	req.data = structuredClone(mergedData);
 
 	delete req.query;
 	delete req.body;
-
-	req.data = _.merge({}, query, headers, body);
 }
 
 /**
@@ -186,7 +190,7 @@ function safeParseRequestData(req) {
  *
  * @returns {object|undefined} - JSON object
  */
-function parseJSON(str) {
+function parseJSON5(str) {
 	if (typeof str === "object") {
 		// Already parsed by body-parser
 		return str;
