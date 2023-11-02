@@ -8,7 +8,7 @@ let lastIpCheckError = "";
 let lastIpCheckTime = moment();
 const runningIpChecks = {};
 
-const IP2LOCATION_KEY = getEnv("IP2LOCATION_KEY");
+let IP2LOCATION_KEY;
 
 /**
  * Looks up the location information for a given IP address using the ip2location API.
@@ -38,14 +38,16 @@ const IP2LOCATION_KEY = getEnv("IP2LOCATION_KEY");
  * }
  */
 export async function ipLookup(ip) {
-	if (typeof ip !== "string") {
-		throw new TypeError(`ipLookup(ip) : 'ip' must be a string.`);
-	}
+	if (!IP2LOCATION_KEY) IP2LOCATION_KEY = getEnv("IP2LOCATION_KEY");
 
 	if (!IP2LOCATION_KEY) {
 		throw new TypeError(
 			`ipLookup(ip) : 'IP2LOCATION_KEY' environment variable is missing.`,
 		);
+	}
+
+	if (typeof ip !== "string") {
+		throw new TypeError(`ipLookup(ip) : 'ip' must be a string.`);
 	}
 
 	try {
