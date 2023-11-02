@@ -1,17 +1,6 @@
 #!/bin/bash
 set -e
 
-if [ -f ".env.shell" ]; then
-    while IFS= read -r line
-    do
-        if [[ ! "$line" =~ ^\# && "$line" != "" ]]; then
-            export $line
-        fi
-    done < .env.shell
-else
-    echo ".env.shell file not found"
-fi
-
 echo ""
 echo " ✏️  Enter the TypeORM migration name:"
 read migrationName
@@ -25,7 +14,8 @@ if [ -z "$migrationName" ]; then
     exit 1
 fi
 
-npx ts-node ./node_modules/typeorm/cli.js \
+scripts/loadEnv.sh \
+    npx ts-node ./node_modules/typeorm/cli.js \
 	migration:generate \
 	-d "./src/typeorm/cliDataSource.ts" \
 	"src/typeorm/migrations/$migrationName"
