@@ -45,6 +45,7 @@
 		"@types/saslprep": "^1.0.2",
 		"@types/uuid": "^9.0.6",
 		"argon2": "^0.31.1",
+		"connect-pg-simple": "^9.0.1",
 		"dotenv": "^16.3.1",
 		"eslint": "^8.52.0",
 		"eslint-config-next": "^14.0.1",
