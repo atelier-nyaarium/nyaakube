@@ -39,7 +39,7 @@
 		"@types/jest": "^29.5.7",
 		"@types/lodash": "^4.14.200",
 		"@types/multer": "^1.4.9",
-		"@types/react": "^18.2.33",
+		"@types/react": "^18.2.34",
 		"@types/react-image-gallery": "^1.2.2",
 		"@types/saslprep": "^1.0.2",
 		"@types/uuid": "^9.0.6",
