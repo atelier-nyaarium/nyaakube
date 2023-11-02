@@ -63,12 +63,13 @@ ENV DATA_PATH=/data
 
 EXPOSE $PORT
 
-RUN npm config set update-notifier false
+RUN apk add bash \
+	&& npm config set update-notifier false
 
 COPY --from=BUILDER /app/deployment/ ./
 COPY --from=MIGRATION_RUNNER /app/ migration/
 
 CMD echo "🛠️  Starting TypeORM migration" \
-	&& cd "migration" && scripts/migrationUp.sh && cd ".." rm -rf migration \
+	&& cd "migration" && scripts/migrationUp.sh && cd .. && rm -rf migration \
 	&& echo "🛠️  Starting node process" \
 	&& node server.js
