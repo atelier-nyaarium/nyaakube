@@ -16,29 +16,43 @@ let postgresDataSource = null;
 export default function PostgresDataSource(configOverrides) {
 	if (postgresDataSource) return postgresDataSource;
 
-	const host = process.env.POSTGRES_HOST || "localhost";
-	const port = Number(process.env.POSTGRES_PORT) || 5432;
-	const username = process.env.POSTGRES_USER;
-	const password = process.env.POSTGRES_PASSWORD;
-	const database = process.env.POSTGRES_DB;
-
 	console.log(
 		` ℹ️`,
 		`Connecting to:`,
-		`postgresql://${username}:****@${host}:${port}/${database}`,
+		createPostgresUrl({ password: "****" }),
 	);
 
 	postgresDataSource = new DataSource({
 		type: "postgres",
-		host,
-		port,
-		username,
-		password,
-		database,
+		url: createPostgresUrl(),
 		synchronize: true,
 		logging: true,
 		...configOverrides,
 	});
 
 	return postgresDataSource;
+}
+
+/**
+ * Create a postgres URL from object or environment variables.
+ *
+ * @typedef {Object} DatabaseConnectionOptions
+ * @property {string} [host] - Hostname of the database.
+ * @property {number} [port] - Port of the database.
+ * @property {string} [username] - Username of the database.
+ * @property {string} [password] - Password of the database.
+ * @property {string} [database] - Database name.
+ *
+ * @param {DatabaseConnectionOptions} [config] - Config (defaults to environment variables)
+ *
+ * @returns {Function} - Connection string for postgres.
+ */
+export function createPostgresUrl(config = null) {
+	const host = config?.host ?? (process.env.POSTGRES_HOST || "localhost");
+	const port = config?.port ?? (Number(process.env.POSTGRES_PORT) || 5432);
+	const username = config?.username ?? process.env.POSTGRES_USER;
+	const password = config?.password ?? process.env.POSTGRES_PASSWORD;
+	const database = config?.database ?? process.env.POSTGRES_DB;
+
+	return `postgresql://${username}:${password}@${host}:${port}/${database}`;
 }
