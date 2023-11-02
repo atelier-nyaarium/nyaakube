@@ -95,17 +95,22 @@ export function createApiHandler({
 
 	return async function apiHandler(req, res) {
 		// TODO: Dockerfile grab this list:
-		//  https://www.cloudflare.com/ips-v4
-		//  https://www.cloudflare.com/ips-v6
-		//
-		// npm i -D ip6
+		//   npm i -D ip6
+		// https://www.cloudflare.com/ips-v4
+		// https://www.cloudflare.com/ips-v6
 
 		const host = req.headers.host;
 		const cfConnectingIp = req.headers["cf-connecting-ip"];
 		const remoteIp = req.connection.remoteAddress;
-		console.log(
-			`Connection from ${cfConnectingIp} (${remoteIp}) intended for ${host}`,
-		);
+		if (cfConnectingIp) {
+			console.log(
+				` ℹ️ CloudFlare connection  ${cfConnectingIp}  ( ${remoteIp} ) intended for ${host}`,
+			);
+		} else {
+			console.log(
+				` ℹ️ Direct connection  ${remoteIp}  intended for ${host}`,
+			);
+		}
 
 		let timeStart;
 		let logLabel = label;
