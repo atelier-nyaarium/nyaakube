@@ -1,4 +1,9 @@
 import "@testing-library/jest-dom";
+import { TextDecoder, TextEncoder } from "util";
 
-// Mock environment variables here
-process.env.IP2LOCATION_KEY = "";
+// Used by connect-pg-simple
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
+// Load test environment variables
+process.env.SESSION_SECRET = "test";
