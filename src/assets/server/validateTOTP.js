@@ -16,7 +16,7 @@ import speakeasy from "@levminer/speakeasy";
  * @throws TypeError if the parameter types are bad.
  *
  * @example
- * const totpSecret = "6,30,30,ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+ * const totpSecret = "6,30,60,ABCDEFGHIJKLMNOPQRSTUVWXYZ";
  * const resValid = await validateTOTP(totpSecret, "123456");
  * -> { valid: true }
  */
@@ -31,19 +31,19 @@ export async function validateTOTP(totpSecret, token) {
 		const split = totpSecret.split(",").map((s) => s.trim());
 		if (split.length !== 4) {
 			throw new TypeError(
-				`validateTOTP(totpSecret, token) : 'totpSecret' must be in the format: 'DIGITS,PERIOD,STEP,SECRET'.`,
+				`validateTOTP(totpSecret, token) : 'totpSecret' must be in the format: 'DIGITS,PERIOD,WINDOW,SECRET'.`,
 			);
 		}
 
 		// eslint-disable-next-line prefer-const
-		let [digits, period, step, secret] = split;
+		let [digits, period, window, secret] = split;
 
 		digits = parseInt(digits);
 		period = parseInt(period);
-		step = parseInt(step);
-		if (isNaN(digits) || isNaN(period) || isNaN(step)) {
+		window = parseInt(window);
+		if (isNaN(digits) || isNaN(period) || isNaN(window)) {
 			throw new TypeError(
-				`validateTOTP(totpSecret, token) : 'totpSecret' must be in the format: 'DIGITS,PERIOD,STEP,SECRET'.`,
+				`validateTOTP(totpSecret, token) : 'totpSecret' must be in the format: 'DIGITS,PERIOD,WINDOW,SECRET'.`,
 			);
 		}
 
@@ -58,11 +58,11 @@ export async function validateTOTP(totpSecret, token) {
 		token = String(token);
 
 		// Give vague expectation about token length
-		if (token.length < 6 || 25 < token.length) {
+		if (token.length < 6 || 10 < token.length) {
 			return {
 				valid: false,
 				code: 400,
-				message: `Expected a TOTP token (numbers-only, 6-25 digits).`,
+				message: `Expected a TOTP token (numbers-only, 6 to 10 digits).`,
 			};
 		}
 
@@ -79,8 +79,10 @@ export async function validateTOTP(totpSecret, token) {
 		const isValid = speakeasy.totp.verify({
 			encoding: "base32",
 			digits,
-			period,
-			step, // Speakeasy uses step instead of window
+			// ⚠️ Speakeasy uses step instead of window
+			// ⚠️ Speak easy flips the terminology of period and step
+			period: window,
+			step: period,
 			secret,
 			token,
 		});
