@@ -5,15 +5,31 @@
 		"node": true,
 		"jest": true
 	},
+	"ignorePatterns": [
+		".next/*",
+		"build/*",
+		"coverage/*",
+		"dist/*",
+		"node_modules/*",
+		"volumes/*",
+		".eslintrc.json",
+		"next-env.d.ts",
+		"next.config.js",
+		"tsconfig.json"
+	],
 	"extends": [
 		"eslint:recommended",
 		"next",
 		"next/core-web-vitals",
+		"plugin:@typescript-eslint/recommended",
 		"plugin:react/recommended",
-		"plugin:react-hooks/recommended",
-		"plugin:security/recommended"
+		"plugin:react-hooks/recommended"
 	],
+	"plugins": ["@typescript-eslint", "react", "security"],
 	"rules": {
+		"@next/next/no-img-element": "off",
+		"@typescript-eslint/no-explicit-any": "warn",
+		"@typescript-eslint/no-unused-vars": ["warn", { "args": "none" }],
 		"no-case-declarations": "warn",
 		"no-constant-condition": "off",
 		"no-loss-of-precision": "warn",
