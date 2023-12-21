@@ -6,7 +6,7 @@ export class Session {
 	sid: string;
 
 	@Column("json")
-	sess: any;
+	sess: unknown;
 
 	@Index()
 	@Column("timestamp", { precision: 6 })

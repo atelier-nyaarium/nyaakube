@@ -11,6 +11,7 @@ _test/
 /compose*.yml
 /coverage/
 /debug.log
+/next-env.d.ts
 /node_modules/
 /volumes/
 
