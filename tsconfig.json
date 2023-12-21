@@ -21,6 +21,12 @@
 		"isolatedModules": true,
 		"jsx": "preserve"
 	},
-	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.jsx"],
-	"exclude": ["./.*", "./coverage", "./volumes", "node_modules"]
+	"include": [
+		// Src directory
+		"src/**/*.js",
+		"src/**/*.jsx",
+		"src/**/*.ts",
+		"src/**/*.tsx"
+	],
+	"exclude": ["./.*"]
 }

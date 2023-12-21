@@ -5,14 +5,26 @@
 		"node": true,
 		"jest": true
 	},
+	"ignorePatterns": [
+		".next/*",
+		"build/*",
+		"coverage/*",
+		"dist/*",
+		"node_modules/*",
+		"volumes/*",
+		".eslintrc.json",
+		"next.config.js",
+		"tsconfig.json"
+	],
 	"extends": [
 		"eslint:recommended",
 		"next",
 		"next/core-web-vitals",
+		"plugin:@typescript-eslint/recommended",
 		"plugin:react/recommended",
-		"plugin:react-hooks/recommended",
-		"plugin:security/recommended"
+		"plugin:react-hooks/recommended"
 	],
+	"plugins": ["@typescript-eslint", "react", "security"],
 	"rules": {
 		"no-case-declarations": "warn",
 		"no-constant-condition": "off",
