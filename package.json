@@ -28,7 +28,7 @@
 		"typeorm": "^0.3.17"
 	},
 	"devDependencies": {
-		"@emotion/react": "^11.11.1",
+		"@emotion/react": "^11.11.3",
 		"@emotion/styled": "^11.11.0",
 		"@levminer/speakeasy": "^1.4.2",
 		"@mui/icons-material": "^5.15.2",
