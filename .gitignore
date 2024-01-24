@@ -5,7 +5,6 @@
 _test/
 /.env*
 /.swc/
-/.git*
 /.vscode-server/
 /.vscode/
 /compose*.yml
