@@ -21,12 +21,19 @@
 		"isolatedModules": true,
 		"jsx": "preserve"
 	},
-	"include": [
-		// Src directory
-		"src/**/*.js",
-		"src/**/*.jsx",
-		"src/**/*.ts",
-		"src/**/*.tsx"
-	],
-	"exclude": ["./.*"]
+	"include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+	"exclude": [
+		"/.eslintrc.js",
+		"/.next/",
+		"/build/",
+		"/coverage/",
+		"/dist/",
+		"/jest.config.mjs",
+		"/next-env.d.ts",
+		"/next.config.js",
+		"/node_modules/",
+		"/tsconfig.json",
+		"/volumes/",
+		"/webpack.config.js"
+	]
 }
