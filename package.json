@@ -47,7 +47,7 @@
 		"@typescript-eslint/parser": "^6.19.0",
 		"argon2": "^0.31.2",
 		"connect-pg-simple": "^9.0.1",
-		"dotenv": "^16.3.1",
+		"dotenv": "^16.4.0",
 		"eslint": "^8.56.0",
 		"eslint-config-next": "^14.1.0",
 		"eslint-plugin-security": "^2.1.0",
