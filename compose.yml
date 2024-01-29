@@ -9,7 +9,7 @@ services:
     env_file:
       - .env.compose
     volumes:
-      - ./volume/data:/data
+      - ./volumes/data:/data
 
   postgres-dev:
     image: postgres:latest
