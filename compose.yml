@@ -9,7 +9,7 @@ services:
     env_file:
       - .env.compose
     volumes:
-      - ./volume/data:/data
+      - ./volumes/data:/data
 
   postgres-dev:
     image: postgres:latest
@@ -20,5 +20,4 @@ services:
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: nyaakube
     volumes:
-      - ./volumes/data:/data
       - ./volumes/db:/var/lib/postgresql/data

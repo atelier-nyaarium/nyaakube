@@ -18,7 +18,10 @@ export class User {
 	email: string;
 
 	@Column({ type: "text" })
-	password: string;
+	password_hash: string;
+
+	@Column({ type: "text" })
+	password_salt: string;
 
 	@CreateDateColumn()
 	created_at: Date;

@@ -67,7 +67,7 @@ export async function assertValidLogin(email, password, totpToken = undefined) {
 	}
 
 	const passwordMatch = await argon2.verify(
-		user.password,
+		user.password_hash,
 		saslPrep(password),
 	);
 	if (!passwordMatch) {
@@ -113,7 +113,8 @@ async function getUserByEmail(email) {
 			return {
 				id: 1,
 				email: ADMIN_EMAIL,
-				password: ADMIN_PASSWORD,
+				password_hash: ADMIN_PASSWORD,
+				password_salt: 0,
 				totp: ADMIN_TOTP,
 				roles: {
 					admin: {},
