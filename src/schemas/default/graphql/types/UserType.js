@@ -16,14 +16,21 @@ const UserType = new GraphQLObjectType({
 			description: "Last update timestamp",
 		},
 		email: { type: GraphQLString },
-		password: {
-			type: GraphQLString,
-			description: "Hashed password - do not expose in public queries!",
-		},
-		totp_secret: {
-			type: GraphQLString,
-			description: "TOTP secret for two-factor authentication",
-		},
+
+		// Do not expose these in public queries:
+		// password_hash: {
+		// 	type: GraphQLString,
+		// 	description: "Hashed password",
+		// },
+		// password_salt: {
+		// 	type: GraphQLString,
+		// 	description: "Password salt",
+		// },
+		// totp_secret: {
+		// 	type: GraphQLString,
+		// 	description: "TOTP secret for two-factor authentication",
+		// },
+
 		roles: {
 			type: new GraphQLList(RoleType),
 			resolve(parent, args, context) {
