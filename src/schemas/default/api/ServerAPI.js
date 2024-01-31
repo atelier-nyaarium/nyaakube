@@ -4,7 +4,7 @@ import {
 } from "@/assets/common/ErrorTypes";
 import PostgresDataSource from "@/typeorm/PostgresDataSource";
 import { Role } from "@/typeorm/entities/role.entity";
-import { User } from "@/typeorm/entities/user.entity";
+import { User } from "@/typeorm/entities/users.entity";
 
 export default class ServerAPI {
 	constructor() {
