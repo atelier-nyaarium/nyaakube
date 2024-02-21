@@ -24,6 +24,11 @@ updates:
           - "@mui/material"
           - "@mui/icons-material"
 
+      eslint:
+        patterns:
+          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser"
+
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
