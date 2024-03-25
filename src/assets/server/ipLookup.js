@@ -1,7 +1,14 @@
+//===================
+//
+//    UNUSED
+//
+// Old code for checking against malicious actor IPs.
+// Not that IP blocking can do much on the internet anyways. 🤷‍♂️
+
 import { asLogTime } from "@/assets/server/asLogTime";
 import { getEnv } from "@/assets/server/getEnv";
 import moment from "moment-timezone";
-import nodeFetch from "node-fetch";
+// import nodeFetch from "node-fetch";
 
 let lastIpCheckGood = true; // If bad, do not go forward with the next request.
 let lastIpCheckError = "";
@@ -72,8 +79,10 @@ export async function ipLookup(ip) {
 			runningIpChecks[ip] = true;
 
 			try {
-				const url = `https://api.ip2location.io/?format=json&key=${IP2LOCATION_KEY}&ip=${ip}`;
-				const json = await nodeFetch(url).then((res) => res.json());
+				// const url = `https://api.ip2location.io/?format=json&key=${IP2LOCATION_KEY}&ip=${ip}`;
+				// const json = await nodeFetch(url).then((res) => res.json());
+				// TODO: Implement fetch when the module is needed
+				const json = {};
 
 				lastIpCheckGood = true;
 				lastIpCheckError = "";
