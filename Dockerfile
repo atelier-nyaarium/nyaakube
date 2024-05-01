@@ -1,4 +1,4 @@
-FROM node:21-alpine AS BUILDER
+FROM node:22-alpine AS BUILDER
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -31,7 +31,7 @@ RUN cp package*.json deployment/
 
 
 
-FROM node:21-alpine as MIGRATION_RUNNER
+FROM node:22-alpine as MIGRATION_RUNNER
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -51,7 +51,7 @@ COPY tsconfig.json ./
 
 
 
-FROM node:21-alpine AS RUNNER
+FROM node:22-alpine AS RUNNER
 WORKDIR /app
 
 ENV NODE_ENV=production
