@@ -3,7 +3,7 @@
  *
  * Removes diacritics and other symbols, like Microsoft Smart Quotes. Meant for sanitizing inputs and messages.
  *
- * Based on: http://stackoverflow.com/questions/286921/efficiently-replace-all-accented-characters-in-a-string
+ * Based on:  https://stackoverflow.com/questions/286921  https://stackoverflow.com/questions/990904
  *
  * @param str The string to remove diacritics from
  *
@@ -17,6 +17,9 @@ export function removeDiacritics(str) {
 	if (typeof str !== "string") {
 		throw TypeError(`removeDiacritics(str) : 'str' must be a string.`);
 	}
+
+	// The bulk of the cleanup
+	str = str.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
 	for (let i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
 		str = str.replace(
