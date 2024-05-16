@@ -15,7 +15,7 @@
  */
 export function removeDiacritics(str) {
 	if (typeof str !== "string") {
-		throw TypeError(`Expected a string`);
+		throw TypeError(`removeDiacritics(str) : 'str' must be a string.`);
 	}
 
 	for (let i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
