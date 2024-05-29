@@ -45,7 +45,7 @@
 		"@types/uuid": "^9.0.8",
 		"@typescript-eslint/eslint-plugin": "^7.9.0",
 		"@typescript-eslint/parser": "^7.9.0",
-		"argon2": "^0.40.1",
+		"argon2": "^0.40.3",
 		"connect-pg-simple": "^9.0.1",
 		"dotenv": "^16.4.5",
 		"eslint": "^8.57.0",
