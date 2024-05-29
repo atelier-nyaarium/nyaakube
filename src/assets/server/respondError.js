@@ -2,7 +2,7 @@ import {
 	AccessDeniedError,
 	TooManyRequestsError,
 	UnauthorizedError,
-} from "@/assets/common/ErrorTypes";
+} from "@/assets/ErrorTypes";
 import { IncomingMessage as ServerRequest, ServerResponse } from "http";
 
 /**

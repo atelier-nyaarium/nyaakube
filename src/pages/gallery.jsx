@@ -1,4 +1,4 @@
-import { fetchJSON } from "@/assets/client";
+import { fetchJson } from "@/assets/client";
 import {
 	Box,
 	Button,
@@ -39,7 +39,7 @@ export default function PageGallery() {
 			setReadyStatus(false);
 			setListing([]);
 
-			const reply = await fetchJSON(`/api/gallery`, {
+			const reply = await fetchJson(`/api/gallery`, {
 				path,
 			});
 			if (reply.ok) {

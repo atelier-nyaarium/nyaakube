@@ -1,4 +1,4 @@
-import { fetchJSON } from "@/assets/client/fetchJSON";
+import { fetchJson } from "@/assets/client/fetchJson";
 import { useLoadingCallback } from "@/assets/client/useLoadingCallback";
 import { useSnackbar } from "@/components/Snackbar";
 import { useMemo } from "react";
@@ -6,7 +6,7 @@ import { useMemo } from "react";
 const DEV = process.env.NODE_ENV !== "production";
 
 /**
- * A custom React hook that uses `fetchJSON` to make API calls and wraps around `useLoadingCallback`.
+ * A custom React hook that uses `fetchJson` to make API calls and wraps around `useLoadingCallback`.
  *
  * @typedef {Object} FetchParams
  * @property {string} url - The URL to fetch.
@@ -127,7 +127,7 @@ export function useFetch(paramsCallback, watchList) {
 			}
 
 			try {
-				const data = await fetchJSON(
+				const data = await fetchJson(
 					params.url,
 					params.data,
 					params.options,

@@ -1,4 +1,4 @@
-import { UnauthorizedError } from "@/assets/common/ErrorTypes";
+import { UnauthorizedError } from "@/assets/ErrorTypes";
 import { createPromise } from "@/assets/common/createPromise";
 import { getEnv } from "@/assets/server/getEnv";
 import { respondError } from "@/assets/server/respondError";

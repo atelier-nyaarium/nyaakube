@@ -1,4 +1,4 @@
-import { fetchJSON } from "@/assets/client";
+import { fetchJson } from "@/assets/client";
 import { jsonToGraphQLQuery } from "json-to-graphql-query";
 import PropTypes from "prop-types";
 import React, { createContext, useCallback, useContext } from "react";
@@ -16,7 +16,7 @@ export function useGraphAPI() {
 export function QueryProvider({ children, namespace = "default" }) {
 	const graph = useCallback(
 		async (query) => {
-			return fetchJSON(`/api/graph/${namespace}`, {
+			return fetchJson(`/api/graph/${namespace}`, {
 				source: jsonToGraphQLQuery(query, { pretty: true }),
 			});
 		},

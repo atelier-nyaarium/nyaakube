@@ -1,4 +1,4 @@
-import { UnauthorizedError } from "@/assets/common/ErrorTypes";
+import { UnauthorizedError } from "@/assets/ErrorTypes";
 import { pause } from "@/assets/common/pause";
 import { getEnv } from "@/assets/server/getEnv";
 import { validateTOTP } from "@/assets/server/validateTOTP";

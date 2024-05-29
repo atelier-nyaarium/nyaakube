@@ -1,11 +1,11 @@
-import { fetchJSON } from "@/assets/client/fetchJSON";
 import {
 	AccessDeniedError,
 	TooManyRequestsError,
 	UnauthorizedError,
-} from "@/assets/common/ErrorTypes";
+} from "@/assets/ErrorTypes";
+import { fetchJson } from "@/assets/common/fetchJson";
 
-describe("fetchJSON", () => {
+describe("fetchJson", () => {
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
@@ -22,22 +22,22 @@ describe("fetchJSON", () => {
 			}),
 		);
 
-		const data = await fetchJSON("/test/url");
+		const data = await fetchJson("/test/url");
 		expect(data).toEqual({ foobar: 42 });
 	});
 
 	it(`should throw an error if url is not a string`, async () => {
-		await expect(fetchJSON(123)).rejects.toThrow(TypeError);
+		await expect(fetchJson(123)).rejects.toThrow(TypeError);
 	});
 
 	it(`should throw an error if data is not an object`, async () => {
-		await expect(fetchJSON("/test/url", "string")).rejects.toThrow(
+		await expect(fetchJson("/test/url", "string")).rejects.toThrow(
 			TypeError,
 		);
 	});
 
 	it(`should throw an error if options is not an object`, async () => {
-		await expect(fetchJSON("/test/url", {}, "string")).rejects.toThrow(
+		await expect(fetchJson("/test/url", {}, "string")).rejects.toThrow(
 			TypeError,
 		);
 	});
@@ -54,7 +54,7 @@ describe("fetchJSON", () => {
 			}),
 		);
 
-		await expect(fetchJSON("/test/url")).rejects.toThrow(UnauthorizedError);
+		await expect(fetchJson("/test/url")).rejects.toThrow(UnauthorizedError);
 	});
 
 	it(`should throw AccessDeniedError if status is 403`, async () => {
@@ -69,7 +69,7 @@ describe("fetchJSON", () => {
 			}),
 		);
 
-		await expect(fetchJSON("/test/url")).rejects.toThrow(AccessDeniedError);
+		await expect(fetchJson("/test/url")).rejects.toThrow(AccessDeniedError);
 	});
 
 	it(`should throw TooManyRequestsError if status is 429`, async () => {
@@ -84,7 +84,7 @@ describe("fetchJSON", () => {
 			}),
 		);
 
-		await expect(fetchJSON("/test/url")).rejects.toThrow(
+		await expect(fetchJson("/test/url")).rejects.toThrow(
 			TooManyRequestsError,
 		);
 	});

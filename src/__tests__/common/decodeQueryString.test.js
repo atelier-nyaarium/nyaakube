@@ -1,4 +1,4 @@
-import { decodeQueryString } from "@/assets/client/decodeQueryString";
+import { decodeQueryString } from "@/assets/common/decodeQueryString";
 
 describe("decodeQueryString", () => {
 	it(`should decode a query string into an object`, () => {

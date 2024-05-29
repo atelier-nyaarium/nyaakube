@@ -2,7 +2,8 @@ import {
 	AccessDeniedError,
 	TooManyRequestsError,
 	UnauthorizedError,
-} from "@/assets/common/ErrorTypes";
+} from "@/assets/ErrorTypes";
+import { encodeQueryString } from "@/assets/common/encodeQueryString";
 import json5 from "json5";
 import _ from "lodash";
 
@@ -19,7 +20,7 @@ import _ from "lodash";
  *
  * @param {string} url - The URL to fetch.
  * @param {Object} [data] - Optional JSON data to send.
- * @param {FetchOptions} [options] - Optional fetch options.
+ * @param {FetchOptions} [otherOptions] - Optional fetch options.
  *
  * @returns {Promise<Object>} - The JSON response.
  *
@@ -31,18 +32,18 @@ import _ from "lodash";
  * @throws {Error} If the response is not JSON.
  *
  * @example
- * const data = await fetchJSON(`/api/session/login`, { email, password });
+ * const data = await fetchJson(`/api/session/login`, { email, password });
  * -> { success: true, message: "Login successful." }
  */
-export async function fetchJSON(url, data, options = {}) {
+export async function fetchJson(url, data, options = {}) {
 	if (typeof url !== "string") {
 		throw new TypeError(
-			`fetchJSON(url, data?, options?) : 'url' must be a string.`,
+			`fetchJson(url, data?, options?) : 'url' must be a string.`,
 		);
 	}
 	if (data !== undefined && (typeof data !== "object" || data === null)) {
 		throw new TypeError(
-			`fetchJSON(url, data?, options?) : 'data' is optional, but must be an object.`,
+			`fetchJson(url, data?, options?) : 'data' is optional, but must be an object.`,
 		);
 	}
 	if (
@@ -50,11 +51,13 @@ export async function fetchJSON(url, data, options = {}) {
 		(typeof options !== "object" || options === null)
 	) {
 		throw new TypeError(
-			`fetchJSON(url, data?, options?) : 'options' is optional, but must be an object.`,
+			`fetchJson(url, data?, options?) : 'options' is optional, but must be an object.`,
 		);
 	}
 
-	const asForm = !!options?.form;
+	const { accessToken, clientId, ...otherOptions } = options;
+
+	const asForm = !!otherOptions?.form;
 
 	let fetchData;
 
@@ -63,18 +66,21 @@ export async function fetchJSON(url, data, options = {}) {
 			{
 				method: "post",
 			},
-			options,
+			otherOptions,
 		);
 	} else {
+		const defaultMethod = data !== undefined ? "post" : "get";
 		fetchData = _.merge(
 			{
-				method: typeof data === "undefined" ? "get" : "post",
+				method: otherOptions.method
+					? otherOptions.method
+					: defaultMethod,
 				headers: {
 					"Accept": "application/json",
 					"Content-Type": "application/json",
 				},
 			},
-			options,
+			otherOptions,
 		);
 	}
 
@@ -92,13 +98,25 @@ export async function fetchJSON(url, data, options = {}) {
 		fetchData.body = formData;
 	} else {
 		if (data !== undefined) {
-			fetchData.body = JSON.stringify(data);
+			if (fetchData.method.toLowerCase() === "get") {
+				url = encodeQueryString(data, url);
+			} else {
+				fetchData.body = JSON.stringify(data);
+			}
 		}
 	}
 
 	// If data is being sent by headers, stringify it.
 	if (fetchData.headers?.data) {
 		fetchData.headers.data = json5.stringify(fetchData.headers.data);
+	}
+
+	if (accessToken) {
+		otherOptions.headers["Authorization"] = `Bearer ${accessToken}`;
+	}
+
+	if (clientId) {
+		otherOptions.headers["Client-ID"] = clientId;
 	}
 
 	const res = await fetch(url, fetchData);
