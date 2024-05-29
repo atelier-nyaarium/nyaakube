@@ -1,3 +1,4 @@
+export { ExpiringCacheMap } from "./ExpiringCacheMap";
 export { average } from "./average";
 export { benchmark } from "./benchmark";
 export { bestByteUnit } from "./bestByteUnit";
