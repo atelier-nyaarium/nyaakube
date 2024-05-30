@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import React, {
 	createContext,
 	memo,
+	useCallback,
 	useContext,
 	useEffect,
 	useState,
@@ -46,6 +47,10 @@ export const Session = memo(function Session({ children }) {
 	useEffect(() => {
 		checkSession();
 	}, [checkSession]);
+
+	if (!sessionData) {
+		return null;
+	}
 
 	if (loading) {
 		return <CircularProgress />;
@@ -120,11 +125,17 @@ function LoginInterface({ checkSession }) {
 		],
 	);
 
+	const handlerSubmit = useCallback((event) => event.preventDefault(), []);
+
 	return (
 		<Card sx={styles.loginCard}>
 			<CardHeader title="Login" />
 			<CardContent>
-				<Box sx={styles.flexColumn}>
+				<Box
+					component="form"
+					onSubmit={handlerSubmit}
+					sx={styles.flexColumn}
+				>
 					<ControlledInput
 						type="text"
 						label="Email"
@@ -153,7 +164,12 @@ function LoginInterface({ checkSession }) {
 						disabled={loading}
 					/>
 
-					<Button variant="contained" onClick={sessionLogin}>
+					<Button
+						type="submit"
+						variant="contained"
+						onClick={sessionLogin}
+						disabled={loading}
+					>
 						{loading ? <CircularProgress size="24px" /> : "Login"}
 					</Button>
 				</Box>
