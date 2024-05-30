@@ -1,6 +1,6 @@
 import { useFetch } from "@/assets/client";
-import AlignScreenMiddle from "@/components/AlignScreenMiddle";
-import ControlledInput from "@/components/ControlledInput";
+import { AlignScreenMiddle } from "@/components/AlignScreenMiddle";
+import { ControlledInput } from "@/components/ControlledInput";
 import { useSnackbar } from "@/components/Snackbar";
 import {
 	Box,
@@ -11,7 +11,13 @@ import {
 	CircularProgress,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+	createContext,
+	memo,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 
 const SessionContext = createContext();
 
@@ -25,10 +31,10 @@ export function useSession() {
 	return context;
 }
 
-export default function Session({ children }) {
+export const Session = memo(function Session({ children }) {
 	const [sessionData, setSessionData] = useState(null);
 
-	const [checkSession] = useFetch(
+	const [checkSession, loading] = useFetch(
 		() => ({
 			url: `/api/session/check`,
 			ok: setSessionData,
@@ -41,7 +47,7 @@ export default function Session({ children }) {
 		checkSession();
 	}, [checkSession]);
 
-	if (!sessionData) {
+	if (loading) {
 		return <CircularProgress />;
 	}
 
@@ -56,7 +62,7 @@ export default function Session({ children }) {
 			)}
 		</SessionContext.Provider>
 	);
-}
+});
 
 Session.propTypes = {
 	children: PropTypes.node.isRequired,

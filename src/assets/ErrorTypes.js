@@ -56,3 +56,23 @@ export class TooManyRequestsError extends Error {
 		super(message);
 	}
 }
+
+/**
+ * Not Found Error
+ *
+ * The requested resource could not be found.
+ *
+ * @extends Error
+ */
+export class NotFoundError extends Error {
+	/**
+	 * Create a NotFoundError.
+	 *
+	 * @param {string} [message] - The error message. Pass a message to override the default.
+	 */
+	constructor(message = undefined) {
+		message ??=
+			"[404] Not Found. The requested resource could not be found.";
+		super(message);
+	}
+}

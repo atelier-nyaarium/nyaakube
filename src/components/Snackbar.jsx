@@ -3,6 +3,7 @@ import { Alert, Grow, IconButton, Snackbar } from "@mui/material";
 import PropTypes from "prop-types";
 import React, {
 	createContext,
+	memo,
 	useCallback,
 	useContext,
 	useReducer,
@@ -65,7 +66,7 @@ function pureReducer(state, action) {
 	}
 }
 
-export function SnackbarProvider({ children }) {
+export const SnackbarProvider = memo(function SnackbarProvider({ children }) {
 	const [state, dispatch] = useReducer(pureReducer, initialState);
 
 	const closingTransition = useCallback((closingTransition) => {
@@ -203,7 +204,7 @@ export function SnackbarProvider({ children }) {
 			{children}
 		</SnackbarContext.Provider>
 	);
-}
+});
 
 SnackbarProvider.propTypes = {
 	children: PropTypes.any,

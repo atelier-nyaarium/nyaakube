@@ -1,7 +1,7 @@
 import { useSession } from "@/components/Session";
 import { Card, CardContent, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 
 /**
  * A component that checks if the user has permission to perform an action.
@@ -12,7 +12,7 @@ import React, { useMemo } from "react";
  *
  * @returns {JSX.Element} The Can component.
  */
-export default function Can({ children, perform, context }) {
+export const Can = memo(function Can({ children, perform, context }) {
 	const { session } = useSession();
 
 	const hasAccess = useMemo(() => {
@@ -42,7 +42,7 @@ export default function Can({ children, perform, context }) {
 			)}
 		</>
 	);
-}
+});
 
 Can.propTypes = {
 	children: PropTypes.any,

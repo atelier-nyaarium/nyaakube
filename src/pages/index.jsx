@@ -1,4 +1,4 @@
-import AlignScreenMiddle from "@/components/AlignScreenMiddle";
+import { AlignScreenMiddle } from "@/components/AlignScreenMiddle";
 import {
 	Avatar,
 	Card,
