@@ -1,4 +1,4 @@
-import { fetchJson } from "@/assets/client";
+import { fetchJson } from "@/assets/common";
 import {
 	Box,
 	Button,

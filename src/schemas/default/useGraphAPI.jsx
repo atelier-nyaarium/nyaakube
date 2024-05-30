@@ -1,4 +1,4 @@
-import { fetchJson } from "@/assets/client";
+import { fetchJson } from "@/assets/common";
 import { jsonToGraphQLQuery } from "json-to-graphql-query";
 import PropTypes from "prop-types";
 import React, { createContext, useCallback, useContext } from "react";

@@ -1,5 +1,5 @@
-import { fetchJson } from "@/assets/client/fetchJson";
 import { useLoadingCallback } from "@/assets/client/useLoadingCallback";
+import { fetchJson } from "@/assets/common/fetchJson";
 import { useSnackbar } from "@/components/Snackbar";
 import { useMemo } from "react";
 
