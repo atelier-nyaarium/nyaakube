@@ -13,7 +13,7 @@ const BASE_GALLERY = path.join(BASE_UNLISTED, "gallery");
 
 export default createApiHandler({
 	label: __filename,
-	handler: async (req, res) => {
+	async handler(req, res) {
 		if (!req.data?.path) {
 			return respondError(
 				req,
