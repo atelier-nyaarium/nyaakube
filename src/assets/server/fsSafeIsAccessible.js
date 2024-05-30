@@ -25,12 +25,19 @@ import { lstatSync } from "fs";
  * @example
  * if (safeIsFileAccessible("/var/data", "Foo̵̔̐Bã̸r?.txt"))
  */
-export function safeIsFileAccessible(workDir, filePath) {
+export function fsSafeIsAccessible(workDir, filePath) {
 	try {
 		const safePathFS = sanitizePath(workDir, filePath);
 
-		// eslint-disable-next-line security/detect-non-literal-fs-filename
-		return lstatSync(safePathFS).isFile();
+		const stats = lstatSync(safePathFS);
+
+		if (stats.isFile()) {
+			return "file";
+		} else if (stats.isDirectory()) {
+			return "directory";
+		} else {
+			return false;
+		}
 	} catch (error) {
 		return false;
 	}

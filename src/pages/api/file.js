@@ -1,8 +1,8 @@
 import {
 	createApiHandler,
+	fsSafeIsAccessible,
 	getEnv,
 	respondError,
-	safeIsFileAccessible,
 	sanitizePath,
 	validateTOTP,
 } from "@/assets/server";
@@ -18,52 +18,72 @@ const SERVE_BASE_HANDLERS = Object.freeze({
 	[BASE_UNLISTED]: serveUnlisted,
 	[BASE_PUBLIC]: servePublic,
 });
+fs.mkdirSync(BASE_PUBLIC, { recursive: true });
+fs.mkdirSync(BASE_UNLISTED, { recursive: true });
+fs.mkdirSync(BASE_PROTECTED, { recursive: true });
 
 export default createApiHandler({
 	label: __filename,
-	handler: async (req, res) => {
+	async handler(req, res) {
+		// Scan for files first
 		for (const basePath in SERVE_BASE_HANDLERS) {
 			const serveHandler = SERVE_BASE_HANDLERS[basePath];
 
-			if (!safeIsFileAccessible(basePath, req.data?.path)) continue;
+			const type = fsSafeIsAccessible(basePath, req.data?.path);
+			if (type !== "file") continue;
 
-			return serveHandler(req, res, basePath, req.data?.path);
+			return serveHandler(req, res, type, basePath, req.data?.path);
+		}
+
+		// Scan for directories next
+		for (const basePath in SERVE_BASE_HANDLERS) {
+			const serveHandler = SERVE_BASE_HANDLERS[basePath];
+
+			const type = fsSafeIsAccessible(basePath, req.data?.path);
+			if (type !== "directory") continue;
+
+			return serveHandler(req, res, type, basePath, req.data?.path);
 		}
 
 		return respondError(req, res, `File not found`, 404);
 	},
 });
 
-async function servePublic(req, res, basePath, filePath) {
-	if (!safeIsFileAccessible(basePath, req.data?.path)) {
+async function servePublic(req, res, type, basePath, filePath) {
+	if (!fsSafeIsAccessible(basePath, req.data?.path)) {
 		return respondError(req, res, `File not found`, 404);
 	}
 
 	const safePathFS = sanitizePath(basePath, filePath);
 
-	// Pipe file reader to response `res`
+	// Check if exists, and if file or directory
+	if (!fs.existsSync(safePathFS)) {
+		return respondError(req, res, `File not found`, 404);
+	}
+
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
 	const fileStream = fs.createReadStream(safePathFS);
 
+	// Pipe file reader to response `res`
 	fileStream.pipe(res);
 }
 
-async function serveUnlisted(req, res, basePath, filePath) {
-	if (!safeIsFileAccessible(basePath, filePath)) {
+async function serveUnlisted(req, res, type, basePath, filePath) {
+	if (!fsSafeIsAccessible(basePath, filePath)) {
 		return respondError(req, res, `File not found`, 404);
 	}
 
 	const safePathFS = sanitizePath(basePath, filePath);
 
-	// Pipe file reader to response `res`
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
 	const fileStream = fs.createReadStream(safePathFS);
 
+	// Pipe file reader to response `res`
 	fileStream.pipe(res);
 }
 
-async function serveProtected(req, res, basePath, filePath) {
-	if (!safeIsFileAccessible(basePath, filePath)) {
+async function serveProtected(req, res, type, basePath, filePath) {
+	if (!fsSafeIsAccessible(basePath, filePath)) {
 		return respondError(req, res, `File not found`, 404);
 	}
 
@@ -78,9 +98,9 @@ async function serveProtected(req, res, basePath, filePath) {
 
 	const safePathFS = sanitizePath(basePath, filePath);
 
-	// Pipe file reader to response `res`
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
 	const fileStream = fs.createReadStream(safePathFS);
 
+	// Pipe file reader to response `res`
 	fileStream.pipe(res);
 }
