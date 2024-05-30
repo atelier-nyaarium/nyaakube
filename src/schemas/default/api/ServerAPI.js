@@ -1,7 +1,4 @@
-import {
-	AccessDeniedError,
-	UnauthorizedError,
-} from "@/assets/common/ErrorTypes";
+import { AccessDeniedError, UnauthorizedError } from "@/assets/ErrorTypes";
 import PostgresDataSource from "@/typeorm/PostgresDataSource";
 import { Role } from "@/typeorm/entities/roles.entity";
 import { User } from "@/typeorm/entities/users.entity";

@@ -1,4 +1,4 @@
-import { encodeQueryString } from "@/assets/client/encodeQueryString";
+import { encodeQueryString } from "@/assets/common/encodeQueryString";
 
 describe("encodeQueryString", () => {
 	it(`encodes an object into a query string`, () => {
