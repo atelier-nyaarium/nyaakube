@@ -9,6 +9,8 @@ if [ -f ".env.shell" ]; then
             export $line
         fi
     done < .env.shell
+else
+    echo ".env.shell not found. Skipping."
 fi
 
 "$@"
