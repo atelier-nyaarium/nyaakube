@@ -1,6 +1,6 @@
 import { useFetch } from "@/assets/client";
-import AlignScreenMiddle from "@/components/AlignScreenMiddle";
-import ControlledInput from "@/components/ControlledInput";
+import { AlignScreenMiddle } from "@/components/AlignScreenMiddle";
+import { ControlledInput } from "@/components/ControlledInput";
 import { useSnackbar } from "@/components/Snackbar";
 import {
 	Box,
@@ -11,7 +11,14 @@ import {
 	CircularProgress,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+	createContext,
+	memo,
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 
 const SessionContext = createContext();
 
@@ -25,10 +32,10 @@ export function useSession() {
 	return context;
 }
 
-export default function Session({ children }) {
+export const Session = memo(function Session({ children }) {
 	const [sessionData, setSessionData] = useState(null);
 
-	const [checkSession] = useFetch(
+	const [checkSession, loading] = useFetch(
 		() => ({
 			url: `/api/session/check`,
 			ok: setSessionData,
@@ -42,6 +49,10 @@ export default function Session({ children }) {
 	}, [checkSession]);
 
 	if (!sessionData) {
+		return null;
+	}
+
+	if (loading) {
 		return <CircularProgress />;
 	}
 
@@ -56,7 +67,7 @@ export default function Session({ children }) {
 			)}
 		</SessionContext.Provider>
 	);
-}
+});
 
 Session.propTypes = {
 	children: PropTypes.node.isRequired,
@@ -114,11 +125,17 @@ function LoginInterface({ checkSession }) {
 		],
 	);
 
+	const handlerSubmit = useCallback((event) => event.preventDefault(), []);
+
 	return (
 		<Card sx={styles.loginCard}>
 			<CardHeader title="Login" />
 			<CardContent>
-				<Box sx={styles.flexColumn}>
+				<Box
+					component="form"
+					onSubmit={handlerSubmit}
+					sx={styles.flexColumn}
+				>
 					<ControlledInput
 						type="text"
 						label="Email"
@@ -147,7 +164,12 @@ function LoginInterface({ checkSession }) {
 						disabled={loading}
 					/>
 
-					<Button variant="contained" onClick={sessionLogin}>
+					<Button
+						type="submit"
+						variant="contained"
+						onClick={sessionLogin}
+						disabled={loading}
+					>
 						{loading ? <CircularProgress size="24px" /> : "Login"}
 					</Button>
 				</Box>

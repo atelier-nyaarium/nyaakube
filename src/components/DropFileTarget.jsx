@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 
 const styles = {
 	root: {
@@ -24,7 +24,11 @@ const styles = {
  * 
  * @returns {JSX.Element} - The JSX element representing the component.
  */
-export default function DropFileTarget({ children, onDrop, disabled }) {
+export const DropFileTarget = memo(function DropFileTarget({
+	children,
+	onDrop,
+	disabled,
+}) {
 	const [dragOver, setDragOver] = useState(false);
 
 	const styleZone = useMemo(
@@ -77,7 +81,7 @@ export default function DropFileTarget({ children, onDrop, disabled }) {
 			{children}
 		</div>
 	);
-}
+});
 
 DropFileTarget.propTypes = {
 	children: PropTypes.any,

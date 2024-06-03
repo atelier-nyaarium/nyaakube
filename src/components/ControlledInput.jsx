@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
-import React, { useCallback } from "react";
+import React, { memo, useCallback } from "react";
 
 const InputLabelProps = {
 	shrink: true,
@@ -20,7 +20,7 @@ const InputLabelProps = {
  *
  * @returns {JSX.Element} - The controlled input component.
  */
-export default function ControlledInput({
+export const ControlledInput = memo(function ControlledInput({
 	value,
 	setValue,
 	onChange,
@@ -69,7 +69,7 @@ export default function ControlledInput({
 			InputLabelProps={InputLabelProps}
 		/>
 	);
-}
+});
 
 ControlledInput.propTypes = {
 	value: PropTypes.any,

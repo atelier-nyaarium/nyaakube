@@ -1,9 +1,9 @@
 import {
 	createApiHandler,
+	fsSafeScanDirectory,
 	getEnv,
 	respondError,
 	respondJson,
-	scanDirectory,
 } from "@/assets/server";
 import path from "path";
 
@@ -13,7 +13,7 @@ const BASE_GALLERY = path.join(BASE_UNLISTED, "gallery");
 
 export default createApiHandler({
 	label: __filename,
-	handler: async (req, res) => {
+	async handler(req, res) {
 		if (!req.data?.path) {
 			return respondError(
 				req,
@@ -23,7 +23,7 @@ export default createApiHandler({
 			);
 		}
 
-		const listing = scanDirectory(BASE_GALLERY, req.data?.path);
+		const listing = fsSafeScanDirectory(BASE_GALLERY, req.data?.path);
 
 		for (let i = listing.dirs.length - 1; 0 <= i; i--) {
 			const dir = listing.dirs[i];

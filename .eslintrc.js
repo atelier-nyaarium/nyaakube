@@ -40,7 +40,7 @@ module.exports = {
 		"no-unused-vars": ["warn", { args: "none" }],
 		"no-useless-escape": "warn",
 		"no-var": "warn",
-		"prefer-arrow-callback": "warn",
+		"prefer-arrow-callback": "off",
 		"prefer-const": "warn",
 		"react-hooks/exhaustive-deps": [
 			"warn",

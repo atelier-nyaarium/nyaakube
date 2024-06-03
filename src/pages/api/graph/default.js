@@ -11,7 +11,7 @@ const api = new ServerAPI();
 
 export default createApiHandler({
 	label: __filename,
-	handler: async (req, res) => {
+	async handler(req, res) {
 		const { source } = req.data;
 
 		if (typeof source !== "string") {

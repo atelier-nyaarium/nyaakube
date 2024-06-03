@@ -1,4 +1,4 @@
-import Session, { useSession } from "@/components/Session";
+import { Session, useSession } from "@/components/Session";
 import { Card, CardHeader, Typography } from "@mui/material";
 import React from "react";
 
@@ -22,7 +22,7 @@ export default function PageTest() {
 	);
 }
 
-function TestCard(props) {
+function TestCard() {
 	const { session } = useSession();
 
 	return (

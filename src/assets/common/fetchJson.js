@@ -1,5 +1,6 @@
 import {
 	AccessDeniedError,
+	NotFoundError,
 	TooManyRequestsError,
 	UnauthorizedError,
 } from "@/assets/ErrorTypes";
@@ -134,6 +135,10 @@ export async function fetchJson(url, data, options = {}) {
 				throw new AccessDeniedError(unexpectedText);
 			}
 
+			if (res.status === 404) {
+				throw new NotFoundError(unexpectedText);
+			}
+
 			if (res.status === 429) {
 				throw new TooManyRequestsError(unexpectedText);
 			}
@@ -153,6 +158,9 @@ export async function fetchJson(url, data, options = {}) {
 		}
 		if (res.status === 403) {
 			throw new AccessDeniedError(json.message);
+		}
+		if (res.status === 404) {
+			throw new NotFoundError(json.message);
 		}
 		if (res.status === 429) {
 			throw new TooManyRequestsError(json.message);

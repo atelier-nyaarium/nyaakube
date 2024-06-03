@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { memo } from "react";
 
 const styles = {
 	centerAlignOuter: {
@@ -24,7 +24,7 @@ const styles = {
 	},
 };
 
-export default function AlignScreenMiddle({ children }) {
+export const AlignScreenMiddle = memo(function AlignScreenMiddle({ children }) {
 	return (
 		<Box sx={styles.centerAlignOuter}>
 			<Box sx={styles.centerAlignInner}>
@@ -32,7 +32,7 @@ export default function AlignScreenMiddle({ children }) {
 			</Box>
 		</Box>
 	);
-}
+});
 
 AlignScreenMiddle.propTypes = {
 	children: PropTypes.any,
