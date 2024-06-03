@@ -13,12 +13,11 @@ else
     echo ".env.shell not found. Skipping."
 fi
 
-which npx
-npx -v
-npx ts-node -v
+echo "Node version: $(node -v)"
 
+# If ts-node exists, but this command fails, double check you are giving enough memory to the container.
 npx ts-node <<EOF
-console.log("ts-node works");
+console.log("ts-node version: " + require("ts-node/package.json").version);
 EOF
 
 echo "$@"
