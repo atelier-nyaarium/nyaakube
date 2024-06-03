@@ -13,4 +13,5 @@ else
     echo ".env.shell not found. Skipping."
 fi
 
+echo "$@"
 "$@"
