@@ -69,6 +69,8 @@ RUN apk add bash \
 COPY --from=BUILDER /app/deployment/ ./
 COPY --from=MIGRATION_RUNNER /app/ migration/
 
+RUN npm install argon2
+
 CMD echo "🛠️  Starting TypeORM migration" \
 	&& cd "migration" && scripts/migrationUp.sh && cd .. && rm -rf migration \
 	&& echo "🛠️  Starting node process" \
