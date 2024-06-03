@@ -13,14 +13,13 @@ else
     echo ".env.shell not found. Skipping."
 fi
 
-ls ./node_modules/typeorm/
-
-ls ./node_modules/ts-node/
-
-ls ./src/typeorm/
-
 which npx
 npx -v
+npx ts-node -v
+
+npx ts-node <<EOF
+console.log("ts-node works");
+EOF
 
 echo "$@"
 "$@"
