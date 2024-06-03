@@ -15,7 +15,7 @@ import { lstatSync } from "fs";
  *     -
  *
  * @param {string} workDir - The working directory to resolve paths from.
- * @param {string} filePath - The relative path to sanitize.
+ * @param {string} filePath - The relative path to check.
  *
  * @returns {boolean} - Whether the file is accessible.
  *
@@ -26,6 +26,18 @@ import { lstatSync } from "fs";
  * if (safeIsFileAccessible("/var/data", "Foo̵̔̐Bã̸r?.txt"))
  */
 export function fsSafeIsAccessible(workDir, filePath) {
+	if (typeof workDir !== "string") {
+		throw new TypeError(
+			`fsSafeIsAccessible(workDir, filePath) : 'workDir' must be a string.`,
+		);
+	}
+
+	if (typeof filePath !== "string") {
+		throw new TypeError(
+			`fsSafeIsAccessible(workDir, filePath) : 'filePath' must be a string.`,
+		);
+	}
+
 	try {
 		const safePathFS = sanitizePath(workDir, filePath);
 
