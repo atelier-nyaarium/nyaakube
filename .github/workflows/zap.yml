@@ -18,7 +18,7 @@ jobs:
       ZAP_AUTH_HEADER_SITE: ${{ secrets.WEBSITE_URL }}
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.8.0
+        uses: zaproxy/action-full-scan@v0.10.0
         with:
           target: "${{ secrets.WEBSITE_URL }}"
           allow_issue_writing: false
