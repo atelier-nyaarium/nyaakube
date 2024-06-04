@@ -1,4 +1,4 @@
-FROM node:22-alpine AS BUILDER
+FROM node:22-bookworm AS BUILDER
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -31,7 +31,7 @@ RUN cp package*.json deployment/
 
 
 
-FROM node:22-alpine as MIGRATION_RUNNER
+FROM node:22-bookworm as MIGRATION_RUNNER
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -51,7 +51,7 @@ COPY tsconfig.json ./
 
 
 
-FROM node:22-alpine AS RUNNER
+FROM node:22-bookworm AS RUNNER
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -63,9 +63,9 @@ ENV DATA_PATH=/data
 
 EXPOSE $PORT
 
-RUN apk add --no-cache \
+RUN apt update && apt install -y \
 	argon2 \
-	bash \
+	&& apt clean && rm -rf /var/lib/apt/lists/* \
 	&& npm config set update-notifier false
 
 COPY --from=BUILDER /app/deployment/ ./
