@@ -76,13 +76,12 @@ RUN apk add --no-cache \
 	&& npm config set update-notifier false
 
 COPY --from=BUILDER /app/deployment/ ./
-COPY --from=BUILDER /app/node_modules/argon2/ node_modules/argon2/
+# COPY --from=BUILDER /app/node_modules/argon2/ node_modules/argon2/
 COPY --from=MIGRATION_RUNNER /app/ migration/
 
 CMD echo "🛠️  Starting TypeORM migration" \
-	&& echo "" && ls -hal node_modules/ \
-	&& echo "" && ls -hal node_modules/argon2/ \
-	&& echo "" && ls -hal node_modules/argon2/prebuilts \
+	&& ls -hal node_modules/argon2/ \
+	&& ls -hal node_modules/argon2/prebuilds \
 	&& cd "migration" && scripts/migrationUp.sh && cd .. && rm -rf migration \
 	&& echo "🛠️  Starting node process" \
 	&& node server.js
