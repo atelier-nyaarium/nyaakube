@@ -6,19 +6,11 @@ ENV NODE_ENV=production
 # React security setting
 ENV INLINE_RUNTIME_CHUNK=false
 
-# Argon2 needs: g++ libc-dev make python3
-RUN apk add --no-cache \
-	g++ \
-	libc-dev \
-	make \
-	python3
-
 RUN npm config set update-notifier false
 
 # Build node_modules first
 COPY package*.json ./
 RUN npm ci --include=dev
-RUN npm rebuild argon2
 
 # Build project
 COPY . .
@@ -72,16 +64,14 @@ ENV DATA_PATH=/data
 EXPOSE $PORT
 
 RUN apk add --no-cache \
+	argon2 \
 	bash \
 	&& npm config set update-notifier false
 
 COPY --from=BUILDER /app/deployment/ ./
-# COPY --from=BUILDER /app/node_modules/argon2/ node_modules/argon2/
 COPY --from=MIGRATION_RUNNER /app/ migration/
 
 CMD echo "🛠️  Starting TypeORM migration" \
-	&& ls -hal node_modules/argon2/ \
-	&& ls -hal node_modules/argon2/prebuilds \
 	&& cd "migration" && scripts/migrationUp.sh && cd .. && rm -rf migration \
 	&& echo "🛠️  Starting node process" \
 	&& node server.js
