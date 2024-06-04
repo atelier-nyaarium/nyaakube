@@ -36,7 +36,6 @@ RUN rm -rf deployment/.next/standalone/
 RUN cp -R public/ deployment/   || true
 RUN cp next.config.js deployment/
 RUN cp package*.json deployment/
-RUN cp -R node_modules/argon2/ deployment/node_modules/argon2/
 
 
 
@@ -77,9 +76,13 @@ RUN apk add --no-cache \
 	&& npm config set update-notifier false
 
 COPY --from=BUILDER /app/deployment/ ./
+COPY --from=BUILDER /app/node_modules/argon2/ node_modules/argon2/
 COPY --from=MIGRATION_RUNNER /app/ migration/
 
 CMD echo "🛠️  Starting TypeORM migration" \
+	&& echo "" && ls -hal node_modules/ \
+	&& echo "" && ls -hal node_modules/argon2/ \
+	&& echo "" && ls -hal node_modules/argon2/prebuilts \
 	&& cd "migration" && scripts/migrationUp.sh && cd .. && rm -rf migration \
 	&& echo "🛠️  Starting node process" \
 	&& node server.js
