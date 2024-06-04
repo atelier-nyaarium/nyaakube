@@ -29,13 +29,14 @@ RUN npx next telemetry disable \
 	&& npm run build
 
 # Next Standalone
-RUN mkdir -p deployment/
+RUN mkdir -p deployment/node_modules/
 RUN cp -R .next/ deployment/
 RUN cp -R .next/standalone/* deployment/
 RUN rm -rf deployment/.next/standalone/
 RUN cp -R public/ deployment/   || true
 RUN cp next.config.js deployment/
 RUN cp package*.json deployment/
+RUN cp -R node_modules/argon2/ deployment/node_modules/argon2/
 
 
 
