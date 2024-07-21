@@ -1,8 +1,9 @@
 # Build
 /.next/
+/build/
 
 # Development
-_test/
+debug/
 /.env*
 /.swc/
 /.vscode-server/
