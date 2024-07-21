@@ -1,34 +1,32 @@
-name: Workflow Call - Build & Lint
+name: Workflow Call - Build & Push
 
 on:
   workflow_call:
     inputs:
-      save:
-        description: "Save the build image artifact"
+      push:
+        description: "Push the image to Docker Hub"
         type: boolean
         required: true
 
 jobs:
   build:
-    name: Build & Lint
-    runs-on: ubuntu-latest
+    name: Build & Push
+    runs-on: ubuntu-latest # Docker commands don't work on my self-hosted runners (since they are also Docker)
     steps:
+      - name: Get repository name
+        run: echo "REPO_NAME=$(basename ${{ github.repository }})" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and export
+      - name: Docker login
+        run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          tags: ${{ github.repository }}:latest
-          outputs: type=docker,dest=/tmp/image.tar
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        if: ${{ inputs.save == true }}
-        with:
-          name: image
-          path: /tmp/image.tar
-          retention-days: 7
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:latest
+          push: true

@@ -13,12 +13,12 @@ jobs:
       actions: read
       contents: read
     with:
-      save: false
+      push: false
 
-  Review:
-    uses: ./.github/workflows/_dependency-review.yml
-    secrets: inherit
-    permissions:
-      actions: read
-      contents: read
-      pull-requests: write
+  # Review:
+  #   uses: ./.github/workflows/_dependency-review.yml
+  #   secrets: inherit
+  #   permissions:
+  #     actions: read
+  #     contents: read
+  #     pull-requests: write

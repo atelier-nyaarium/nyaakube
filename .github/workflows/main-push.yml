@@ -12,7 +12,7 @@ on:
       - main
 
   schedule:
-    - cron: "0 8 * * 1"
+    - cron: "0 4 * * 1"
 
 jobs:
   Build:
@@ -22,29 +22,29 @@ jobs:
       actions: read
       contents: read
     with:
-      save: true
+      push: true
 
-  Push:
-    needs: Build
-    uses: ./.github/workflows/_docker-push.yml
-    secrets: inherit
-    permissions:
-      actions: read
-      contents: read
+  # Push:
+  #   needs: Build
+  #   uses: ./.github/workflows/_docker-push.yml
+  #   secrets: inherit
+  #   permissions:
+  #     actions: read
+  #     contents: read
 
   Rollout:
-    needs: Push
+    needs: Build
     uses: ./.github/workflows/_k8s-restart.yml
     secrets: inherit
     permissions:
       actions: read
       contents: read
 
-  Trivy:
-    needs: Push
-    uses: ./.github/workflows/_trivy.yml
-    secrets: inherit
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
+  # Trivy:
+  #   needs: Push
+  #   uses: ./.github/workflows/_trivy.yml
+  #   secrets: inherit
+  #   permissions:
+  #     actions: read
+  #     contents: read
+  #     security-events: write
