@@ -71,10 +71,7 @@ RUN apt update && apt install -y \
 COPY --from=BUILDER /app/deployment/ ./
 COPY --from=MIGRATION_RUNNER /app/ migration/
 
-RUN rm -rf /usr/bin/apt* /usr/lib/apt /etc/apt /var/lib/apt \
-    && rm -rf /usr/bin/dpkg* /usr/lib/dpkg /var/lib/dpkg \
-    && rm -rf /usr/bin/addgroup /usr/bin/adduser /usr/bin/newusers /usr/bin/delgroup /usr/bin/deluser \
-    && rm -rf /usr/bin/su /etc/sudoers
+RUN rm -rf /usr/bin/addgroup /usr/bin/adduser /usr/bin/newusers /usr/bin/delgroup /usr/bin/deluser /usr/bin/su /etc/sudoers
 
 CMD echo "🛠️  Starting TypeORM migration" \
 	&& cd "migration" && scripts/migrationUp.sh && cd .. && rm -rf migration \
