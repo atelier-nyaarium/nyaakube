@@ -9,20 +9,13 @@ jobs:
     # runs-on: self-hosted
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: image
-          path: /tmp
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Load image
-        run: docker load --input /tmp/image.tar
+      - name: Get repository name
+        run: echo "REPO_NAME=$(basename ${{ github.repository }})" >> $GITHUB_ENV
 
       - name: Run Trivy scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "${{ github.repository }}:latest"
+          image-ref: ${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:latest
           format: "sarif"
           output: "trivy-results.sarif"
           vuln-type: "os,library"

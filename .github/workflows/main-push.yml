@@ -40,11 +40,11 @@ jobs:
       actions: read
       contents: read
 
-  # Trivy:
-  #   needs: Push
-  #   uses: ./.github/workflows/_trivy.yml
-  #   secrets: inherit
-  #   permissions:
-  #     actions: read
-  #     contents: read
-  #     security-events: write
+  Trivy:
+    needs: Build
+    uses: ./.github/workflows/_trivy.yml
+    secrets: inherit
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
