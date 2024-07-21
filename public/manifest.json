@@ -1,0 +1,38 @@
+{
+	"short_name": "Nyaa~",
+	"name": "Atelier Nyaarium",
+	"id": "/",
+	"start_url": ".",
+	"display": "standalone",
+	"display_override": ["window-controls-overlay", "standalone"],
+	"theme_color": "#ffffff",
+	"background_color": "#000000",
+	"protocol_handlers": [
+		{
+			"protocol": "web+nyaarium",
+			"url": "/action?data=%s",
+			"example": "web+nyaarium://action?data=%7Baction%3A%27reboot%27%2Cid%3A%27123%27%7D"
+		}
+	],
+	"icons": [
+		{
+			"src": "Nyaarium%20Logo.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"screenshots": [
+		{
+			"src": "Banner.png",
+			"sizes": "2000x1000",
+			"type": "image/png",
+			"form_factor": "wide"
+		},
+		{
+			"src": "Test.jpg",
+			"sizes": "1440x3120",
+			"type": "image/jpeg",
+			"form_factor": "narrow"
+		}
+	]
+}
