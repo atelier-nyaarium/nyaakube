@@ -1,4 +1,4 @@
-FROM node:22-bookworm AS BUILDER
+FROM node:22.5-bookworm-slim AS BUILDER
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -31,7 +31,7 @@ RUN cp package*.json deployment/
 
 
 
-FROM node:22-bookworm as MIGRATION_RUNNER
+FROM node:22.5-bookworm-slim as MIGRATION_RUNNER
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -51,7 +51,7 @@ COPY tsconfig.json ./
 
 
 
-FROM node:22-bookworm AS RUNNER
+FROM node:22.5-bookworm-slim AS RUNNER
 WORKDIR /app
 
 ENV NODE_ENV=production
