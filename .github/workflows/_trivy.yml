@@ -6,7 +6,8 @@ on:
 jobs:
   trivy:
     name: Trivy
-    runs-on: self-hosted
+    # runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
