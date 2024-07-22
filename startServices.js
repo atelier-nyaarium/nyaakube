@@ -1,3 +1,5 @@
+console.log(`Top of file`);
+
 const DEV = process.env.NODE_ENV !== "production";
 const PORT = process.env.PORT || (DEV ? 3000 : 80);
 const ORIGIN = process.env.ORIGIN || `http://localhost:${PORT}`;
