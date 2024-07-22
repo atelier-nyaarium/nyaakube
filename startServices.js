@@ -4,7 +4,10 @@ const ORIGIN_SELF = `http://127.0.0.1:${PORT}`;
 
 (async () => {
 	console.log(` ℹ️ `, `startServices.js - Connecting to ${ORIGIN_SELF}`);
-	for (let i = 0; i < 100; i++) {
+
+	await pause(5000);
+
+	for (let i = 0; i < 300; i++) {
 		try {
 			await fetch(ORIGIN_SELF).then((res) => res.status);
 			console.log(` ℹ️ `, `startServices.js - Success`);
@@ -20,7 +23,7 @@ const ORIGIN_SELF = `http://127.0.0.1:${PORT}`;
 					process.exit(1);
 			}
 
-			console.log(` ⏳ `, error.cause.code);
+			console.log(`⏳️ `, `Waiting...`);
 
 			await pause(1000);
 		}
