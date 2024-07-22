@@ -1,7 +1,6 @@
-import { Box } from "@mui/material";
-import { memo, ReactNode } from "react";
+import { CSSProperties, memo, ReactNode } from "react";
 
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
 	centerAlignOuter: {
 		display: `flex`,
 		width: `100%`,
@@ -15,11 +14,10 @@ const styles = {
 		textAlign: `center`,
 	},
 	centerAlignContent: {
-		"maxWidth": `600px`,
-
-		"& > *": {
-			textAlign: `initial`,
-		},
+		maxWidth: `600px`,
+	},
+	reset: {
+		textAlign: `initial`,
 	},
 };
 
@@ -31,10 +29,12 @@ export const AlignScreenMiddle = memo(function AlignScreenMiddle({
 	children,
 }: AlignScreenMiddleProps) {
 	return (
-		<Box sx={styles.centerAlignOuter}>
-			<Box sx={styles.centerAlignInner}>
-				<Box sx={styles.centerAlignContent}>{children}</Box>
-			</Box>
-		</Box>
+		<div style={styles.centerAlignOuter}>
+			<div style={styles.centerAlignInner}>
+				<div style={styles.centerAlignContent}>
+					<div style={styles.reset}>{children}</div>
+				</div>
+			</div>
+		</div>
 	);
 });
