@@ -1,16 +1,15 @@
 FROM node:22.5-bookworm-slim AS node_modules_dev
 WORKDIR /app
 COPY package*.json ./
-RUN npm config set update-notifier false && \
-	npm ci --include=dev
+RUN npm config set update-notifier false \
+    && npm audit fix --package-lock-only \
+    && npm ci --include=dev
 
 
 
 FROM node:22.5-bookworm-slim AS node_modules_prod
 WORKDIR /app
-COPY package*.json ./
-RUN npm config set update-notifier false && \
-	npm ci --omit=dev
+RUN npm i @remix-run/serve
 
 
 
@@ -31,14 +30,17 @@ RUN npm run build
 RUN mkdir deployment
 RUN mv build deployment/
 RUN mv package*.json deployment/
-RUN mv public deployment/ || true
-RUN mv scripts deployment/
 RUN mv startServices.js deployment/
 
 
 
 FROM node:22.5-bookworm-slim AS runner
 WORKDIR /app
+
+# Debugging tools
+# RUN apt update && apt install -y \
+#     ncdu \
+#     && apt clean && rm -rf /var/lib/apt/lists/*
 
 # Reduce CVEs
 RUN rm -rf \
