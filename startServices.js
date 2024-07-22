@@ -20,6 +20,8 @@ const ORIGIN = process.env.ORIGIN || `http://localhost:${PORT}`;
 					process.exit(1);
 			}
 
+			console.log(` ⏳ `, error.cause.code);
+
 			await pause(1000);
 		}
 	}
