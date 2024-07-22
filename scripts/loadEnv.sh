@@ -10,7 +10,7 @@ if [ -f ".env.shell" ]; then
         fi
     done < .env.shell
 else
-    echo ".env.shell not found. Skipping."
+    echo "ℹ️ .env.shell not found. Skipping."
 fi
 
 echo "Node version: $(node -v)"
