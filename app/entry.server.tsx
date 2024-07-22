@@ -11,13 +11,22 @@ import { randomBytes } from "crypto";
 import { PassThrough } from "node:stream";
 import { renderToPipeableStream } from "react-dom/server";
 
+const DEV = process.env.NODE_ENV !== "production";
+
 const ABORT_DELAY = 5_000;
 
 function setSecurityHeaders(responseHeaders: Headers) {
+	const scripts = [];
+
+	if (DEV) {
+		// Development only
+		scripts.push("'unsafe-inline'");
+	}
+
 	Object.entries({
 		"Content-Security-Policy": Object.entries({
 			"default-src": ["'none'"],
-			"script-src": ["'self'", "'unsafe-inline'"],
+			"script-src": ["'self'", ...scripts],
 			"style-src": ["'self'", "'unsafe-inline'"],
 			"manifest-src": ["'self'"],
 			"connect-src": ["'self'"],
