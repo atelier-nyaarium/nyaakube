@@ -1,12 +1,12 @@
 import { TextField } from "@mui/material";
-import React, { memo, useCallback } from "react";
+import { memo, ReactNode, useCallback } from "react";
 
 interface ControlledInputProps {
 	type: string;
 	value?: any;
 	setValue?: (value: any) => void;
 	onChange?: (value: any) => void;
-	label?: React.ReactNode;
+	label?: ReactNode;
 	placeholder?: string;
 	disabled?: boolean;
 }
