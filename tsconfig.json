@@ -24,6 +24,7 @@
 	"include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
 	"exclude": [
 		"/.eslintrc.js",
+		"/app/",
 		"/.next/",
 		"/build/",
 		"/coverage/",
