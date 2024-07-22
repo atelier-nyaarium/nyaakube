@@ -1,4 +1,20 @@
-FROM node:22.5-bookworm-slim AS BUILDER
+FROM node:22.5-bookworm-slim AS node_modules_dev
+WORKDIR /app
+COPY package*.json ./
+RUN npm config set update-notifier false && \
+	npm ci --include=dev
+
+
+
+FROM node:22.5-bookworm-slim AS node_modules_prod
+WORKDIR /app
+COPY package*.json ./
+RUN npm config set update-notifier false && \
+	npm ci --omit=dev
+
+
+
+FROM node_modules_dev AS builder
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -6,53 +22,30 @@ ENV NODE_ENV=production
 # React security setting
 ENV INLINE_RUNTIME_CHUNK=false
 
-RUN npm config set update-notifier false
-
-# Build node_modules first
-COPY package*.json ./
-RUN npm ci --include=dev
-
 # Build project
 COPY . .
-RUN rm -rf src/pages/dev/ src/pages/api/dev/
-RUN npx next telemetry disable \
-	&& npm run lint \
-	&& npm run test \
-	&& npm run build
 
-# Next Standalone
-RUN mkdir -p deployment/node_modules/
-RUN cp -R .next/ deployment/
-RUN cp -R .next/standalone/* deployment/
-RUN rm -rf deployment/.next/standalone/
-RUN cp -R public/ deployment/   || true
-RUN cp next.config.js deployment/
-RUN cp package*.json deployment/
+RUN npm run build
+
+# Isolate deployment files
+RUN mkdir deployment
+RUN mv build deployment/
+RUN mv package*.json deployment/
+RUN mv public deployment/ || true
+RUN mv scripts deployment/
+RUN mv startServices.js deployment/
 
 
 
-FROM node:22.5-bookworm-slim as MIGRATION_RUNNER
+FROM node:22.5-bookworm-slim AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
-
-RUN npm config set update-notifier false
-
-COPY package*.json ./
-RUN npm ci --omit=dev
-
-# Scripts
-COPY scripts/ scripts/
-RUN chmod +x scripts/*.sh
-
-# TypeORM
-COPY src/typeorm/ src/typeorm/
-COPY tsconfig.json ./
-
-
-
-FROM node:22.5-bookworm-slim AS RUNNER
-WORKDIR /app
+# Reduce CVEs
+RUN rm -rf \
+    /usr/bin/apt* /usr/lib/apt /etc/apt /var/lib/apt \
+    /usr/bin/dpkg* /usr/lib/dpkg /var/lib/dpkg \
+    /usr/bin/addgroup /usr/bin/adduser /usr/bin/newusers /usr/bin/delgroup /usr/bin/deluser \
+    /usr/bin/su /etc/sudoers
 
 ENV NODE_ENV=production
 
@@ -63,22 +56,7 @@ ENV DATA_PATH=/data
 
 EXPOSE $PORT
 
-RUN apt update && apt install -y \
-	argon2 \
-	&& apt clean && rm -rf /var/lib/apt/lists/* \
-	&& npm config set update-notifier false
+COPY --from=node_modules_prod /app/node_modules/ ./node_modules/
+COPY --from=builder /app/deployment/ ./
 
-COPY --from=BUILDER /app/deployment/ ./
-COPY --from=MIGRATION_RUNNER /app/ migration/
-
-# Reduce CVEs
-RUN rm -rf \
-    /usr/bin/apt* /usr/lib/apt /etc/apt /var/lib/apt \
-    /usr/bin/dpkg* /usr/lib/dpkg /var/lib/dpkg \
-    /usr/bin/addgroup /usr/bin/adduser /usr/bin/newusers /usr/bin/delgroup /usr/bin/deluser \
-    /usr/bin/su /etc/sudoers
-
-CMD echo "🛠️  Starting TypeORM migration" \
-	&& cd "migration" && scripts/migrationUp.sh && cd .. && rm -rf migration \
-	&& echo "🛠️  Starting node process" \
-	&& node server.js
+CMD ["npm", "run", "start"]
