@@ -1,16 +1,20 @@
 import json5 from "json5";
 import _ from "lodash";
 import { encodeQueryString } from "~/assets/common/encodeQueryString";
+import { pause } from "~/assets/common/pause";
 import {
 	AccessDeniedError,
 	TooManyRequestsError,
 	UnauthorizedError,
 } from "~/assets/ErrorTypes";
 
+const FETCH_BACKOFF_DELAY = 30000;
+
 export interface FetchOptions extends RequestInit {
 	form?: boolean;
 	accessToken?: string;
 	clientId?: string;
+	retry?: number;
 }
 
 /**
@@ -62,7 +66,20 @@ export async function fetchJson(
 		);
 	}
 
-	const { accessToken, clientId, ...otherOptions } = options;
+	const { accessToken, clientId, retry, ...otherOptions } = options;
+
+	if (retry !== undefined) {
+		if (!Number.isInteger(retry)) {
+			throw new TypeError(
+				`fetchJson(url, data?, options?) : Optional 'retry' must be an integer.`,
+			);
+		}
+		if (retry < 0) {
+			throw new TypeError(
+				`fetchJson(url, data?, options?) : Optional 'retry' must be 0 or greater.`,
+			);
+		}
+	}
 
 	const asForm = !!otherOptions.form;
 
@@ -135,7 +152,39 @@ export async function fetchJson(
 		(fetchData.headers as Record<string, string>)["Client-ID"] = clientId;
 	}
 
-	const res = await fetch(url, fetchData);
+	let res: Response = new Response();
+	if (retry) {
+		for (let i = 0; i < retry; i++) {
+			const delay = 10000 + i * FETCH_BACKOFF_DELAY;
+			try {
+				res = await fetch(url, fetchData);
+				break;
+			} catch (error: any) {
+				if (
+					error.name === "AbortError" ||
+					error.name === "ConnectTimeoutError" ||
+					error.name === "SocketError"
+				) {
+					if (i === retry - 1) throw error;
+
+					if (error.cause) {
+						console.log(
+							`fetchJson:  ${error.name}  maps to  ${error.cause.code}`,
+						);
+					} else {
+						console.log(`fetchJson:  error.cause doesnt exist`);
+					}
+
+					// Pause and loop again
+					await pause(delay);
+				} else {
+					throw error;
+				}
+			}
+		}
+	} else {
+		res = await fetch(url, fetchData);
+	}
 
 	let json;
 	try {
