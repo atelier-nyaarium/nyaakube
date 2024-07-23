@@ -10,37 +10,12 @@ interface BadgeData {
 	fetchData: () => Promise<any>;
 }
 
-const HOST = getEnv("HOST");
-const badges: BadgeData[] = [
-	{
-		enabled: !!HOST,
-		url: `https://developer.mozilla.org/en-US/observatory/analyze?host=${HOST}`,
-		async fetchData() {
-			const json = await fetchJson(
-				`https://observatory-api.mdn.mozilla.net/api/v2/analyze?host=${HOST}`,
-			);
+interface BadgeJson {
+	url: string;
+	image: string;
+}
 
-			const grade = json.history.pop();
-
-			let color;
-			if (85 <= grade.score) {
-				color = "brightgreen";
-			} else if (65 <= grade.score) {
-				color = "yellow";
-			} else {
-				color = "red";
-			}
-
-			const format = {
-				label: "Observatory",
-				message: `${grade.grade} (${grade.score})`,
-				color,
-			};
-
-			return `data:image/svg+xml;base64,` + btoa(makeBadge(format));
-		},
-	},
-];
+let badges: BadgeJson[] | null = null;
 
 export const meta: MetaFunction = () => {
 	return [
@@ -62,9 +37,55 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-	const ret: any[] = [];
+	// const url = new URL(request.url);
+	// const data = JSON5.parse(url.searchParams.get("data") ?? "{}");
 
-	for (const badge of badges) {
+	try {
+		await initializeBadges();
+		return json(badges);
+	} catch (error: any) {
+		return json({ error: error.message });
+	}
+}
+
+async function initializeBadges() {
+	if (badges) return;
+
+	const HOST = getEnv("HOST");
+
+	badges = [];
+	const badgesData: BadgeData[] = [
+		{
+			enabled: !!HOST,
+			url: `https://developer.mozilla.org/en-US/observatory/analyze?host=${HOST}`,
+			async fetchData() {
+				const json = await fetchJson(
+					`https://observatory-api.mdn.mozilla.net/api/v2/analyze?host=${HOST}`,
+				);
+
+				const grade = json.history.pop();
+
+				let color;
+				if (85 <= grade.score) {
+					color = "brightgreen";
+				} else if (65 <= grade.score) {
+					color = "yellow";
+				} else {
+					color = "red";
+				}
+
+				const format = {
+					label: "Observatory",
+					message: `${grade.grade} (${grade.score})`,
+					color,
+				};
+
+				return `data:image/svg+xml;base64,` + btoa(makeBadge(format));
+			},
+		},
+	];
+
+	for (const badge of badgesData) {
 		if (!badge.enabled) continue;
 
 		if (!badge.image) {
@@ -79,18 +100,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 			}
 		}
 
-		ret.push({
-			url: badge.url,
+		badges.push({
+			url: badge.url!,
 			image: badge.image,
 		});
-	}
-
-	// const url = new URL(request.url);
-	// const data = JSON5.parse(url.searchParams.get("data") ?? "{}");
-
-	try {
-		return json(ret);
-	} catch (error: any) {
-		return json({ error: error.message });
 	}
 }
