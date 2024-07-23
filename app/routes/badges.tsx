@@ -76,7 +76,7 @@ async function initializeBadges() {
 
 				const format = {
 					label: "Observatory",
-					message: `${grade.grade} (${grade.score})`,
+					message: `${grade.grade}`,
 					color,
 				};
 
