@@ -1,4 +1,4 @@
-import speakeasy from "@levminer/speakeasy";
+import { otpauthURL } from "@levminer/speakeasy";
 
 /**
  * Generates a TOTP URL
@@ -54,7 +54,7 @@ export function generateTotpUrl(
 		);
 	}
 
-	return speakeasy.otpauthURL({
+	return otpauthURL({
 		encoding: "base32",
 		algorithm: "sha1",
 		issuer: encodeURIComponent(issuerLabel),

@@ -3,7 +3,7 @@ import saslPrep from "saslprep";
 import { UnauthorizedError } from "~/assets/ErrorTypes";
 import { pause } from "~/assets/common/pause";
 import { getEnv } from "~/assets/server/getEnv";
-import { validateTOTP } from "~/assets/server/validateTOTP";
+// import { validateTOTP } from "~/assets/server/validateTOTP";
 
 interface User {
 	id: number;
@@ -96,24 +96,25 @@ export async function assertValidLogin(
 		);
 	}
 
-	if (user.totp) {
-		const validTotp: TotpValidationResult = await validateTOTP(
-			user.totp,
-			saslPrep(totpToken!),
-		);
-		if (!validTotp.valid) {
-			if (validTotp.code === 401) {
-				// Already sleeps when 401
-				throw new UnauthorizedError(
-					"Invalid email or password (or TOTP if used).",
-				);
-			} else {
-				// Only provide message if the request format is bad.
-				await randomSleep();
-				throw new Error(validTotp.message || "TOTP validation failed.");
-			}
-		}
-	}
+	// BROKEN - Replace Speakeasy with something else. Or fork and fix it.
+	// if (user.totp) {
+	// 	const validTotp: TotpValidationResult = await validateTOTP(
+	// 		user.totp,
+	// 		saslPrep(totpToken!),
+	// 	);
+	// 	if (!validTotp.valid) {
+	// 		if (validTotp.code === 401) {
+	// 			// Already sleeps when 401
+	// 			throw new UnauthorizedError(
+	// 				"Invalid email or password (or TOTP if used).",
+	// 			);
+	// 		} else {
+	// 			// Only provide message if the request format is bad.
+	// 			await randomSleep();
+	// 			throw new Error(validTotp.message || "TOTP validation failed.");
+	// 		}
+	// 	}
+	// }
 
 	return {
 		email: user.email,

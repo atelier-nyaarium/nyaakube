@@ -1,4 +1,4 @@
-import speakeasy from "@levminer/speakeasy";
+import { totp } from "@levminer/speakeasy";
 import { pause } from "~/assets/common/pause";
 
 interface ValidationResult {
@@ -79,7 +79,7 @@ export async function validateTOTP(
 			};
 		}
 
-		const isValid = speakeasy.totp.verify({
+		const isValid = totp.verify({
 			encoding: "base32",
 			digits: digitsNum,
 			// ⚠️ Speakeasy uses step instead of window
