@@ -3,7 +3,6 @@ import { CSSProperties, useEffect, useMemo } from "react";
 import { AlignScreenMiddle } from "~/components/AlignScreenMiddle";
 import { useSnackbar } from "~/components/Snackbar";
 import { useFetch } from "~/hooks/useFetch";
-import { getEnv } from "~/assets/server";
 
 const styles: { [key: string]: CSSProperties } = {
 	coreCard: {
@@ -66,11 +65,14 @@ const Typography = ({ variant, children }: any) => {
 	return <div>{children}</div>;
 };
 
-export const meta: MetaFunction = () => {
+const ORIGIN = `https://${process.env.PUBLIC_HOST}`;
+
+export const meta: metafunction = () => {
+	const organization = `Atelier Nyaarium`;
 	const title = `Index | Nyaarium`;
 	const description = `Welcome to Atelier Nyaarium!`;
 	const image = `/logos/nyaarium.png`;
-	const url = `https://${getEnv("PUBLIC_HOST")}`;
+	const url = `${ORIGIN}`;
 	
 	return [
 		{ title },
@@ -84,8 +86,8 @@ export const meta: MetaFunction = () => {
 			"script:ld+json": {
 				"@context": "https://schema.org",
 				"@type": "Organization",
-				"name": "Atelier Nyaarium",
-				"url": "https://nyaarium.com",
+				"name": organization,
+				"url": ORIGIN,
 			},
 		},
 	];
