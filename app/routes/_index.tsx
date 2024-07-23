@@ -3,6 +3,7 @@ import { CSSProperties, useEffect, useMemo } from "react";
 import { AlignScreenMiddle } from "~/components/AlignScreenMiddle";
 import { useSnackbar } from "~/components/Snackbar";
 import { useFetch } from "~/hooks/useFetch";
+import { getEnv } from "~/assets/server";
 
 const styles: { [key: string]: CSSProperties } = {
 	coreCard: {
@@ -66,14 +67,18 @@ const Typography = ({ variant, children }: any) => {
 };
 
 export const meta: MetaFunction = () => {
+	const title = `Index | Nyaarium`;
+	const description = `Welcome to Atelier Nyaarium!`;
+	const image = `/logos/nyaarium.png`;
+	const url = `https://${getEnv("PUBLIC_HOST")}`;
+	
 	return [
-		{ title: "Atelier Nyaarium" },
-		{ name: "description", content: "Welcome to Atelier Nyaarium!" },
-
-		{ property: "og:title", content: "New Remix App" },
-		{ property: "og:description", content: "Welcome to Remix!" },
-		{ property: "og:image", content: "/Nyaarium%20Logo.png" },
-		{ property: "og:url", content: "Canonical URL of the page" },
+		{ title },
+		{ name: "description", content: description },
+		{ property: "og:title", content: title },
+		{ property: "og:description", content: description },
+		{ property: "og:image", content: image },
+		{ property: "og:url", content: url },
 
 		{
 			"script:ld+json": {
@@ -120,7 +125,7 @@ export default function PageIndex() {
 
 	return (
 		<>
-			<title>Index | Nyaarium</title>
+			
 
 			<AlignScreenMiddle>
 				<Card sx={styles.navigationTile}>
