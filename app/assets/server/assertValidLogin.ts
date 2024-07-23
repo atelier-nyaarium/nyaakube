@@ -1,4 +1,4 @@
-import argon2 from "argon2";
+import { verify } from "argon2";
 import saslPrep from "saslprep";
 import { UnauthorizedError } from "~/assets/ErrorTypes";
 import { pause } from "~/assets/common/pause";
@@ -85,10 +85,7 @@ export async function assertValidLogin(
 		throw new UnauthorizedError("TOTP token required.");
 	}
 
-	const passwordMatch = await argon2.verify(
-		user.password_hash,
-		saslPrep(password),
-	);
+	const passwordMatch = await verify(user.password_hash, saslPrep(password));
 	if (!passwordMatch) {
 		await randomSleep();
 		throw new UnauthorizedError(

@@ -1,4 +1,4 @@
-import path from "path";
+import { normalize, join as pathJoin } from "path";
 
 /**
  * Sanitize Path
@@ -38,8 +38,8 @@ export function sanitizePath(workingDir: string, filePath: string): string {
 		);
 	}
 
-	const resolvedPath = path.normalize(
-		path.join(
+	const resolvedPath = normalize(
+		pathJoin(
 			workingDir,
 			filePath
 				// Protocol
@@ -54,7 +54,7 @@ export function sanitizePath(workingDir: string, filePath: string): string {
 				//   - Trim whitespace
 				//   - Resolve . and ..
 				.map((s) =>
-					path.normalize(
+					normalize(
 						decodeURIComponent(s)
 							.replace(/[^a-zA-Z0-9 _,.()-]/g, "")
 							.trim(),

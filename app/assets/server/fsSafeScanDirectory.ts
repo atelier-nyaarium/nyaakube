@@ -1,5 +1,5 @@
 import { lstatSync, readdirSync } from "fs";
-import path from "path";
+import { join as pathJoin } from "path";
 import { sanitizePath } from "~/assets/server/sanitizePath";
 
 interface ScanResult {
@@ -60,7 +60,7 @@ export function fsSafeScanDirectory(
 		const files = readdirSync(safePathFS);
 		for (const filename of files) {
 			// filename comes from our own filesystem, so it's safe
-			const safeFilePathFS = path.join(safePathFS, filename);
+			const safeFilePathFS = pathJoin(safePathFS, filename);
 
 			const stats = lstatSync(safeFilePathFS);
 
