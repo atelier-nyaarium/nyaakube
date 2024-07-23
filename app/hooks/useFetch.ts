@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { fetchJson, FetchOptions } from "~/assets/common/fetchJson";
 import { useSnackbar } from "~/components/Snackbar";
 import { useLoadingCallback } from "~/hooks/useLoadingCallback";
@@ -13,6 +13,8 @@ export interface FetchParams {
 	ok?: (data: any) => void;
 	error?: (err: Error) => void;
 }
+
+export type FetchReturn = [() => Promise<void>, any, boolean, Error | null];
 
 /**
  * A custom React hook that uses `fetchJson` to make API calls and wraps around `useLoadingCallback`.
@@ -36,8 +38,10 @@ export interface FetchParams {
 export function useFetch(
 	paramsCallback: () => FetchParams,
 	watchList: any[],
-): [() => Promise<void>, boolean, Error | null] {
+): FetchReturn {
 	const snackbar = useSnackbar();
+
+	const [responseJson, setResponseJson] = useState<any>(null);
 
 	if (DEV) {
 		if (typeof paramsCallback !== "function") {
@@ -139,6 +143,7 @@ export function useFetch(
 				if (params.ok) {
 					await params.ok(data);
 				}
+				setResponseJson(data);
 				return data;
 			} catch (error: any) {
 				if (params.error) {
@@ -159,5 +164,5 @@ export function useFetch(
 		[snackbar, ...watchList],
 	);
 
-	return [fetchCallback, loading, error];
+	return [fetchCallback, responseJson, loading, error];
 }
