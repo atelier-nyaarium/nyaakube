@@ -67,13 +67,21 @@ const Typography = ({ variant, children }: any) => {
 
 const ORIGIN = `https://${process.env.PUBLIC_HOST}`;
 
-export const meta: metafunction = () => {
+export const meta: metafunction = ({
+	data, // Data from the loader
+	location, // Location object
+	params, // File name driven params: concerts.$city.$date.tsx
+}) => {
 	const organization = `Atelier Nyaarium`;
 	const title = `Index | Nyaarium`;
 	const description = `Welcome to Atelier Nyaarium!`;
 	const image = `/logos/nyaarium.png`;
-	const url = `${ORIGIN}`;
+	const url = `${ORIGIN}/`;
 	
+	console.log(data);
+	console.log(location);
+	console.log(params);
+
 	return [
 		{ title },
 		{ name: "description", content: description },
