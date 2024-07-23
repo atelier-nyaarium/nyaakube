@@ -1,7 +1,8 @@
 import type { MetaFunction } from "@remix-run/node";
-import { CSSProperties, useMemo } from "react";
+import { CSSProperties, useEffect, useMemo } from "react";
 import { AlignScreenMiddle } from "~/components/AlignScreenMiddle";
 import { useSnackbar } from "~/components/Snackbar";
+import { useFetch } from "~/hooks/useFetch";
 
 const styles: { [key: string]: CSSProperties } = {
 	coreCard: {
@@ -18,6 +19,12 @@ const styles: { [key: string]: CSSProperties } = {
 	navigationTile: {
 		width: `240px`,
 		fontSize: `1.5rem`,
+	},
+
+	footerBadges: {
+		position: "absolute",
+		bottom: "0",
+		left: "8px",
 	},
 };
 
@@ -80,6 +87,16 @@ export const meta: MetaFunction = () => {
 };
 
 export default function PageIndex() {
+	const [getBadges, badges] = useFetch(
+		() => ({
+			url: `/badges`,
+		}),
+		[],
+	);
+	useEffect(() => {
+		getBadges();
+	}, [getBadges]);
+
 	const snackbar = useSnackbar();
 
 	// Invert if dark theme
@@ -228,6 +245,14 @@ export default function PageIndex() {
 					</CardActionArea>
 				</Card>
 			</AlignScreenMiddle>
+
+			<div style={styles.footerBadges}>
+				{badges?.map((badge: any) => (
+					<a key={badge.url} href={badge.url}>
+						<img src={badge.image} />
+					</a>
+				))}
+			</div>
 		</>
 	);
 }
