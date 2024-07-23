@@ -45,6 +45,8 @@ function setSecurityHeaders(responseHeaders: Headers, nonce?: string) {
 		})
 			.map(([k, v]) => `${k} ${v.join(" ")}`)
 			.join("; "),
+		"Cross-Origin-Opener-Policy": "same-origin",
+		"Cross-Origin-Embedder-Policy": "require-corp",
 		"Referrer-Policy": "same-origin",
 		"Strict-Transport-Security":
 			"max-age=31536000; includeSubDomains; preload",
