@@ -7,6 +7,7 @@ export default ({ command }: any) => {
 
 	if (command === "build") {
 		ssr.noExternal = true;
+		ssr.external = ["argon2"];
 	}
 
 	return defineConfig({
