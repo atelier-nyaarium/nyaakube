@@ -51,16 +51,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
 async function initializeBadges() {
 	if (badges) return;
 
-	const HOST = getEnv("HOST");
+	const PUBLIC_HOST = getEnv("PUBLIC_HOST");
 
 	badges = [];
 	const badgesData: BadgeData[] = [
 		{
-			enabled: !!HOST,
-			url: `https://developer.mozilla.org/en-US/observatory/analyze?host=${HOST}`,
+			enabled: !!PUBLIC_HOST,
+			url: `https://developer.mozilla.org/en-US/observatory/analyze?host=${PUBLIC_HOST}`,
 			async fetchData() {
 				const json = await fetchJson(
-					`https://observatory-api.mdn.mozilla.net/api/v2/analyze?host=${HOST}`,
+					`https://observatory-api.mdn.mozilla.net/api/v2/analyze?host=${PUBLIC_HOST}`,
 				);
 
 				const grade = json.history.pop();
