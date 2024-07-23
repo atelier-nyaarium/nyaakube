@@ -17,7 +17,7 @@ const styles: { [key: string]: CSSProperties } = {
 	},
 
 	navigationTile: {
-		width: `190px`,
+		width: `170px`,
 		fontSize: `1.4rem`,
 	},
 
