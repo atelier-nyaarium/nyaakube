@@ -7,6 +7,7 @@ import {
 	ScrollRestoration,
 } from "@remix-run/react";
 import { ReactNode } from "react";
+import { useNonce } from "~/components/Nonce";
 import { SnackbarProvider } from "~/components/Snackbar";
 
 const darkTheme = createTheme({
@@ -16,6 +17,8 @@ const darkTheme = createTheme({
 });
 
 export default function App(props: { children: ReactNode }) {
+	const nonce = useNonce();
+
 	return (
 		<html>
 			<head>
@@ -30,8 +33,8 @@ export default function App(props: { children: ReactNode }) {
 					<SnackbarProvider>
 						<Outlet />
 					</SnackbarProvider>
-					<ScrollRestoration />
-					<Scripts />
+					<ScrollRestoration nonce={nonce} />
+					<Scripts nonce={nonce} />
 				</ThemeProvider>
 			</body>
 		</html>

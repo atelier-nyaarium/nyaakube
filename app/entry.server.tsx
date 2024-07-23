@@ -10,17 +10,22 @@ import { RemixServer } from "@remix-run/react";
 import { randomBytes } from "crypto";
 import { PassThrough } from "node:stream";
 import { renderToPipeableStream } from "react-dom/server";
+import { NonceProvider } from "~/components/Nonce";
 
 const DEV = process.env.NODE_ENV !== "production";
 
 const ABORT_DELAY = 5_000;
 
-function setSecurityHeaders(responseHeaders: Headers) {
+function setSecurityHeaders(responseHeaders: Headers, nonce?: string) {
 	const scripts = [];
 
 	if (DEV) {
 		// Development only
 		scripts.push("'unsafe-inline'");
+	}
+
+	if (nonce) {
+		scripts.push(`'strict-dynamic' 'nonce-${nonce}'`);
 	}
 
 	Object.entries({
@@ -72,19 +77,21 @@ export default function handleRequest(
 		const nonce = randomBytes(16).toString("hex");
 
 		const { pipe, abort } = renderToPipeableStream(
-			<RemixServer
-				nonce={nonce}
-				context={remixContext}
-				url={request.url}
-				abortDelay={ABORT_DELAY}
-			/>,
+			<NonceProvider value={nonce}>
+				<RemixServer
+					nonce={nonce}
+					context={remixContext}
+					url={request.url}
+					abortDelay={ABORT_DELAY}
+				/>
+			</NonceProvider>,
 			{
 				onShellReady() {
 					shellRendered = true;
 					const body = new PassThrough();
 					const stream = createReadableStreamFromReadable(body);
 
-					setSecurityHeaders(responseHeaders);
+					setSecurityHeaders(responseHeaders, nonce);
 
 					responseHeaders.set("Content-Type", "text/html");
 
