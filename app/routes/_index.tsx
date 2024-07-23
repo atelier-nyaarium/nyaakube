@@ -17,8 +17,8 @@ const styles: { [key: string]: CSSProperties } = {
 	},
 
 	navigationTile: {
-		width: `220px`,
-		fontSize: `1.5rem`,
+		width: `190px`,
+		fontSize: `1.4rem`,
 	},
 
 	footerBadges: {
