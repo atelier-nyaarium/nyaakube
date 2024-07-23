@@ -4,17 +4,21 @@ const styles: { [key: string]: CSSProperties } = {
 	centerAlignOuter: {
 		display: `flex`,
 		width: `100%`,
+		height: `100vh`,
 		alignItems: `center`,
+		justifyContent: 'center',
 		flexFlow: `column`,
 	},
 	centerAlignInner: {
 		display: `flex`,
-		height: `100vh`,
+		justifyContent: 'center',
 		alignItems: `center`,
 		textAlign: `center`,
 	},
 	centerAlignContent: {
 		maxWidth: `600px`,
+		width: `100%`,
+		boxSizing: 'border-box',
 	},
 	reset: {
 		textAlign: `initial`,
