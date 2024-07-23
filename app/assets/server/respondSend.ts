@@ -15,7 +15,8 @@ import { ServerResponse } from "http";
  * @example
  * return respondSend(res, "Hello, world!");
  */
-export function respondSend(
+// export
+function respondSend(
 	res: ExpressResponse,
 	data: string,
 	status: number = 200,

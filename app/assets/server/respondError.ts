@@ -25,7 +25,8 @@ import {
  * @example
  * return respondError(req, res, "Error message here");
  */
-export function respondError(
+// export
+function respondError(
 	req: ExpressRequest,
 	res: ExpressResponse,
 	error: Error | string,

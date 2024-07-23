@@ -17,7 +17,8 @@ import { otpauthURL } from "@levminer/speakeasy";
  * generateTotpUrl("Company Name", "user@email", 6, 30, "ABC");
  * -> "otpauth://totp/Company%20Name:user@email?secret= . . . "
  */
-export function generateTotpUrl(
+// export
+function generateTotpUrl(
 	issuerLabel: string,
 	userLabel: string,
 	digits: number,

@@ -1,13 +1,7 @@
 export { asLogTime } from "./asLogTime";
 export { assertValidLogin } from "./assertValidLogin";
-export { createApiHandler } from "./createApiHandler";
 export { fsSafeFileType } from "./fsSafeFileType";
 export { fsSafeScanDirectory } from "./fsSafeScanDirectory";
 export { getEnv } from "./getEnv";
-export { ipLookup } from "./ipLookup";
-export { respondError } from "./respondError";
-export { respondGraphError } from "./respondGraphError";
-export { respondJson } from "./respondJson";
-export { respondSend } from "./respondSend";
 export { runProcess } from "./runProcess";
 export { sanitizePath } from "./sanitizePath";

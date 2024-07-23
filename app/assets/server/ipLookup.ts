@@ -59,9 +59,8 @@ interface IpLookupResult {
  *     "is_proxy": false
  * }
  */
-export async function ipLookup(
-	ip: string,
-): Promise<IpLookupResult | undefined> {
+// export
+async function ipLookup(ip: string): Promise<IpLookupResult | undefined> {
 	if (!IP2LOCATION_KEY) IP2LOCATION_KEY = getEnv("IP2LOCATION_KEY");
 
 	if (!IP2LOCATION_KEY) {

@@ -15,7 +15,8 @@ import { ServerResponse } from "http";
  * @example
  * return respondJson(res, { foo: "bar" });
  */
-export function respondJson(
+// export
+function respondJson(
 	res: ExpressResponse,
 	data: Record<string, unknown>,
 	status: number = 200,

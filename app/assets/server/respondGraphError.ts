@@ -30,7 +30,8 @@ export const DEV = process.env.NODE_ENV === "development";
  * });
  * return respondGraphError(req, res, result.errors);
  */
-export function respondGraphError(
+// export
+function respondGraphError(
 	req: ExpressRequest,
 	res: ExpressResponse,
 	errors: GraphQLError[],

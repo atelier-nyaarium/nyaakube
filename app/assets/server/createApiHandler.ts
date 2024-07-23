@@ -66,7 +66,8 @@ interface ApiHandlerOptions {
  *     },
  * });
  */
-export function createApiHandler({
+// export
+function createApiHandler({
 	label = "(anonymous)",
 	log = true,
 	useSession = false,
