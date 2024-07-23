@@ -21,13 +21,11 @@ const styles: { [key: string]: CSSProperties } = {
 	},
 };
 
-interface AlignScreenMiddleProps {
-	children: ReactNode;
-}
-
 export const AlignScreenMiddle = memo(function AlignScreenMiddle({
 	children,
-}: AlignScreenMiddleProps) {
+}: {
+	children: ReactNode;
+}) {
 	return (
 		<div style={styles.centerAlignOuter}>
 			<div style={styles.centerAlignInner}>
