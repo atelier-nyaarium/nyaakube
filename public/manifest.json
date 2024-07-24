@@ -16,20 +16,20 @@
 	],
 	"icons": [
 		{
-			"src": "Nyaarium%20Logo.png",
+			"src": "/logos/nyaarium.webp",
 			"type": "image/png",
 			"sizes": "512x512"
 		}
 	],
 	"screenshots": [
 		{
-			"src": "Banner.png",
+			"src": "/Banner.webp",
 			"sizes": "2000x1000",
 			"type": "image/png",
 			"form_factor": "wide"
 		},
 		{
-			"src": "Test.jpg",
+			"src": "/Test.webp",
 			"sizes": "1440x3120",
 			"type": "image/jpeg",
 			"form_factor": "narrow"

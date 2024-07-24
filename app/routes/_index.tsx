@@ -83,7 +83,7 @@ export const meta: MetaFunction = ({
 	const organization = `Atelier Nyaarium`;
 	const title = `Index | Nyaarium`;
 	const description = `Welcome to Atelier Nyaarium!`;
-	const image = `/logos/nyaarium.png`;
+	const image = `/logos/nyaarium.webp`;
 	const url = `${data.origin}/`;
 
 	console.groupCollapsed(`Meta`);
@@ -159,7 +159,7 @@ export default function PageIndex() {
 						<CardHeader
 							avatar={
 								<Avatar
-									src="/logos/discord.png"
+									src="/logos/discord.webp"
 									sx={sxLogoAuto}
 								/>
 							}
@@ -175,7 +175,7 @@ export default function PageIndex() {
 						<CardHeader
 							avatar={
 								<Avatar
-									src="/logos/github.png"
+									src="/logos/github.webp"
 									sx={sxLogoAuto}
 								/>
 							}
@@ -189,7 +189,7 @@ export default function PageIndex() {
 						<CardHeader
 							avatar={
 								<Avatar
-									src="/logos/chilloutvr.png"
+									src="/logos/chilloutvr.webp"
 									sx={sxLogoAuto}
 								/>
 							}
@@ -205,7 +205,7 @@ export default function PageIndex() {
 						<CardHeader
 							avatar={
 								<Avatar
-									src="/logos/vrchat.png"
+									src="/logos/vrchat.webp"
 									sx={sxLogoNormal}
 								/>
 							}
@@ -227,7 +227,7 @@ export default function PageIndex() {
 						<CardHeader
 							avatar={
 								<Avatar
-									src="/logos/steam.png"
+									src="/logos/steam.webp"
 									sx={sxLogoAuto}
 								/>
 							}
@@ -242,7 +242,7 @@ export default function PageIndex() {
 						<CardHeader
 							avatar={
 								<Avatar
-									src="/logos/twitch.png"
+									src="/logos/twitch.webp"
 									sx={sxLogoAuto}
 								/>
 							}
@@ -257,7 +257,7 @@ export default function PageIndex() {
 						<CardHeader
 							avatar={
 								<Avatar
-									src="/logos/twitter.png"
+									src="/logos/twitter.webp"
 									sx={sxLogoAuto}
 								/>
 							}
