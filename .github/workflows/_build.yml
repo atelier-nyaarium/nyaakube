@@ -23,10 +23,16 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Docker login
+        if: ${{ fromJSON(inputs.push) }}
         run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
 
       - name: Build and push
+        if: ${{ fromJSON(inputs.push) }}
         uses: docker/build-push-action@v5
         with:
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:latest
-          push: ${{ inputs.push }}
+          push: true
+
+      - name: Build only
+        if: ${{ !fromJSON(inputs.push) }}
+        uses: docker/build-push-action@v5
