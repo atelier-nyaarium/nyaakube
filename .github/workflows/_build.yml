@@ -29,4 +29,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:latest
-          push: true
+          push: ${{ inputs.push }}
