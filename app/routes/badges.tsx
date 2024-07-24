@@ -1,39 +1,91 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { makeBadge } from "badge-maker";
-import { fetchJson } from "~/assets/common";
+import { ExpiringCacheMap, fetchJson } from "~/assets/common";
 import { getEnv } from "~/assets/server";
 
 interface BadgeData {
-	enabled: boolean;
-	url?: string;
-	image?: any;
+	url: string;
 	fetchData: () => Promise<any>;
 }
 
 interface BadgeJson {
+	enabled: boolean;
 	url: string;
 	image: string;
 }
 
-let badges: BadgeJson[] | null = null;
+let badgesDefs: { [key: string]: BadgeData };
+let badges: ExpiringCacheMap<string, BadgeJson>;
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	// const url = new URL(request.url);
 	// const data = JSON5.parse(url.searchParams.get("data") ?? "{}");
 
-	await initializeBadges();
-	return json(badges);
+	const enabledBadges = await getBadges();
+
+	return json(
+		enabledBadges.map(({ url, image }) => ({
+			url,
+			image,
+		})),
+	);
 }
 
-async function initializeBadges() {
-	if (badges) return;
+async function getBadges(): Promise<BadgeJson[]> {
+	const ret: BadgeJson[] = [];
+
+	if (!badgesDefs) {
+		// Initialize maps
+		initializeBadges();
+	}
+
+	for (const key in badgesDefs) {
+		const badgeDef = badgesDefs[key];
+
+		let badge: BadgeJson | undefined = badges.get(key);
+		if (!badge) {
+			try {
+				console.log(`Fetching badge for: ${badgeDef.url}`);
+
+				badge = {
+					enabled: true,
+					url: badgeDef.url,
+					image: await badgeDef.fetchData(),
+				};
+
+				badges.set(key, badge);
+			} catch (error) {
+				console.error("Error fetching badge", error);
+
+				badge = {
+					enabled: false,
+					url: badgeDef.url,
+					image: "--",
+				};
+
+				badges.set(key, badge);
+				continue;
+			}
+		}
+
+		if (badge.enabled) {
+			ret.push(badge!);
+		}
+	}
+
+	return ret;
+}
+
+function initializeBadges(): void {
+	badgesDefs = {};
+	badges = new ExpiringCacheMap<string, BadgeJson>({
+		keepAliveOnGet: false,
+		ttl: 24 * 60 * 60 * 1000, // 24 hours
+	});
 
 	const PUBLIC_HOST = getEnv("PUBLIC_HOST");
-
-	badges = [];
-	const badgesData: BadgeData[] = [
-		{
-			enabled: !!PUBLIC_HOST,
+	if (PUBLIC_HOST) {
+		badgesDefs.observatory = {
 			url: `https://developer.mozilla.org/en-US/observatory/analyze?host=${PUBLIC_HOST}`,
 			async fetchData() {
 				const json = await fetchJson(
@@ -59,27 +111,6 @@ async function initializeBadges() {
 
 				return `data:image/svg+xml;base64,` + btoa(makeBadge(format));
 			},
-		},
-	];
-
-	for (const badge of badgesData) {
-		if (!badge.enabled) continue;
-
-		if (!badge.image) {
-			try {
-				console.log(`Fetching badge for: ${badge.url}`);
-
-				badge.image = await badge.fetchData();
-			} catch (error) {
-				badge.enabled = false;
-				console.error("Error fetching badge", error);
-				continue;
-			}
-		}
-
-		badges.push({
-			url: badge.url!,
-			image: badge.image,
-		});
+		};
 	}
 }
