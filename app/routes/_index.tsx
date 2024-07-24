@@ -155,7 +155,7 @@ export default function PageIndex() {
 						onClick={() => {
 							snackbar({
 								type: "info",
-								message: `Opening Discord...`,
+								message: `Opened in Discord`,
 							});
 						}}
 					>
@@ -223,7 +223,7 @@ export default function PageIndex() {
 						onClick={() => {
 							snackbar({
 								type: "info",
-								message: `Opening Steam...`,
+								message: `Opened in Steam`,
 							});
 						}}
 					>
@@ -275,7 +275,7 @@ export default function PageIndex() {
 			<div style={styles.footerBadges}>
 				{badges?.map((badge: any) => (
 					<a key={badge.url} href={badge.url}>
-						<img src={badge.image} />
+						<img src={badge.image} alt="[badge]" />
 					</a>
 				))}
 			</div>
