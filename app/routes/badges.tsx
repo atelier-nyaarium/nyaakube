@@ -1,4 +1,4 @@
-import { json, LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
+import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { makeBadge } from "badge-maker";
 import { fetchJson } from "~/assets/common";
 import { getEnv } from "~/assets/server";
@@ -16,25 +16,6 @@ interface BadgeJson {
 }
 
 let badges: BadgeJson[] | null = null;
-
-export const meta: MetaFunction = () => {
-	return [
-		{ title: "New Remix App" },
-		{ name: "description", content: "Welcome to Remix!" },
-		{ property: "og:title", content: "New Remix App" },
-		{ property: "og:description", content: "Welcome to Remix!" },
-		{ property: "og:image", content: "/Nyaarium%20Logo.png" },
-		{ property: "og:url", content: "Canonical URL of the page" },
-		{
-			"script:ld+json": {
-				"@context": "https://schema.org",
-				"@type": "Organization",
-				"name": "Atelier Nyaarium",
-				"url": "https://nyaarium.com",
-			},
-		},
-	];
-};
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	// const url = new URL(request.url);
