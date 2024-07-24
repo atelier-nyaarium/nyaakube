@@ -28,6 +28,7 @@ class Node<K, V> {
  * -> ["pika:boo", "foo:bar"]
  */
 export class ExpiringCacheMap<K, V> {
+	private _keepAliveOnGet: boolean;
 	private _ttl: number;
 	private _map: Map<K, Node<K, V>>;
 	private _head: Node<K, V> | null;
@@ -35,8 +36,13 @@ export class ExpiringCacheMap<K, V> {
 	private _cleanupInterval: NodeJS.Timeout | null;
 
 	constructor({
+		keepAliveOnGet = true,
 		ttl = 10 * 60 * 1000, // in ms (default 10 minutes)
-	}: { ttl?: number } = {}) {
+	}: {
+		keepAliveOnGet?: boolean;
+		ttl?: number;
+	} = {}) {
+		this._keepAliveOnGet = keepAliveOnGet;
 		this._ttl = ttl;
 		this._map = new Map<K, Node<K, V>>();
 		this._head = null;
@@ -64,8 +70,10 @@ export class ExpiringCacheMap<K, V> {
 		const node = this._map.get(key);
 		if (!node) return undefined;
 
-		node.timestamp = Date.now();
-		this._moveToHead(node);
+		if (this._keepAliveOnGet) {
+			node.timestamp = Date.now();
+			this._moveToHead(node);
+		}
 
 		return node.value;
 	}
