@@ -20,7 +20,7 @@ export default function App(props: { children: ReactNode }) {
 	const nonce = useNonce();
 
 	return (
-		<html>
+		<html lang="en">
 			<head>
 				<meta charSet="utf-8" />
 				<meta
