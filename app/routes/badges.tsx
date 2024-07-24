@@ -21,12 +21,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	// const url = new URL(request.url);
 	// const data = JSON5.parse(url.searchParams.get("data") ?? "{}");
 
-	try {
-		await initializeBadges();
-		return json(badges);
-	} catch (error: any) {
-		return json({ error: error.message });
-	}
+	await initializeBadges();
+	return json(badges);
 }
 
 async function initializeBadges() {
