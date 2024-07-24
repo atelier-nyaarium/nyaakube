@@ -1,5 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
+import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { CSSProperties, useEffect, useMemo } from "react";
+import { getEnv } from "~/assets/server";
 import { AlignScreenMiddle } from "~/components/AlignScreenMiddle";
 import { useSnackbar } from "~/components/Snackbar";
 import { useFetch } from "~/hooks/useFetch";
@@ -65,22 +67,30 @@ const Typography = ({ variant, children }: any) => {
 	return <div>{children}</div>;
 };
 
-const ORIGIN = `https://${process.env.PUBLIC_HOST}`;
+export async function loader({ request }: LoaderFunctionArgs) {
+	const origin = `https://${getEnv("PUBLIC_HOST") || "localhost:3000"}`;
+
+	return json({
+		origin,
+	});
+}
 
 export const meta: MetaFunction = ({
 	data, // Data from the loader
 	location, // Location object
 	params, // File name driven params: concerts.$city.$date.tsx
-}) => {
+}: any) => {
 	const organization = `Atelier Nyaarium`;
 	const title = `Index | Nyaarium`;
 	const description = `Welcome to Atelier Nyaarium!`;
 	const image = `/logos/nyaarium.png`;
-	const url = `${ORIGIN}/`;
+	const url = `${data.origin}/`;
 
-	console.log(data);
-	console.log(location);
-	console.log(params);
+	console.groupCollapsed(`Meta`);
+	console.log(`Loader Data`, data);
+	console.log(`Location`, location);
+	console.log(`Params`, params);
+	console.groupEnd();
 
 	return [
 		{ title },
@@ -95,7 +105,7 @@ export const meta: MetaFunction = ({
 				"@context": "https://schema.org",
 				"@type": "Organization",
 				"name": organization,
-				"url": ORIGIN,
+				"url": data.origin,
 			},
 		},
 	];
@@ -135,7 +145,7 @@ export default function PageIndex() {
 
 	return (
 		<>
-			<AlignScreenMiddle>
+			<AlignScreenMiddle width="420px">
 				<Card sx={styles.navigationTile}>
 					<CardActionArea
 						href="discord://-/users/164550341604409344"

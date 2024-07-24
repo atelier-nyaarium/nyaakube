@@ -1,4 +1,4 @@
-import { CSSProperties, memo, ReactNode } from "react";
+import { CSSProperties, memo, ReactNode, useMemo } from "react";
 
 const styles: { [key: string]: CSSProperties } = {
 	centerAlignOuter: {
@@ -6,19 +6,17 @@ const styles: { [key: string]: CSSProperties } = {
 		width: `100%`,
 		height: `100vh`,
 		alignItems: `center`,
-		justifyContent: 'center',
+		justifyContent: "center",
 		flexFlow: `column`,
 	},
 	centerAlignInner: {
 		display: `flex`,
-		justifyContent: 'center',
+		justifyContent: "center",
 		alignItems: `center`,
 		textAlign: `center`,
 	},
 	centerAlignContent: {
-		maxWidth: `600px`,
-		width: `100%`,
-		boxSizing: 'border-box',
+		boxSizing: "border-box",
 	},
 	reset: {
 		textAlign: `initial`,
@@ -26,14 +24,23 @@ const styles: { [key: string]: CSSProperties } = {
 };
 
 export const AlignScreenMiddle = memo(function AlignScreenMiddle({
+	width,
 	children,
 }: {
+	width: string;
 	children: ReactNode;
 }) {
+	const contentStyle = useMemo(() => {
+		return {
+			...styles.centerAlignContent,
+			width,
+		};
+	}, [width]);
+
 	return (
 		<div style={styles.centerAlignOuter}>
 			<div style={styles.centerAlignInner}>
-				<div style={styles.centerAlignContent}>
+				<div style={contentStyle}>
 					<div style={styles.reset}>{children}</div>
 				</div>
 			</div>
