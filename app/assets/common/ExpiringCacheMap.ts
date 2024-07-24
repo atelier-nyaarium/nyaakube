@@ -34,14 +34,18 @@ export class ExpiringCacheMap<K, V> {
 	private _head: Node<K, V> | null;
 	private _tail: Node<K, V> | null;
 	private _cleanupInterval: NodeJS.Timeout | null;
+	private _cleanupIntervalTime: number;
 
 	constructor({
+		clearIntervalTime = 60 * 1000, // in ms (default 1 minute)
 		keepAliveOnGet = true,
 		ttl = 10 * 60 * 1000, // in ms (default 10 minutes)
 	}: {
+		clearIntervalTime?: number;
 		keepAliveOnGet?: boolean;
 		ttl?: number;
 	} = {}) {
+		this._cleanupIntervalTime = clearIntervalTime;
 		this._keepAliveOnGet = keepAliveOnGet;
 		this._ttl = ttl;
 		this._map = new Map<K, Node<K, V>>();
@@ -49,7 +53,7 @@ export class ExpiringCacheMap<K, V> {
 		this._tail = null;
 		this._cleanupInterval = setInterval(
 			this._cleanup.bind(this),
-			60 * 1000, // every minute
+			this._cleanupIntervalTime,
 		);
 	}
 
