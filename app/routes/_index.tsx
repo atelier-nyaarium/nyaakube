@@ -100,6 +100,9 @@ export const meta: MetaFunction = ({
 		{ property: "og:image", content: image },
 		{ property: "og:url", content: url },
 
+		{ tagName: "link", rel: "icon", content: "/favicon.ico" },
+		{ tagName: "link", rel: "canonical", content: url },
+
 		{
 			"script:ld+json": {
 				"@context": "https://schema.org",
