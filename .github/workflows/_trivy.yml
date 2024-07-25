@@ -6,7 +6,6 @@ on:
 jobs:
   trivy:
     name: Trivy
-    # runs-on: self-hosted
     runs-on: ubuntu-latest
     steps:
       - name: Get repository name

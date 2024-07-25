@@ -10,7 +10,6 @@ on:
 jobs:
   push:
     name: Docker Push (${{ github.repository }}:latest)
-    # runs-on: self-hosted
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact

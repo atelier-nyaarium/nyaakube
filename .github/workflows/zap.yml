@@ -12,7 +12,6 @@ on:
 jobs:
   zap:
     name: ZAP Scanner
-    # runs-on: self-hosted
     runs-on: ubuntu-latest
     env:
       ZAP_AUTH_HEADER_VALUE: ${{ secrets.ZAP_AUTH_HEADER_VALUE }}
