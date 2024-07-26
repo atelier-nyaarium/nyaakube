@@ -51,10 +51,14 @@ export class ExpiringCacheMap<K, V> {
 		this._map = new Map<K, Node<K, V>>();
 		this._head = null;
 		this._tail = null;
-		this._cleanupInterval = setInterval(
-			this._cleanup.bind(this),
-			this._cleanupIntervalTime,
-		);
+		if (ttl) {
+			this._cleanupInterval = setInterval(
+				this._cleanup.bind(this),
+				this._cleanupIntervalTime,
+			);
+		} else {
+			this._cleanupInterval = null;
+		}
 	}
 
 	destroy(): void {
