@@ -1,8 +1,20 @@
 module.exports = {
+	repositories: ["atelier-nyaarium/nyaakube"],
 	platform: "github",
-	logLevel: "info",
 	onboarding: false,
 	requireConfig: false,
+	docker: {
+		enabled: true,
+	},
+	npm: {
+		enabled: true,
+		packageRules: [
+			{
+				matchUpdateTypes: ["minor", "patch"],
+				automerge: true,
+			},
+		],
+	},
 	packageRules: [
 		{
 			packagePatterns: ["react", "react-dom"],
@@ -29,31 +41,18 @@ module.exports = {
 			groupName: "mikro-orm",
 		},
 		{
-			packagePatterns: [
-				"@typescript-eslint/eslint-plugin",
-				"@typescript-eslint/parser",
-			],
+			packagePatterns: ["@typescript-eslint/eslint-plugin", "@typescript-eslint/parser"],
 			groupName: "eslint",
 		},
-	],
-	npm: {
-		enabled: true,
-		packageRules: [
-			{
-				matchUpdateTypes: ["minor", "patch"],
-				automerge: true,
-			},
-		],
-	},
-	docker: {
-		enabled: true,
-	},
-	schedule: [
 		{
-			// interval: "weekly",
-			// day: "monday",
-			interval: "daily",
-			time: "10:00",
+			matchPackagePatterns: ["^github-actions/.*"],
+			groupName: "github-actions",
+			automerge: true,
+		},
+		{
+			matchDatasources: ["docker"],
+			groupName: "docker",
+			automerge: true,
 		},
 	],
 };

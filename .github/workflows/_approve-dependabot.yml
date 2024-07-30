@@ -3,8 +3,6 @@ name: Workflow Call - Approve Dependabot
 on:
   workflow_call:
 
-  workflow_dispatch:
-
 jobs:
   dependabot:
     runs-on: ubuntu-latest
