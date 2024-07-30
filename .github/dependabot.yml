@@ -12,6 +12,13 @@ updates:
       interval: "weekly"
       day: "wednesday"
       time: "12:00"
+    automerged_updates:
+      - match:
+          dependency_type: "all"
+          update_type: "semver:patch"
+      - match:
+          dependency_type: "all"
+          update_type: "semver:minor"
     groups:
       react:
         patterns:
