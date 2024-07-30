@@ -28,11 +28,11 @@ jobs:
 
       - name: Build and push
         if: ${{ fromJSON(inputs.push) }}
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:latest
           push: true
 
       - name: Build only
         if: ${{ !fromJSON(inputs.push) }}
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
