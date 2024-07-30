@@ -48,3 +48,11 @@ jobs:
       actions: read
       contents: read
       security-events: write
+
+  Dependabot:
+    needs: Build
+    uses: ./.github/workflows/_trigger-dependabot.yml
+    secrets: inherit
+    permissions:
+      actions: read
+      contents: read
