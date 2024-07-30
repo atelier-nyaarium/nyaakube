@@ -2,11 +2,13 @@
 #   DOCKER_PASSWORD
 #   DOCKER_USERNAME
 #   KUBECONFIG
-#   SNYK_TOKEN
+#   PAT_TOKEN
 
 name: Push (main)
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - main
