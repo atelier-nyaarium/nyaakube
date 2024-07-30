@@ -2,12 +2,16 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     versioning-strategy: "increase"
+    open-pull-requests-limit: 1
     directory: "/"
+    labels:
+      - "dependabot"
+    assignees:
+      - "nyaarium"
     schedule:
       interval: "weekly"
       day: "wednesday"
-    assignees:
-      - "nyaarium"
+      time: "12:00"
     groups:
       react:
         patterns:
@@ -19,10 +23,22 @@ updates:
           - "next"
           - "eslint-config-next"
 
+      remix:
+        patterns:
+          - "@remix-run/*"
+
       material-ui:
         patterns:
           - "@mui/material"
           - "@mui/icons-material"
+
+      emotion:
+        patterns:
+          - "@emotion/*"
+
+      mikro-orm:
+        patterns:
+          - "@mikro-orm/*"
 
       eslint:
         patterns:
@@ -34,5 +50,4 @@ updates:
     schedule:
       interval: "weekly"
       day: "wednesday"
-    assignees:
-      - "nyaarium"
+      time: "12:00"
