@@ -50,8 +50,9 @@ module.exports = {
 	},
 	schedule: [
 		{
-			interval: "weekly",
-			day: "monday",
+			// interval: "weekly",
+			// day: "monday",
+			interval: "daily",
 			time: "10:00",
 		},
 	],
