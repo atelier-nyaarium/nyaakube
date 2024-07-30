@@ -10,8 +10,8 @@ updates:
       - "nyaarium"
     schedule:
       interval: "weekly"
-      day: "wednesday"
-      time: "12:00"
+      day: "monday"
+      time: "10:00"
     # automerged_updates:
     #   - match:
     #       dependency_type: "all"
