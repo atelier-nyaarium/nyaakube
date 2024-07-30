@@ -41,11 +41,11 @@ jobs:
       contents: read
       security-events: write
 
-  Approve:
-    needs: Build
-    uses: ./.github/workflows/_approve-dependabot.yml
-    secrets: inherit
-    permissions:
-      actions: read
-      contents: read
-      pull-requests: write
+  # Approve:
+  #   needs: Build
+  #   uses: ./.github/workflows/_approve-dependabot.yml
+  #   secrets: inherit
+  #   permissions:
+  #     actions: read
+  #     contents: read
+  #     pull-requests: write
