@@ -1,4 +1,4 @@
-name: Trigger Dependabot Check
+name: Workflow Call - Trigger Dependabot
 
 on:
   workflow_call:
@@ -12,8 +12,36 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Trigger Dependabot
+      - name: Approve & Enable Auto-Merge for Dependabot PRs
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          curl -X POST -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
-          -d '{"event_type": "dependabot_trigger"}' \
-          https://api.github.com/repos/${{ github.repository }}/dispatches
+          gh_prs=$(gh pr list --limit 100 --state open --json number,author,title | jq -c '.[]')
+
+          echo "$gh_prs" | while read -r pr; do
+            pr_number=$(echo "$pr" | jq -r '.number')
+            pr_author=$(echo "$pr" | jq -r '.author.login')
+
+            if [ "$pr_author" == "app/dependabot" ]; then
+              pr_title=$(echo "$pr" | jq -r '.title')
+
+              echo "Approving: [$pr_number] $pr_title"
+
+              if gh pr merge "$pr_number" --auto -m; then
+                echo "Auto-merged PR #$pr_number successfully."
+              else
+                if gh pr merge "$pr_number" -m; then
+                  echo "Regularly merged PR #$pr_number successfully."
+                else
+                  echo "Failed to merge PR #$pr_number."
+                  continue
+                fi
+              fi
+
+              if gh pr review --approve "$pr_number"; then
+                echo "Approved PR #$pr_number successfully."
+              else
+                echo "Failed to approve PR #$pr_number."
+              fi
+            fi
+          done
