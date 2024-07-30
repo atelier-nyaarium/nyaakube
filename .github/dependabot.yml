@@ -12,13 +12,13 @@ updates:
       interval: "weekly"
       day: "wednesday"
       time: "12:00"
-    automerged_updates:
-      - match:
-          dependency_type: "all"
-          update_type: "semver:patch"
-      - match:
-          dependency_type: "all"
-          update_type: "semver:minor"
+    # automerged_updates:
+    #   - match:
+    #       dependency_type: "all"
+    #       update_type: "semver:patch"
+    #   - match:
+    #       dependency_type: "all"
+    #       update_type: "semver:minor"
     groups:
       react:
         patterns:
@@ -55,6 +55,5 @@ updates:
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "wednesday"
+      interval: "daily"
       time: "12:00"
