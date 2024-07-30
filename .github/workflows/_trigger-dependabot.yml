@@ -14,6 +14,6 @@ jobs:
 
       - name: Trigger Dependabot
         run: |
-          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          curl -X POST -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
           -d '{"event_type": "dependabot_trigger"}' \
           https://api.github.com/repos/${{ github.repository }}/dispatches
