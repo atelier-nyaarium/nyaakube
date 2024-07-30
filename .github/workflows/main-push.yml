@@ -51,7 +51,7 @@ jobs:
 
   Dependabot:
     needs: Build
-    uses: ./.github/workflows/_trigger-dependabot.yml
+    uses: ./.github/workflows/_approve-dependabot.yml
     secrets: inherit
     permissions:
       actions: read

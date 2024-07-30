@@ -1,4 +1,4 @@
-name: Workflow Call - Trigger Dependabot
+name: Workflow Call - Approve Dependabot
 
 on:
   workflow_call:
