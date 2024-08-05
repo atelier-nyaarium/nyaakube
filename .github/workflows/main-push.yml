@@ -14,7 +14,7 @@ on:
       - main
 
   schedule:
-    - cron: "0 4 * * 1"
+    - cron: "0 12 * * *" # Run every day at 12:00 UTC (4:00 AM PST)
 
 jobs:
   Build:
