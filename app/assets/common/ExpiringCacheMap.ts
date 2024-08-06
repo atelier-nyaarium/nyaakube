@@ -52,16 +52,13 @@ export class ExpiringCacheMap<K, V> {
 		this._head = null;
 		this._tail = null;
 		if (ttl) {
-			this._cleanupInterval = setInterval(
-				this._cleanup.bind(this),
-				this._cleanupIntervalTime,
-			);
+			this._cleanupInterval = setInterval(this._cleanup.bind(this), this._cleanupIntervalTime);
 		} else {
 			this._cleanupInterval = null;
 		}
 	}
 
-	destroy(): void {
+	public destroy(): void {
 		if (this._cleanupInterval) {
 			clearInterval(this._cleanupInterval);
 			this._cleanupInterval = null;
@@ -74,7 +71,7 @@ export class ExpiringCacheMap<K, V> {
 		this._tail = null;
 	}
 
-	get(key: K): V | undefined {
+	public get(key: K): V | undefined {
 		const node = this._map.get(key);
 		if (!node) return undefined;
 
@@ -86,7 +83,7 @@ export class ExpiringCacheMap<K, V> {
 		return node.value;
 	}
 
-	set(key: K, value: V): void {
+	public set(key: K, value: V): void {
 		let node = this._map.get(key);
 		if (node) {
 			node.value = value;
@@ -99,7 +96,7 @@ export class ExpiringCacheMap<K, V> {
 		}
 	}
 
-	delete(key: K): void {
+	public delete(key: K): void {
 		const node = this._map.get(key);
 		if (!node) return;
 
@@ -107,9 +104,41 @@ export class ExpiringCacheMap<K, V> {
 		this._map.delete(key);
 	}
 
-	forEach(
-		callback: (value: V, key: K, map: ExpiringCacheMap<K, V>) => void,
-	): void {
+	public [Symbol.iterator](): IterableIterator<[K, V]> {
+		const map = this._map;
+		const iterator = map[Symbol.iterator]();
+		return {
+			[Symbol.iterator]() {
+				return this;
+			},
+			next(): IteratorResult<[K, V]> {
+				const { done, value } = iterator.next();
+				if (done) {
+					return { done: true, value: undefined as [K, V] };
+				}
+				return { done: false, value: [value[0], value[1].value] };
+			},
+		};
+	}
+
+	public values(): IterableIterator<V> {
+		const map = this._map;
+		const iterator = map[Symbol.iterator]();
+		return {
+			[Symbol.iterator]() {
+				return this;
+			},
+			next(): IteratorResult<V> {
+				const { done, value } = iterator.next();
+				if (done) {
+					return { done: true, value: undefined as V };
+				}
+				return { done: false, value: value[1].value };
+			},
+		};
+	}
+
+	public forEach(callback: (value: V, key: K, map: ExpiringCacheMap<K, V>) => void): void {
 		let node = this._head;
 		while (node) {
 			callback(node.value, node.key, this);
@@ -117,9 +146,7 @@ export class ExpiringCacheMap<K, V> {
 		}
 	}
 
-	map<U>(
-		callback: (value: V, key: K, map: ExpiringCacheMap<K, V>) => U,
-	): U[] {
+	public map<U>(callback: (value: V, key: K, map: ExpiringCacheMap<K, V>) => U): U[] {
 		const result: U[] = [];
 		let node = this._head;
 		while (node) {
