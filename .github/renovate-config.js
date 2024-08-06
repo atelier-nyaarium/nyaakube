@@ -54,5 +54,11 @@ module.exports = {
 			groupName: "docker",
 			automerge: true,
 		},
+		{
+			matchPackagePatterns: [".*"],
+			matchPaths: [".github/workflows/*.yml"],
+			groupName: "github-workflows",
+			automerge: true,
+		},
 	],
 };
