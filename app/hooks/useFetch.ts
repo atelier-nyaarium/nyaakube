@@ -35,36 +35,27 @@ export type FetchReturn = [() => Promise<void>, any, boolean, Error | null];
  * const [fetchData, loading, error] = useFetch(() => ({ url: `/api/session/login`, data: { email, password } }), [email, password]);
  * -> fetchData: Function, loading: boolean, error: Error
  */
-export function useFetch(
-	paramsCallback: () => FetchParams,
-	watchList: any[],
-): FetchReturn {
+export function useFetch(paramsCallback: () => FetchParams, watchList: any[]): FetchReturn {
 	const snackbar = useSnackbar();
 
 	const [responseJson, setResponseJson] = useState<any>(null);
 
 	if (DEV) {
 		if (typeof paramsCallback !== "function") {
-			throw new TypeError(
-				`useFetch(paramsCallback, watchList) : 'paramsCallback' must be a function.`,
-			);
+			throw new TypeError(`useFetch(paramsCallback, watchList) : 'paramsCallback' must be a function.`);
 		}
 
 		if (paramsCallback.constructor.name === "AsyncFunction") {
-			throw new TypeError(
-				`useFetch(paramsCallback, watchList) : 'paramsCallback' cannot be async.`,
-			);
+			throw new TypeError(`useFetch(paramsCallback, watchList) : 'paramsCallback' cannot be async.`);
 		}
 
 		if (!Array.isArray(watchList)) {
-			throw new TypeError(
-				`useFetch(paramsCallback, watchList) : 'watchList' must be an array.`,
-			);
+			throw new TypeError(`useFetch(paramsCallback, watchList) : 'watchList' must be an array.`);
 		}
 	}
 
 	// Do not watch on `paramsCallback` for the next line. This should behave like useCallback.
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// DISABLED eslint-disable-next-line react-hooks/exhaustive-deps
 	const params = useMemo(() => paramsCallback(), watchList);
 
 	if (DEV) {
@@ -77,36 +68,25 @@ export function useFetch(
 
 		// Params: Expect params.url
 		if (typeof params.url !== "string") {
-			throw new TypeError(
-				`useFetch(paramsCallback, watchList) : 'paramsCallback().url' must be a string.`,
-			);
+			throw new TypeError(`useFetch(paramsCallback, watchList) : 'paramsCallback().url' must be a string.`);
 		}
 
 		// Params: Expect optional params.data
-		if (
-			params.data !== undefined &&
-			(params.data === null || typeof params.data !== "object")
-		) {
+		if (params.data !== undefined && (params.data === null || typeof params.data !== "object")) {
 			throw new TypeError(
 				`useFetch(paramsCallback, watchList) : 'paramsCallback().data' is optional, but must be an object.`,
 			);
 		}
 
 		// Params: Expect optional params.options
-		if (
-			params.options !== undefined &&
-			(params.options === null || typeof params.options !== "object")
-		) {
+		if (params.options !== undefined && (params.options === null || typeof params.options !== "object")) {
 			throw new TypeError(
 				`useFetch(paramsCallback, watchList) : 'paramsCallback().options' is optional, but must be an object.`,
 			);
 		}
 
 		// Params: Expect optional params.validate
-		if (
-			params.validate !== undefined &&
-			typeof params.validate !== "function"
-		) {
+		if (params.validate !== undefined && typeof params.validate !== "function") {
 			throw new TypeError(
 				`useFetch(paramsCallback, watchList) : 'paramsCallback().validate' is optional, but must be a function.`,
 			);
@@ -135,11 +115,7 @@ export function useFetch(
 			}
 
 			try {
-				const data = await fetchJson(
-					params.url,
-					params.data,
-					params.options,
-				);
+				const data = await fetchJson(params.url, params.data, params.options);
 				if (params.ok) {
 					await params.ok(data);
 				}
@@ -151,16 +127,13 @@ export function useFetch(
 				} else {
 					snackbar({
 						type: "error",
-						message:
-							error instanceof Error
-								? error.message
-								: String(error),
+						message: error instanceof Error ? error.message : String(error),
 					});
 				}
 			}
 		},
 		// Do not watch on `params` for the next line. This should behave like useCallback.
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// DISABLED eslint-disable-next-line react-hooks/exhaustive-deps
 		[snackbar, ...watchList],
 	);
 

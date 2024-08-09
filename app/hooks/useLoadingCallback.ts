@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useSnackbar } from "~/components/Snackbar";
 
 const DEV = process.env.NODE_ENV !== "production";
@@ -17,15 +17,11 @@ export function useLoadingCallback<T extends any[], R>(
 ): [(...args: T) => Promise<R | undefined>, boolean, Error | null] {
 	if (DEV) {
 		if (typeof callback !== "function") {
-			throw new TypeError(
-				"useLoadingCallback(callback, watchList) : 'callback' must be a function.",
-			);
+			throw new TypeError("useLoadingCallback(callback, watchList) : 'callback' must be a function.");
 		}
 
 		if (!Array.isArray(watchList)) {
-			throw new TypeError(
-				"useLoadingCallback(callback, watchList) : 'watchList' must be an array.",
-			);
+			throw new TypeError("useLoadingCallback(callback, watchList) : 'watchList' must be an array.");
 		}
 	}
 
@@ -42,8 +38,7 @@ export function useLoadingCallback<T extends any[], R>(
 				setError(null);
 				return result;
 			} catch (err) {
-				const errorInstance =
-					err instanceof Error ? err : new Error(String(err));
+				const errorInstance = err instanceof Error ? err : new Error(String(err));
 				snackbar({
 					type: "error",
 					message: errorInstance.message,
@@ -53,7 +48,7 @@ export function useLoadingCallback<T extends any[], R>(
 				setLoading(false);
 			}
 		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// DISABLED eslint-disable-next-line react-hooks/exhaustive-deps
 		[snackbar, ...watchList],
 	);
 

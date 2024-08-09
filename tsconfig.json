@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"lib": ["DOM", "DOM.Iterable", "ES2022"],
-		"types": ["@remix-run/node", "vite/client"],
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"types": ["node", "@remix-run/node", "vite/client"],
 		"isolatedModules": true,
 		"esModuleInterop": true,
 		"jsx": "react-jsx",
@@ -23,11 +23,5 @@
 		}
 	},
 	"include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
-	"exclude": [
-		"/build/",
-		"/node_modules/",
-		"/volumes/",
-		"/.eslintrc.js",
-		"/tsconfig.json"
-	]
+	"exclude": ["/build/", "/node_modules/", "/volumes/", "/.eslintrc.js", "/tsconfig.json"]
 }

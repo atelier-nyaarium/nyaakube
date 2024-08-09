@@ -9,6 +9,7 @@
 		"dev": "scripts/loadEnv.sh node startServices.js &  NODE_ENV=development  scripts/loadEnv.sh npx remix vite:dev",
 		"start": "node startServices.js &  NODE_ENV=production  remix-serve ./build/server/index.js",
 		"build": "npm run clean && npx remix vite:build",
+		"lint": "npx eslint .",
 		"typecheck": "tsc",
 		"====[ Misc ]====": "",
 		"reinstall": "npm run purge && npm i",
@@ -64,12 +65,12 @@
 		"@types/react-image-gallery": "^1.2.4",
 		"@types/saslprep": "^1.0.3",
 		"@types/uuid": "^10.0.0",
-		"@typescript-eslint/eslint-plugin": "^8.0.0",
-		"@typescript-eslint/parser": "^8.0.0",
 		"dotenv": "^16.4.5",
-		"eslint": "9.8.0",
-		"eslint-plugin-security": "^3.0.1",
+		"eslint": "^9.8.0",
+		"eslint-plugin-react": "^7.35.0",
+		"globals": "^15.9.0",
 		"typescript": "^5.5.3",
+		"typescript-eslint": "^8.0.1",
 		"vite-tsconfig-paths": "^5.0.0"
 	}
 }
