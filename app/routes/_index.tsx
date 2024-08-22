@@ -6,67 +6,6 @@ import { AlignScreenMiddle } from "~/components/AlignScreenMiddle";
 import { useSnackbar } from "~/components/Snackbar";
 import { useFetch } from "~/hooks/useFetch";
 
-const styles: { [key: string]: CSSProperties } = {
-	coreCard: {
-		display: `inline-block`,
-		margin: `4px`,
-		boxShadow: `0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)`,
-		borderRadius: `4px`,
-		backgroundColor: `rgba(127, 127, 127, 0.2)`,
-	},
-	coreCardContent: {
-		padding: `16px`,
-	},
-
-	navigationTile: {
-		width: `170px`,
-		fontSize: `1.4rem`,
-	},
-
-	footerBadges: {
-		position: "absolute",
-		bottom: "0",
-		left: "8px",
-	},
-};
-
-const Card = ({ sx, children }: any) => (
-	<div style={styles.coreCard}>
-		<div style={styles.coreCardContent}>
-			<div style={sx}>{children}</div>
-		</div>
-	</div>
-);
-
-const CardHeader = ({ avatar, title }: any) => (
-	<div style={{ display: "flex", alignItems: "center" }}>
-		{avatar}
-		<div style={{ marginLeft: "16px" }}>{title}</div>
-	</div>
-);
-
-const CardActionArea = ({ href, onClick, children }: any) => (
-	<a
-		href={href}
-		onClick={onClick}
-		style={{ textDecoration: "none", color: "inherit" }}
-	>
-		{children}
-	</a>
-);
-
-const Avatar = ({ src, sx }: any) => (
-	<img
-		src={src}
-		style={{ width: "40px", height: "40px", borderRadius: "50%", ...sx }}
-		alt="avatar"
-	/>
-);
-
-const Typography = ({ variant, children }: any) => {
-	return <div>{children}</div>;
-};
-
 export async function loader({ request }: LoaderFunctionArgs) {
 	const origin = `https://${getEnv("PUBLIC_HOST") || "localhost:3000"}`;
 
@@ -80,8 +19,7 @@ export const meta: MetaFunction = ({
 	location, // Location object
 	params, // File name driven params: concerts.$city.$date.tsx
 }: any) => {
-	const organization = `Atelier Nyaarium`;
-	const title = `Index | Nyaarium`;
+	const title = `Atelier Nyaarium`;
 	const description = `Welcome to Atelier Nyaarium!`;
 	const image = `/logos/nyaarium.webp`;
 	const url = `${data.origin}/`;
@@ -107,7 +45,7 @@ export const meta: MetaFunction = ({
 			"script:ld+json": {
 				"@context": "https://schema.org",
 				"@type": "Organization",
-				"name": organization,
+				"name": `Atelier Nyaarium`,
 				"url": data.origin,
 			},
 		},
@@ -160,15 +98,8 @@ export default function PageIndex() {
 						}}
 					>
 						<CardHeader
-							avatar={
-								<Avatar
-									src="/logos/discord.webp"
-									sx={sxLogoAuto}
-								/>
-							}
-							title={
-								<Typography variant="h5">Nyaarium</Typography>
-							}
+							avatar={<Avatar src="/logos/discord.webp" sx={sxLogoAuto} />}
+							title={<Typography variant="h5">Nyaarium</Typography>}
 						/>
 					</CardActionArea>
 				</Card>
@@ -176,12 +107,7 @@ export default function PageIndex() {
 				<Card sx={styles.navigationTile}>
 					<CardActionArea href="https://github.com/nyaarium">
 						<CardHeader
-							avatar={
-								<Avatar
-									src="/logos/github.webp"
-									sx={sxLogoAuto}
-								/>
-							}
+							avatar={<Avatar src="/logos/github.webp" sx={sxLogoAuto} />}
 							title={<Typography variant="h5">GitHub</Typography>}
 						/>
 					</CardActionArea>
@@ -190,15 +116,8 @@ export default function PageIndex() {
 				<Card sx={styles.navigationTile}>
 					<CardActionArea href="https://hub.abinteractive.net/social/profile?guid=09d90a90-f757-2042-d0bc-196a9ecd3a1b">
 						<CardHeader
-							avatar={
-								<Avatar
-									src="/logos/chilloutvr.webp"
-									sx={sxLogoAuto}
-								/>
-							}
-							title={
-								<Typography variant="h5">ChilloutVR</Typography>
-							}
+							avatar={<Avatar src="/logos/chilloutvr.webp" sx={sxLogoAuto} />}
+							title={<Typography variant="h5">ChilloutVR</Typography>}
 						/>
 					</CardActionArea>
 				</Card>
@@ -206,12 +125,7 @@ export default function PageIndex() {
 				<Card sx={styles.navigationTile}>
 					<CardActionArea href="https://vrchat.com/home/user/usr_8c8467ca-7057-4c65-905e-3e62abb26adb">
 						<CardHeader
-							avatar={
-								<Avatar
-									src="/logos/vrchat.webp"
-									sx={sxLogoNormal}
-								/>
-							}
+							avatar={<Avatar src="/logos/vrchat.webp" sx={sxLogoNormal} />}
 							title={<Typography variant="h5">VRChat</Typography>}
 						/>
 					</CardActionArea>
@@ -228,12 +142,7 @@ export default function PageIndex() {
 						}}
 					>
 						<CardHeader
-							avatar={
-								<Avatar
-									src="/logos/steam.webp"
-									sx={sxLogoAuto}
-								/>
-							}
+							avatar={<Avatar src="/logos/steam.webp" sx={sxLogoAuto} />}
 							title={<Typography variant="h5">Steam</Typography>}
 						/>
 					</CardActionArea>
@@ -258,15 +167,8 @@ export default function PageIndex() {
 				<Card sx={styles.navigationTile}>
 					<CardActionArea href="https://x.com/nyaarium">
 						<CardHeader
-							avatar={
-								<Avatar
-									src="/logos/twitter.webp"
-									sx={sxLogoAuto}
-								/>
-							}
-							title={
-								<Typography variant="h5">Twitter</Typography>
-							}
+							avatar={<Avatar src="/logos/twitter.webp" sx={sxLogoAuto} />}
+							title={<Typography variant="h5">Twitter</Typography>}
 						/>
 					</CardActionArea>
 				</Card>
@@ -282,3 +184,56 @@ export default function PageIndex() {
 		</>
 	);
 }
+
+const styles: { [key: string]: CSSProperties } = {
+	coreCard: {
+		display: `inline-block`,
+		margin: `4px`,
+		boxShadow: `0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)`,
+		borderRadius: `4px`,
+		backgroundColor: `rgba(127, 127, 127, 0.2)`,
+	},
+	coreCardContent: {
+		padding: `16px`,
+	},
+
+	navigationTile: {
+		width: `170px`,
+		fontSize: `1.4rem`,
+	},
+
+	footerBadges: {
+		position: "absolute",
+		bottom: "0",
+		left: "8px",
+	},
+};
+
+const Card = ({ sx, children }: any) => (
+	<div style={styles.coreCard}>
+		<div style={styles.coreCardContent}>
+			<div style={sx}>{children}</div>
+		</div>
+	</div>
+);
+
+const CardHeader = ({ avatar, title }: any) => (
+	<div style={{ display: "flex", alignItems: "center" }}>
+		{avatar}
+		<div style={{ marginLeft: "16px" }}>{title}</div>
+	</div>
+);
+
+const CardActionArea = ({ href, onClick, children }: any) => (
+	<a href={href} onClick={onClick} style={{ textDecoration: "none", color: "inherit" }}>
+		{children}
+	</a>
+);
+
+const Avatar = ({ src, sx }: any) => (
+	<img src={src} style={{ width: "40px", height: "40px", borderRadius: "50%", ...sx }} alt="avatar" />
+);
+
+const Typography = ({ variant, children }: any) => {
+	return <div>{children}</div>;
+};
