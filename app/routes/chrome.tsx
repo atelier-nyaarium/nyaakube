@@ -1,5 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
-import { json, LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { CSSProperties } from "react";
 import { getEnv } from "~/assets/server";
 
