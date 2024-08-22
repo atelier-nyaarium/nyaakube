@@ -43,28 +43,28 @@ export const meta: MetaFunction = ({
 export default function PageChrome() {
 	const links = [
 		{
+			name: `uBlock Origin`,
+			url: `https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm`,
+		},
+		{
 			name: `SponsorBlock`,
 			url: `https://chromewebstore.google.com/detail/sponsorblock-for-youtube/mnjggcdmjocbbbhaepdhchncahnbgone`,
-		},
-		{
-			name: `7TV`,
-			url: `https://chromewebstore.google.com/detail/7tv/ammjkodgmmoknidbanneddgankgfejfh`,
-		},
-		{
-			name: `Purple Ads Blocker`,
-			url: `https://chromewebstore.google.com/detail/purple-ads-blocker/lkgcfobnmghhbhgekffaadadhmeoindg`,
-		},
-		{
-			name: `The Camelizer`,
-			url: `https://chromewebstore.google.com/detail/the-camelizer/ghnomdcacenbmilgjigehppbamfndblo`,
 		},
 		{
 			name: `Consent-O-Matic`,
 			url: `https://chromewebstore.google.com/detail/consent-o-matic/mdjildafknihdffpkfmmpnpoiajfjnjd`,
 		},
 		{
-			name: `uBlock Origin`,
-			url: `https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm`,
+			name: `Purple Ads Blocker`,
+			url: `https://chromewebstore.google.com/detail/purple-ads-blocker/lkgcfobnmghhbhgekffaadadhmeoindg`,
+		},
+		{
+			name: `7TV`,
+			url: `https://chromewebstore.google.com/detail/7tv/ammjkodgmmoknidbanneddgankgfejfh`,
+		},
+		{
+			name: `The Camelizer`,
+			url: `https://chromewebstore.google.com/detail/the-camelizer/ghnomdcacenbmilgjigehppbamfndblo`,
 		},
 	];
 
