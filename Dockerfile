@@ -1,9 +1,7 @@
 FROM node:22.6-bookworm-slim AS node_modules_dev
 WORKDIR /app
 COPY package*.json ./
-RUN npm config set update-notifier false \
-    && npm audit fix --package-lock-only \
-    && npm ci --include=dev
+RUN npm config set update-notifier false && npm ci --include=dev
 
 
 
