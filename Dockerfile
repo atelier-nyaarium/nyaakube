@@ -1,11 +1,11 @@
-FROM node:22.6-bookworm-slim AS node_modules_dev
+FROM node:22.7-bookworm-slim AS node_modules_dev
 WORKDIR /app
 COPY package*.json ./
 RUN npm config set update-notifier false && npm ci --include=dev
 
 
 
-FROM node:22.6-bookworm-slim AS node_modules_prod
+FROM node:22.7-bookworm-slim AS node_modules_prod
 WORKDIR /app
 RUN npm i @remix-run/serve
 
@@ -32,7 +32,7 @@ RUN mv startServices.js deployment/
 
 
 
-FROM node:22.6-bookworm-slim AS runner
+FROM node:22.7-bookworm-slim AS runner
 WORKDIR /app
 
 # Debugging tools
