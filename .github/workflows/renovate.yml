@@ -3,10 +3,10 @@ on:
   workflow_dispatch:
 
   schedule:
-    # Run 3 times a day every day starting 10:00 UTC (3:00 AM PST)
-    - cron: "0 10 * * *"
+    # Run 3 times a day every day starting 10:15 UTC (3:15 AM PST)
     - cron: "15 10 * * *"
     - cron: "30 10 * * *"
+    - cron: "45 10 * * *"
 
 jobs:
   renovate:
