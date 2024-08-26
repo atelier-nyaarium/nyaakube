@@ -36,6 +36,11 @@ RUN mv public deployment/
 FROM node:22.7-bookworm-slim AS runner
 WORKDIR /app
 
+RUN apt update && apt install -y \
+    openssh-client \
+    rsync \
+    && apt clean && rm -rf /var/lib/apt/lists/*
+
 # Debugging tools
 # RUN apt update && apt install -y \
 #     ncdu \
@@ -60,4 +65,4 @@ EXPOSE $PORT
 COPY --from=node_modules_prod /app/node_modules/ ./node_modules/
 COPY --from=builder /app/deployment/ ./
 
-CMD ["npm", "run", "start"]
+CMD ["sh", "start.sh"]
