@@ -25,7 +25,7 @@ COPY . .
 RUN npm run build
 
 # Isolate deployment files
-RUN mkdir deployment
+RUN mkdir -p deployment/public/
 RUN mv build deployment/
 RUN mv package*.json deployment/
 RUN mv startServices.js deployment/
