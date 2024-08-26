@@ -6,7 +6,7 @@ TO="public/"
 
 
 if [ -n "$RSYNC_KEY" ]; then
-	echo "$RSYNC_KEY" | base64 -d > temp.key
+	echo "$RSYNC_KEY" > temp.key
 	unset RSYNC_KEY
 	chmod 600 temp.key
 	# rsync -arv --del
