@@ -28,7 +28,7 @@ RUN npm run build
 RUN mkdir -p deployment/public/
 RUN mv build deployment/
 RUN mv package*.json deployment/
-RUN mv startServices.js deployment/
+RUN mv docker/* deployment/
 
 
 
