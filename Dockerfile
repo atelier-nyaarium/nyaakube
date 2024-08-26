@@ -29,6 +29,7 @@ RUN mkdir -p deployment/public/
 RUN mv build deployment/
 RUN mv package*.json deployment/
 RUN mv docker/* deployment/
+RUN mv public deployment/
 
 
 
