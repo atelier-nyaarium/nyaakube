@@ -5,7 +5,7 @@ updates:
     open-pull-requests-limit: 10
     directory: "/"
     labels:
-      - "dependabot"
+      - "dependencies"
     assignees:
       - "nyaarium"
     schedule:
