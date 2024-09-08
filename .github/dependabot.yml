@@ -9,8 +9,7 @@ updates:
     assignees:
       - "nyaarium"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "daily"
       time: "11:00"
     # automerged_updates:
     #   - match:
