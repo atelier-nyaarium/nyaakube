@@ -7,7 +7,8 @@ RUN npm config set update-notifier false && npm ci --include=dev
 
 FROM node:22.9-bookworm-slim AS node_modules_prod
 WORKDIR /app
-RUN npm i @remix-run/serve
+COPY package*.json ./
+RUN npm config set update-notifier false && npm ci --only=production
 
 
 
