@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"====[ Build ]====": "",
-		"dev": "scripts/loadEnv.sh node startServices.js &  NODE_ENV=development  scripts/loadEnv.sh npx remix vite:dev",
+		"dev": "scripts/loadEnv.sh node docker/startServices.js &  NODE_ENV=development  scripts/loadEnv.sh npx remix vite:dev",
 		"start": "node startServices.js &  NODE_ENV=production  remix-serve ./build/server/index.js",
 		"build": "npm run clean && npm run lint && npx remix vite:build",
 		"lint": "npx eslint .",
