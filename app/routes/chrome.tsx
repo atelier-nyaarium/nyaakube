@@ -59,6 +59,10 @@ export default function PageChrome() {
 			url: `https://chromewebstore.google.com/detail/purple-ads-blocker/lkgcfobnmghhbhgekffaadadhmeoindg`,
 		},
 		{
+			name: `Alternate Player for Twitch`,
+			url: `https://chromewebstore.google.com/detail/alternate-player-for-twit/bhplkbgoehhhddaoolmakpocnenplmhf`,
+		},
+		{
 			name: `7TV`,
 			url: `https://chromewebstore.google.com/detail/7tv/ammjkodgmmoknidbanneddgankgfejfh`,
 		},
