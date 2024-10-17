@@ -1,11 +1,11 @@
-FROM node:22.9-bookworm-slim AS node_modules_dev
+FROM node:23.0-bookworm-slim AS node_modules_dev
 WORKDIR /app
 COPY package*.json ./
 RUN npm config set update-notifier false && npm ci --include=dev
 
 
 
-FROM node:22.9-bookworm-slim AS node_modules_prod
+FROM node:23.0-bookworm-slim AS node_modules_prod
 WORKDIR /app
 COPY package*.json ./
 RUN npm config set update-notifier false && npm ci --only=production
@@ -34,7 +34,7 @@ RUN mv public deployment/
 
 
 
-FROM node:22.9-bookworm-slim AS runner
+FROM node:23.0-bookworm-slim AS runner
 WORKDIR /app
 
 RUN apt update && apt install -y \
